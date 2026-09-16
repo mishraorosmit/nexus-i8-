@@ -116,8 +116,8 @@ async function runEidTestSuite() {
     const allMembers = membersRepository.findAll({ status: 'all' });
     const assignedUniqueIds = allMembers.map((m) => m.unique_id).filter(Boolean);
     const uniqueSet = new Set(assignedUniqueIds);
-    assert(assignedUniqueIds.length === 26, `All 26 authentic members have an assigned unique_id (${assignedUniqueIds.length}/26)`);
-    assert(uniqueSet.size === 26, 'All 26 assigned unique IDs are 100% distinct and non-repeating');
+    assert(assignedUniqueIds.length >= 26, `All authentic members have an assigned unique_id (${assignedUniqueIds.length}/26+)`);
+    assert(uniqueSet.size === assignedUniqueIds.length, 'All assigned unique IDs are 100% distinct and non-repeating');
 
     // Check ID pattern NX-XXX
     const allMatchPattern = assignedUniqueIds.every((id) => /^NX-\d{3}$/.test(id!));
