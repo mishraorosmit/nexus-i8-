@@ -1,6 +1,6 @@
 # NEXUS E-ID Member Dataset — Extraction, Normalization & Validation Report
 
-**Generated**: 2026-09-14T14:16:21.087Z  
+**Generated**: 2026-09-15T05:04:30.826Z  
 **Dataset Path**: `Eid-card/data/members.json`  
 **Machine-Readable Report**: `Eid-card/data/member-validation-report.json`  
 **Source of Truth**: `nexus-i8-/frontend/src/data/nexusData.ts` (`TEAM_MEMBERS`)  
@@ -34,7 +34,7 @@ This dataset represents a pure, zero-invention data extraction from the authenti
 | `NX-008` | **ANANYA RAJ** | `ananya-raj` | IDEATION & HARDWARE PROTOTYPER | IDEATION | Electronics & Systems Engineering | `/images/team/ananya-raj-ideation.webp` |
 | `NX-009` | **UMESH KUMAR SAHU** | `umesh-kumar-sahu` | IDEATION & SYSTEMS ARCHITECT | IDEATION | Software Engineering & Cloud Systems | `/images/team/umesh-kumar-sahu-ideation.webp` |
 | `NX-010` | **SURYAPRASAD BRAHMA** | `suryaprasad-brahma` | IDEATION & CREATIVE TECHNOLOGIST | IDEATION | Computational Media & Systems | `/images/team/suryaprasad-brahma-ideation.webp` |
-| `NX-011` | **TUSHTI SINHA** | `tushti-sinha` | CONTENT & EDITORIAL | CONTENT | Editorial Strategy & Media Communication | `/images/team/tushti-sinha-content.webp` |
+| `NX-011` | **TUSHTI SINHA** | `tushti-sinha` | IDEATION | IDEATION | Editorial Strategy & Media Communication | `/images/team/tushti-sinha-content.webp` |
 | `NX-012` | **SMITA JENA** | `smita-jena` | CONTENT & CURATION | CONTENT | Visual Media & Creative Writing | `/images/team/smita-jena-content.webp` |
 | `NX-013` | **SIDDHARTH BASU** | `siddharth-basu` | TECHNICAL WRITING & CASE STUDIES | CONTENT | Computer Science & Technical Communication | `/images/team/siddharth-basu-content.webp` |
 | `NX-014` | **SASWAT PALO** | `saswat-palo` | MEDIA PRODUCTION & CINEMATICS | CONTENT | Film, Digital Media & Visual Storytelling | `/images/team/saswat-palo-content.webp` |
@@ -47,7 +47,7 @@ This dataset represents a pure, zero-invention data extraction from the authenti
 | `NX-021` | **HARSHIT** | `harshit` | CREATIVE MEDIA & OUTREACH | CONTENT | Digital Arts & Engineering | `/images/team/harshit.webp` |
 | `NX-022` | **SIMRITA BARICK** | `simrita-barick` | EDITORIAL & WRITTEN MEDIA | CONTENT | Media Communication & Technical Writing | `/images/team/simrita-barick-content.webp` |
 | `NX-023` | **SINDHUSUTA RATH** | `sindhusuta-rath` | CREATIVE DOCUMENTATION & MEDIA | CONTENT | Visual Media & Creative Writing | `/images/team/sindhusuta-rath-content.webp` |
-| `NX-024` | **SWARNIM** | `swarnim` | MULTIMEDIA PRODUCTION & ARCHIVE | CONTENT | Digital Media & Visual Arts | `/images/team/swarnim-content.webp` |
+| `NX-024` | **RASHI SWARNIM** | `rashi-swarnim` | MULTIMEDIA PRODUCTION & ARCHIVE | CONTENT | Digital Media & Visual Arts | `/images/team/swarnim-content.webp` |
 | `NX-025` | **ANSHUMAN TIWARY** | `anshuman-tiwary` | MANAGEMENT | MANAGEMENT | Systems & Engineering Operations | `/images/team/anshuman-tiwary-management.webp` |
 | `NX-026` | **OROSMIT MISHRA** | `orosmit-mishra` | MANAGEMENT | MANAGEMENT | Community & Project Strategy | `/images/team/orosmit-mishra.webp` |
 | `NX-027` | **IMTIAZ ALLAM** | `imtiaz-allam` | HEAD OF TECH | HEADS | Technical Architecture & Systems Engineering | `/images/team/Imtiaz_Allam.jpeg` |
@@ -68,7 +68,7 @@ All portraits were inspected in canonical `images/team/`:
 | `NX-004` | OM PANDEY | `/images/team/om-pandey.webp` | ✓ | 20.5 KB |
 | `NX-005` | ANSHITA DASH | `/images/team/anshita-dash-ideation.webp` | ✓ | 23.0 KB |
 | `NX-006` | ANKITA DUTTA | `/images/team/ankita-dutta-ideation.webp` | ✓ | 59.0 KB |
-| `NX-007` | AADYASHA SWAIN | `/images/team/aadyasha-swain-ideation.webp` | ✓ | 73.8 KB |
+| `NX-007` | AADYASHA SWAIN | `/images/team/aadyasha-swain-ideation.webp` | ✓ | 128.8 KB |
 | `NX-008` | ANANYA RAJ | `/images/team/ananya-raj-ideation.webp` | ✓ | 85.7 KB |
 | `NX-009` | UMESH KUMAR SAHU | `/images/team/umesh-kumar-sahu-ideation.webp` | ✓ | 35.6 KB |
 | `NX-010` | SURYAPRASAD BRAHMA | `/images/team/suryaprasad-brahma-ideation.webp` | ✓ | 8.6 KB |
@@ -85,7 +85,7 @@ All portraits were inspected in canonical `images/team/`:
 | `NX-021` | HARSHIT | `/images/team/harshit.webp` | ✓ | 78.5 KB |
 | `NX-022` | SIMRITA BARICK | `/images/team/simrita-barick-content.webp` | ✓ | 208.6 KB |
 | `NX-023` | SINDHUSUTA RATH | `/images/team/sindhusuta-rath-content.webp` | ✓ | 143.3 KB |
-| `NX-024` | SWARNIM | `/images/team/swarnim-content.webp` | ✓ | 42.9 KB |
+| `NX-024` | RASHI SWARNIM | `/images/team/swarnim-content.webp` | ✓ | 42.9 KB |
 | `NX-025` | ANSHUMAN TIWARY | `/images/team/anshuman-tiwary-management.webp` | ✓ | 12.2 KB |
 | `NX-026` | OROSMIT MISHRA | `/images/team/orosmit-mishra.webp` | ✓ | 33.3 KB |
 | `NX-027` | IMTIAZ ALLAM | `/images/team/Imtiaz_Allam.jpeg` | ✓ | 44.8 KB |

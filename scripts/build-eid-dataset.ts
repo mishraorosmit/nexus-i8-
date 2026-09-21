@@ -44,7 +44,7 @@ const DETERMINISTIC_ID_MAPPING: Record<string, string> = {
   'team-content-11': 'NX-021',// HARSHIT
   'team-content-12': 'NX-022',// SIMRITA BARICK
   'team-content-13': 'NX-023',// SINDHUSUTA RATH
-  'team-content-14': 'NX-024',// SWARNIM
+  'team-content-14': 'NX-024',// RASHI SWARNIM
   'team-01': 'NX-025',       // ANSHUMAN TIWARY
   'team-02': 'NX-026',       // OROSMIT MISHRA
   'team-head-02': 'NX-027',  // IMTIAZ ALLAM

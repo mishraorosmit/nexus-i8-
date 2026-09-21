@@ -22,6 +22,7 @@ export interface Project {
   disciplines: string; // e.g. "TECH × EDUCATION"
   status: 'Active' | 'Completed' | 'Incubating';
   leadStudents: string[];
+  contributors?: Record<string, string[]>;
   tags: string[];
   deliverables?: string[];
   githubUrl?: string;

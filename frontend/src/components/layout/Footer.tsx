@@ -43,7 +43,7 @@ export const Footer: React.FC<FooterProps> = ({ onRouteChange }) => {
       className="w-full bg-[var(--bg-primary)] text-[var(--text-primary)] pt-16 md:pt-20 pb-12 border-t border-[var(--border-subtle)] transition-colors duration-250"
     >
       <Container>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 pb-14 border-b border-[var(--border-subtle)]">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 pb-14 border-b border-[var(--border-subtle)]">
           {/* 1. Logo & College Community */}
           <div className="col-span-2 md:col-span-3 lg:col-span-1 space-y-4">
             <NexusLogo
@@ -128,25 +128,7 @@ export const Footer: React.FC<FooterProps> = ({ onRouteChange }) => {
             </ul>
           </div>
 
-          {/* 4. University & Location */}
-          <div className="col-span-1 space-y-3">
-            <h4 className="font-dosis text-xs uppercase tracking-[0.22em] text-[#F2613F] font-bold">
-              CAMPUS
-            </h4>
-            <div className="space-y-1">
-              <p className="text-xs font-bitter text-[var(--text-primary)]">
-                Center for Student Innovation
-              </p>
-              <p className="text-xs font-bitter text-[var(--text-secondary)]">
-                Design Pavilion • Lab 204
-              </p>
-            </div>
-            <div className="pt-1 text-xs font-mono text-[var(--text-muted)]">
-              MEETINGS: THU 6:00 PM
-            </div>
-          </div>
-
-          {/* 5. Coding Ninjas Affiliation (Rightmost Column) */}
+          {/* 4. Coding Ninjas Affiliation (Rightmost Column) */}
           <div className="col-span-2 sm:col-span-1 lg:col-span-1 space-y-3">
             <h4 className="font-dosis text-xs uppercase tracking-[0.22em] text-[#F2613F] font-bold">
               AFFILIATION
@@ -175,10 +157,6 @@ export const Footer: React.FC<FooterProps> = ({ onRouteChange }) => {
           <div className="my-2 sm:my-0 flex items-center justify-center">
             <InteractiveFooterPenguin scale={2.6} />
           </div>
-
-          <p className="text-[var(--text-muted)] tracking-[0.2em] text-center sm:text-right">
-            STUDENT-LED COLLEGE COMMUNITY
-          </p>
         </div>
       </Container>
     </footer>

@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-09-14T14:16:21.087Z",
+  "timestamp": "2026-09-15T05:04:30.826Z",
   "sourceRepository": "nexus-i8-",
   "sourceFile": "frontend/src/data/nexusData.ts",
   "targetDataset": "Eid-card/data/members.json",
@@ -117,8 +117,8 @@
       "uniqueId": "NX-011",
       "name": "TUSHTI SINHA",
       "slug": "tushti-sinha",
-      "role": "CONTENT & EDITORIAL",
-      "group": "CONTENT",
+      "role": "IDEATION",
+      "group": "IDEATION",
       "domain": "Editorial Strategy & Media Communication",
       "image": "/images/team/tushti-sinha-content.webp",
       "sourceId": "team-content-01"
@@ -245,8 +245,8 @@
     },
     {
       "uniqueId": "NX-024",
-      "name": "SWARNIM",
-      "slug": "swarnim",
+      "name": "RASHI SWARNIM",
+      "slug": "rashi-swarnim",
       "role": "MULTIMEDIA PRODUCTION & ARCHIVE",
       "group": "CONTENT",
       "domain": "Digital Media & Visual Arts",
@@ -352,7 +352,7 @@
       "name": "AADYASHA SWAIN",
       "relativeImagePath": "/images/team/aadyasha-swain-ideation.webp",
       "imagesDirExists": true,
-      "fileSizeBytes": 75560
+      "fileSizeBytes": 131876
     },
     {
       "uniqueId": "NX-008",
@@ -468,7 +468,7 @@
     },
     {
       "uniqueId": "NX-024",
-      "name": "SWARNIM",
+      "name": "RASHI SWARNIM",
       "relativeImagePath": "/images/team/swarnim-content.webp",
       "imagesDirExists": true,
       "fileSizeBytes": 43938

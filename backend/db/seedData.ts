@@ -132,7 +132,7 @@ export const SEED_RESOURCES: ResourceItem[] = [
     title: 'NEXUS Interface Tokens & Typography Primer',
     category: 'DesignSystem',
     description: 'Standardized design tokens, warm paper palettes, and editorial layout standards.',
-    url: 'https://github.com/nexus-club/typestream',
+    url: 'https://github.com/nexus-club/design-tokens',
     tags: ['Design System', 'Typography', 'Tokens'],
   },
   {
@@ -148,7 +148,7 @@ export const SEED_RESOURCES: ResourceItem[] = [
     title: 'Canvas & Shader Animation Starter Template',
     category: 'StarterKit',
     description: 'Minimal zero-dependency starter for high-performance interactive generative graphics.',
-    url: 'https://github.com/nexus-club/algolab',
+    url: 'https://github.com/nexus-club/algolog',
     tags: ['Canvas', 'TypeScript', 'Animation'],
   },
 ];

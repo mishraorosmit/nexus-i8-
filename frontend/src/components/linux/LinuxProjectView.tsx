@@ -186,20 +186,40 @@ export const LinuxProjectView: React.FC<LinuxProjectViewProps> = ({ project }) =
 
             {/* Student Leads & Tech Stack */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-              {/* Student Leads */}
-              <div className="p-4 bg-[#181818] border border-[rgba(245,239,230,0.10)] rounded-[2px] space-y-2">
+              {/* Student Leads / Contributors */}
+              <div className="p-4 bg-[#181818] border border-[rgba(245,239,230,0.10)] rounded-[2px] space-y-2.5">
                 <span className="font-mono text-[10px] uppercase tracking-widest text-[#F2613F] flex items-center gap-1.5">
                   <Users className="w-3 h-3" />
-                  <span>STUDENT SQUAD LEADS</span>
+                  <span>{project.contributors ? 'CONTRIBUTORS' : 'STUDENT SQUAD LEADS'}</span>
                 </span>
-                <ul className="space-y-1">
-                  {project.leadStudents.map((lead) => (
-                    <li key={lead} className="font-mono text-xs text-[#F5EFE6] flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 bg-[#F2613F] rounded-full" />
-                      <span>{lead}</span>
-                    </li>
-                  ))}
-                </ul>
+                {project.contributors ? (
+                  <div className="space-y-2.5">
+                    {Object.entries(project.contributors).map(([category, members]) => (
+                      <div key={category} className="space-y-1">
+                        <span className="font-mono text-[10px] font-bold text-[#857E74] tracking-wider block">
+                          {category}
+                        </span>
+                        <ul className="space-y-1">
+                          {members.map((name) => (
+                            <li key={name} className="font-mono text-xs text-[#F5EFE6] flex items-center gap-2">
+                              <span className="w-1.5 h-1.5 bg-[#F2613F] rounded-full" />
+                              <span>{name}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <ul className="space-y-1">
+                    {project.leadStudents.map((lead) => (
+                      <li key={lead} className="font-mono text-xs text-[#F5EFE6] flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 bg-[#F2613F] rounded-full" />
+                        <span>{lead}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
 
               {/* Technologies */}
@@ -271,12 +291,29 @@ export const LinuxProjectView: React.FC<LinuxProjectViewProps> = ({ project }) =
 
               <div>
                 <span className="text-[#F2613F]">## </span>
-                <span className="text-[#F5EFE6] font-bold">3. Squad Authors</span>
-                <ul className="list-disc list-inside mt-1 text-[#C2BBB0]">
-                  {project.leadStudents.map((lead) => (
-                    <li key={lead}>{lead}</li>
-                  ))}
-                </ul>
+                <span className="text-[#F5EFE6] font-bold">
+                  {project.contributors ? '3. Contributors' : '3. Squad Authors'}
+                </span>
+                {project.contributors ? (
+                  <div className="mt-2 space-y-2 text-[#C2BBB0]">
+                    {Object.entries(project.contributors).map(([category, members]) => (
+                      <div key={category} className="space-y-0.5">
+                        <span className="text-[11px] font-bold text-[#F5EFE6] uppercase">{category}:</span>
+                        <ul className="list-disc list-inside pl-2 text-xs">
+                          {members.map((name) => (
+                            <li key={name}>{name}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <ul className="list-disc list-inside mt-1 text-[#C2BBB0]">
+                    {project.leadStudents.map((lead) => (
+                      <li key={lead}>{lead}</li>
+                    ))}
+                  </ul>
+                )}
               </div>
 
               {project.githubUrl && (

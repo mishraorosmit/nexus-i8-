@@ -67,7 +67,7 @@ export const LinuxTerminal: React.FC<LinuxTerminalProps> = ({ onOpenProject, onC
           <div className="space-y-1 text-[#C2BBB0]">
             <div className="text-[#F2613F] font-bold">AVAILABLE COMMANDS:</div>
             <div>• <span className="text-[#F5EFE6] font-bold">projects</span> (or <span className="text-[#F5EFE6] font-bold">ls</span>) — List all repository project packages</div>
-            <div>• <span className="text-[#F5EFE6] font-bold">open &lt;name|id&gt;</span> — Open project inspection window (e.g. 'open algolab')</div>
+            <div>• <span className="text-[#F5EFE6] font-bold">open &lt;name|id&gt;</span> — Open project inspection window (e.g. 'open algolog')</div>
             <div>• <span className="text-[#F5EFE6] font-bold">github &lt;name|id&gt;</span> — Launch external GitHub repository in browser</div>
             <div>• <span className="text-[#F5EFE6] font-bold">cat &lt;project/readme&gt;</span> — Print project summary & context</div>
             <div>• <span className="text-[#F5EFE6] font-bold">about</span> — Show NEXUS student community origin & mission</div>
@@ -101,14 +101,19 @@ export const LinuxTerminal: React.FC<LinuxTerminalProps> = ({ onOpenProject, onC
 
       case 'open': {
         if (!argString) {
-          outputNode = <div className="text-[#F2613F]">Usage: open &lt;project_name | project_id&gt; (e.g., 'open algolab')</div>;
+          outputNode = <div className="text-[#F2613F]">Usage: open &lt;project_name | project_id&gt; (e.g., 'open algolog')</div>;
           break;
         }
         const target = projectSource.find(
           (p) =>
             p.title.toLowerCase() === argString ||
             p.id.toLowerCase() === argString ||
-            p.title.toLowerCase().includes(argString)
+            p.title.toLowerCase().includes(argString) ||
+            (p.id === 'nxs-001' && (argString === 'algolab' || argString === 'e1')) ||
+            (p.id === 'nxs-002' && (argString === 'arcanum' || argString === 'e2')) ||
+            (p.id === 'nxs-003' && (argString === 'clubsphere' || argString === 'e3' || argString === 'commute')) ||
+            (p.id === 'nxs-004' && (argString === 'e4' || argString === 'library' || argString === 'lims' || argString === 'voxen')) ||
+            (p.id === 'nxs-005' && (argString === 'e5' || argString === 'habitat'))
         );
         if (target) {
           onOpenProject(target);
@@ -136,7 +141,12 @@ export const LinuxTerminal: React.FC<LinuxTerminalProps> = ({ onOpenProject, onC
           (p) =>
             p.title.toLowerCase() === argString ||
             p.id.toLowerCase() === argString ||
-            p.title.toLowerCase().includes(argString)
+            p.title.toLowerCase().includes(argString) ||
+            (p.id === 'nxs-001' && (argString === 'algolab' || argString === 'e1')) ||
+            (p.id === 'nxs-002' && (argString === 'arcanum' || argString === 'e2')) ||
+            (p.id === 'nxs-003' && (argString === 'clubsphere' || argString === 'e3' || argString === 'commute')) ||
+            (p.id === 'nxs-004' && (argString === 'e4' || argString === 'library' || argString === 'lims' || argString === 'voxen')) ||
+            (p.id === 'nxs-005' && (argString === 'e5' || argString === 'habitat'))
         );
         if (target && target.githubUrl) {
           window.open(target.githubUrl, '_blank', 'noopener,noreferrer');
@@ -166,7 +176,12 @@ export const LinuxTerminal: React.FC<LinuxTerminalProps> = ({ onOpenProject, onC
           (p) =>
             p.title.toLowerCase() === argString ||
             p.id.toLowerCase() === argString ||
-            p.title.toLowerCase().includes(argString)
+            p.title.toLowerCase().includes(argString) ||
+            (p.id === 'nxs-001' && (argString === 'algolab' || argString === 'e1')) ||
+            (p.id === 'nxs-002' && (argString === 'arcanum' || argString === 'e2')) ||
+            (p.id === 'nxs-003' && (argString === 'clubsphere' || argString === 'e3' || argString === 'commute')) ||
+            (p.id === 'nxs-004' && (argString === 'e4' || argString === 'library' || argString === 'lims' || argString === 'voxen')) ||
+            (p.id === 'nxs-005' && (argString === 'e5' || argString === 'habitat'))
         );
         if (target) {
           outputNode = (

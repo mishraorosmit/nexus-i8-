@@ -417,9 +417,9 @@ export const CLOUDINARY_IMAGE_MAP: Record<string, CloudinaryImageRecord> = {
   "/images/team/aadyasha-swain-ideation.webp": {
     localPath: "/images/team/aadyasha-swain-ideation.webp",
     publicId: "aarambh/team/aadyasha-swain-ideation",
-    deliveryUrl: "https://res.cloudinary.com/plg8gola/image/upload/aarambh/team/aadyasha-swain-ideation.webp",
+    deliveryUrl: "/images/team/aadyasha-swain-ideation.webp",
     category: "team",
-    sha256: "1b4ec1cbeaf8420c88bfc6f07abea75b698200f4255f7043d9bf8d560969874e",
+    sha256: "c83709b58d643f966e684a1f9cd54ef2841814d3c497c57626df4f624c47e86d",
   },
   "/images/team/ananya-raj-ideation.webp": {
     localPath: "/images/team/ananya-raj-ideation.webp",
@@ -606,14 +606,14 @@ export const CLOUDINARY_IMAGE_MAP: Record<string, CloudinaryImageRecord> = {
   "/images/team/swarnim-content.webp": {
     localPath: "/images/team/swarnim-content.webp",
     publicId: "aarambh/team/swarnim-content",
-    deliveryUrl: "https://res.cloudinary.com/plg8gola/image/upload/aarambh/team/swarnim-content.webp",
+    deliveryUrl: "/images/team/swarnim-content.webp",
     category: "team",
     sha256: "0411a63ec9e8f215aeac8f55203eb1572ee7cf1477183e3ef62351dead61e0c2",
   },
   "/images/team/tushti-sinha-content.webp": {
     localPath: "/images/team/tushti-sinha-content.webp",
     publicId: "aarambh/team/tushti-sinha-content",
-    deliveryUrl: "https://res.cloudinary.com/plg8gola/image/upload/aarambh/team/tushti-sinha-content.webp",
+    deliveryUrl: "/images/team/tushti-sinha-content.webp",
     category: "team",
     sha256: "b9562311cccbed487f618d0b7521d2a043411cd73f776807d885a0ce14f74523",
   },
