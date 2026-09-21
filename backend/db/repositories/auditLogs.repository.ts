@@ -10,6 +10,9 @@ export interface AuditLogRecord {
   entity_id: string | null;
   details: string | null;
   ip_address: string | null;
+  admin_context?: string | null;
+  before_json?: string | null;
+  after_json?: string | null;
   created_at: string;
 }
 
@@ -21,8 +24,11 @@ export interface CreateAuditLogParams {
   action: string;
   entityType: string;
   entityId?: string | null;
-  details?: Record<string, unknown> | string | null;
+  details?: Record<string, unknown> | object | string | null;
   ipAddress?: string | null;
+  adminContext?: Record<string, unknown> | object | string | null;
+  beforeJson?: Record<string, unknown> | object | string | null;
+  afterJson?: Record<string, unknown> | object | string | null;
 }
 
 export class AuditLogsRepository extends BaseRepository<AuditLogRecord> {
@@ -33,16 +39,27 @@ export class AuditLogsRepository extends BaseRepository<AuditLogRecord> {
   public record(params: CreateAuditLogParams): AuditLogRecord {
     const id = params.id || `aud-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
     const now = new Date().toISOString();
-    const detailsStr: string | null =
-      typeof params.details === 'object' && params.details !== null
-        ? JSON.stringify(params.details)
-        : typeof params.details === 'string'
-        ? params.details
-        : null;
+
+    const stringifyVal = (val: unknown): string | null => {
+      if (val === undefined || val === null) return null;
+      if (typeof val === 'string') return val;
+      try {
+        return JSON.stringify(val);
+      } catch {
+        return String(val);
+      }
+    };
+
+    const detailsStr = stringifyVal(params.details);
+    const adminContextStr = stringifyVal(params.adminContext);
+    const beforeJsonStr = stringifyVal(params.beforeJson);
+    const afterJsonStr = stringifyVal(params.afterJson);
 
     const stmt = this.db.prepare(`
-      INSERT INTO audit_logs (id, admin_id, admin_name, admin_role, action, entity_type, entity_id, details, ip_address, created_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO audit_logs (
+        id, admin_id, admin_name, admin_role, action, entity_type, entity_id,
+        details, ip_address, admin_context, before_json, after_json, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
 
     stmt.run(
@@ -55,6 +72,9 @@ export class AuditLogsRepository extends BaseRepository<AuditLogRecord> {
       params.entityId || null,
       detailsStr,
       params.ipAddress || null,
+      adminContextStr,
+      beforeJsonStr,
+      afterJsonStr,
       now
     );
 
@@ -68,6 +88,9 @@ export class AuditLogsRepository extends BaseRepository<AuditLogRecord> {
       entity_id: params.entityId || null,
       details: detailsStr,
       ip_address: params.ipAddress || null,
+      admin_context: adminContextStr,
+      before_json: beforeJsonStr,
+      after_json: afterJsonStr,
       created_at: now,
     };
   }
@@ -76,7 +99,11 @@ export class AuditLogsRepository extends BaseRepository<AuditLogRecord> {
     options: {
       action?: string;
       entityType?: string;
+      entityId?: string;
       adminId?: string;
+      startDate?: string;
+      endDate?: string;
+      search?: string;
       page?: number;
       limit?: number;
     } = {}
@@ -96,9 +123,26 @@ export class AuditLogsRepository extends BaseRepository<AuditLogRecord> {
       conditions.push('entity_type = ?');
       params.push(options.entityType);
     }
+    if (options.entityId) {
+      conditions.push('entity_id = ?');
+      params.push(options.entityId);
+    }
     if (options.adminId) {
       conditions.push('admin_id = ?');
       params.push(options.adminId);
+    }
+    if (options.startDate) {
+      conditions.push('created_at >= ?');
+      params.push(options.startDate);
+    }
+    if (options.endDate) {
+      conditions.push('created_at <= ?');
+      params.push(options.endDate);
+    }
+    if (options.search && options.search.trim() !== '') {
+      const q = `%${options.search.trim()}%`;
+      conditions.push('(action LIKE ? OR entity_id LIKE ? OR details LIKE ? OR admin_name LIKE ?)');
+      params.push(q, q, q, q);
     }
 
     const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
@@ -121,3 +165,5 @@ export class AuditLogsRepository extends BaseRepository<AuditLogRecord> {
 }
 
 export const auditLogsRepository = new AuditLogsRepository();
+export const auditRepository = auditLogsRepository;
+

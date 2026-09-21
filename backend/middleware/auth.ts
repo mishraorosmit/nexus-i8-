@@ -40,8 +40,9 @@ export function extractToken(req: Request): string | null {
 
 /**
  * Middleware: Requires an active, authenticated admin session.
+ * Enforces server-side validation against SQLite admin_sessions.
  */
-export function requireAuth(req: Request, res: Response, next: NextFunction): void {
+export function requireAdminSession(req: Request, res: Response, next: NextFunction): void {
   try {
     const token = extractToken(req);
     if (!token) {
@@ -62,6 +63,11 @@ export function requireAuth(req: Request, res: Response, next: NextFunction): vo
     next(err);
   }
 }
+
+/**
+ * Backward compatibility alias for requireAdminSession
+ */
+export const requireAuth = requireAdminSession;
 
 /**
  * Middleware: Requires super_admin role specifically.

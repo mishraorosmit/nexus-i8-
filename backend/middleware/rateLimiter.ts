@@ -91,3 +91,10 @@ export const apiRateLimiter = createRateLimiter({
   max: 1000,
   message: 'Rate limit exceeded for API requests. Please wait a few moments.',
 });
+
+// Event registration rate limiter: 100 requests per 15 minutes per IP (allowing high attendee throughput)
+export const eventRegistrationRateLimiter = createRateLimiter({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  message: 'Too many event registration attempts from this connection. Please wait before trying again.',
+});

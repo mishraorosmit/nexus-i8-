@@ -2,6 +2,7 @@ import { announcementsRepository, AnnouncementRecord } from '../../db/repositori
 
 export interface PublicAnnouncementDto {
   id: string;
+  slug: string;
   title: string;
   summary: string;
   body: string;
@@ -14,6 +15,7 @@ export interface PublicAnnouncementDto {
 export function formatPublicAnnouncement(record: AnnouncementRecord): PublicAnnouncementDto {
   return {
     id: record.id,
+    slug: record.slug || record.id,
     title: record.title,
     summary: record.summary,
     body: record.body,
@@ -41,8 +43,8 @@ export class AnnouncementsService {
     };
   }
 
-  public async getPublishedAnnouncementById(id: string): Promise<PublicAnnouncementDto | null> {
-    const record = announcementsRepository.findPublishedById(id);
+  public async getPublishedAnnouncementById(identifier: string): Promise<PublicAnnouncementDto | null> {
+    const record = announcementsRepository.findPublishedByIdOrSlug(identifier);
     return record ? formatPublicAnnouncement(record) : null;
   }
 }

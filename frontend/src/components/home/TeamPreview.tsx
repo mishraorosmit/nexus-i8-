@@ -3,14 +3,15 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Container } from '../primitives/Container.tsx';
 import { SectionLabel } from '../primitives/SectionLabel.tsx';
 import { PrimaryButton, TextLink } from '../primitives/Button.tsx';
 import { TeamCard } from '../primitives/TeamCard.tsx';
 import { RevealSection, RevealText } from '../motion/MotionPrimitives.tsx';
-import { AppRoute } from '../../types.ts';
+import { AppRoute, TeamMember } from '../../types.ts';
 import { TEAM_MEMBERS } from '../../data/nexusData.ts';
+import { fetchPublicMembers } from '../../api/membersApi.ts';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface TeamPreviewProps {
@@ -24,9 +25,22 @@ interface TeamPreviewProps {
  * On Mobile / Small Screens: Smooth Horizontal Touch-Snap Carousel with Indicators
  */
 export const TeamPreview: React.FC<TeamPreviewProps> = ({ onRouteChange }) => {
-  const previewLeads = TEAM_MEMBERS.slice(0, 4);
+  const [members, setMembers] = useState<TeamMember[]>(TEAM_MEMBERS);
+  const previewLeads = members.slice(0, 4);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [activeMobileIdx, setActiveMobileIdx] = useState(0);
+
+  useEffect(() => {
+    let isMounted = true;
+    fetchPublicMembers().then((liveMembers) => {
+      if (isMounted && liveMembers && liveMembers.length > 0) {
+        setMembers(liveMembers);
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const handleScroll = () => {
     if (!scrollRef.current) return;

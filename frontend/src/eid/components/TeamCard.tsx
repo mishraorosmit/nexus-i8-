@@ -103,11 +103,16 @@ export const TeamCard: React.FC<TeamCardProps> = ({
             </div>
           </div>
 
-          {/* Top Left Department Indicator */}
-          <div className="absolute top-3.5 left-3.5 z-20 pointer-events-none">
+          {/* Top Left Department Indicator & Status */}
+          <div className="absolute top-3.5 left-3.5 z-20 pointer-events-none flex items-center gap-1.5">
             <div className="px-2 py-0.5 rounded-md bg-black/70 backdrop-blur-xs border border-black/25 text-[7px] font-mono-tech text-[#DCDCD5] uppercase tracking-wider shadow-xs">
               {member.department}
             </div>
+            {Boolean(((member as any).status || '').toUpperCase() === 'ALUMNI') && (
+              <div className="px-1.5 py-0.5 rounded-md bg-indigo-950/80 backdrop-blur-xs border border-indigo-500/40 text-[6.5px] font-mono-tech text-indigo-300 uppercase tracking-widest font-bold shadow-xs">
+                ALUMNI
+              </div>
+            )}
           </div>
 
           {/* ================= MIDDLE CONTENT SECTION ================= */}
@@ -254,8 +259,8 @@ export const TeamCard: React.FC<TeamCardProps> = ({
             <QrCode
               value={
                 typeof window !== 'undefined' && window.location?.origin
-                  ? `${window.location.origin}${member.qrUrl}`
-                  : member.qrUrl
+                  ? `${window.location.origin}${member.qrUrl?.startsWith('/') ? member.qrUrl : `/${member.qrUrl || `memberID/${member.slug}/${member.id}`}`}`
+                  : (member.qrUrl || `/memberID/${member.slug}/${member.id}`)
               }
               size={142}
               darkColor="#120D09"

@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { Container } from '../primitives/Container.tsx';
 import { SectionLabel } from '../primitives/SectionLabel.tsx';
@@ -16,85 +16,12 @@ interface FinalCTAProps {
 }
 
 /**
- * Hook for smooth magnetic attraction on desktop fine pointers.
- */
-function useButtonMagnetic(enabled: boolean = true) {
-  const [offset, setOffset] = useState({ x: 0, y: 0 });
-  const [isFinePointer, setIsFinePointer] = useState(false);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      setIsFinePointer(fine && !reducedMotion);
-    }
-  }, []);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
-    if (!enabled || !isFinePointer) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    const deltaX = (e.clientX - centerX) * 0.16;
-    const deltaY = (e.clientY - centerY) * 0.16;
-    const clampedX = Math.max(-6, Math.min(6, deltaX));
-    const clampedY = Math.max(-6, Math.min(6, deltaY));
-    setOffset({ x: clampedX, y: clampedY });
-  };
-
-  const handleMouseLeave = () => {
-    if (!enabled || !isFinePointer) return;
-    setOffset({ x: 0, y: 0 });
-  };
-
-  return {
-    offset,
-    handleMouseMove,
-    handleMouseLeave,
-    style: enabled && isFinePointer ? {
-      transform: `translate3d(${offset.x}px, ${offset.y}px, 0)`,
-      transition: offset.x === 0 && offset.y === 0
-        ? 'transform 350ms cubic-bezier(0.16, 1, 0.3, 1)'
-        : 'transform 80ms ease-out',
-    } : undefined,
-  };
-}
-
-/**
- * Hook for localized cursor follower glow
- */
-function useButtonGlow() {
-  const [pos, setPos] = useState({ x: 0, y: 0, active: false });
-
-  const onMouseMove = (e: React.MouseEvent<HTMLElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    setPos({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-      active: true,
-    });
-  };
-
-  const onMouseLeave = () => {
-    setPos((prev) => ({ ...prev, active: false }));
-  };
-
-  return { pos, onMouseMove, onMouseLeave };
-}
-
-/**
  * FINAL CALL TO ACTION (SECTION 06)
  * Heading: BUILD WHAT'S NEXT.
  * Subhead: If you want to make projects with people who care about craft, design, and code, NEXUS is where you start.
- * Highly visible, tactile, reactive buttons.
+ * Crisp, tactile, and responsive buttons without forced reflow or mouse-following glow noise.
  */
 export const FinalCTA: React.FC<FinalCTAProps> = ({ onRouteChange }) => {
-  const primaryMagnetic = useButtonMagnetic(true);
-  const primaryGlow = useButtonGlow();
-
-  const secondaryMagnetic = useButtonMagnetic(true);
-  const secondaryGlow = useButtonGlow();
-
   return (
     <RevealSection
       id="nexus-final-cta"
@@ -148,38 +75,9 @@ export const FinalCTA: React.FC<FinalCTAProps> = ({ onRouteChange }) => {
               id="cta-btn-get-in-touch"
               type="button"
               onClick={() => onRouteChange('/contact')}
-              onMouseMove={(e) => {
-                primaryMagnetic.handleMouseMove(e);
-                primaryGlow.onMouseMove(e);
-              }}
-              onMouseLeave={() => {
-                primaryMagnetic.handleMouseLeave();
-                primaryGlow.onMouseLeave();
-              }}
-              style={primaryMagnetic.style}
               className="relative w-full sm:w-auto inline-flex items-center justify-between gap-6 px-8 py-4 sm:px-9 sm:py-4.5 bg-[#F2613F] text-white font-dosis font-bold tracking-[0.22em] text-xs sm:text-[13px] uppercase rounded-[2px] border border-[#F2613F] shadow-xs transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-0.5 hover:bg-[#FA7958] active:scale-[0.98] active:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--text-primary)] cursor-pointer group select-none overflow-hidden"
               aria-label="GET IN TOUCH"
             >
-              {/* Dynamic Cursor Light Follower */}
-              {primaryGlow.pos.active && (
-                <span
-                  className="absolute pointer-events-none rounded-full opacity-30 mix-blend-overlay"
-                  style={{
-                    left: `${primaryGlow.pos.x}px`,
-                    top: `${primaryGlow.pos.y}px`,
-                    width: '140px',
-                    height: '140px',
-                    transform: 'translate(-50%, -50%)',
-                    background: 'radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.1) 50%, transparent 75%)',
-                  }}
-                  aria-hidden="true"
-                />
-              )}
-
-              {/* Reactive Corner Pins */}
-              <span className="absolute top-1 left-1 w-1 h-1 bg-white opacity-80 group-hover:scale-125 transition-transform duration-200" aria-hidden="true" />
-              <span className="absolute bottom-1 right-1 w-1 h-1 bg-white opacity-80 group-hover:scale-125 transition-transform duration-200" aria-hidden="true" />
-
               {/* Text & Icon Content */}
               <span className="relative z-10 text-white font-bold tracking-[0.22em] transition-transform duration-200 group-hover:translate-x-0.5">
                 GET IN TOUCH
@@ -194,34 +92,9 @@ export const FinalCTA: React.FC<FinalCTAProps> = ({ onRouteChange }) => {
               id="cta-btn-explore-projects"
               type="button"
               onClick={() => onRouteChange('/projects')}
-              onMouseMove={(e) => {
-                secondaryMagnetic.handleMouseMove(e);
-                secondaryGlow.onMouseMove(e);
-              }}
-              onMouseLeave={() => {
-                secondaryMagnetic.handleMouseLeave();
-                secondaryGlow.onMouseLeave();
-              }}
-              style={secondaryMagnetic.style}
               className="relative w-full sm:w-auto inline-flex items-center justify-between gap-6 px-8 py-4 sm:px-9 sm:py-4.5 bg-[var(--bg-surface)] text-[var(--text-primary)] font-dosis font-bold tracking-[0.22em] text-xs sm:text-[13px] uppercase rounded-[2px] border border-[var(--border-strong)] shadow-xs transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-0.5 hover:border-[#F2613F] hover:bg-[var(--bg-elevated)] active:scale-[0.98] active:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F2613F] cursor-pointer group select-none overflow-hidden"
               aria-label="EXPLORE PROJECTS"
             >
-              {/* Dynamic Cursor Highlight */}
-              {secondaryGlow.pos.active && (
-                <span
-                  className="absolute pointer-events-none rounded-full opacity-25"
-                  style={{
-                    left: `${secondaryGlow.pos.x}px`,
-                    top: `${secondaryGlow.pos.y}px`,
-                    width: '140px',
-                    height: '140px',
-                    transform: 'translate(-50%, -50%)',
-                    background: 'radial-gradient(circle, rgba(242,97,63,0.5) 0%, rgba(242,97,63,0.1) 50%, transparent 75%)',
-                  }}
-                  aria-hidden="true"
-                />
-              )}
-
               {/* Reactive Left Accent Bar */}
               <span className="absolute left-0 top-0 bottom-0 w-[2px] bg-[#F2613F] transform scale-y-0 group-hover:scale-y-100 transition-transform duration-250 ease-out origin-top" aria-hidden="true" />
 
@@ -239,4 +112,5 @@ export const FinalCTA: React.FC<FinalCTAProps> = ({ onRouteChange }) => {
     </RevealSection>
   );
 };
+
 

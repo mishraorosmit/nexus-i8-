@@ -125,7 +125,33 @@ async function runAdminTestSuite() {
 
   console.log('\n--- Test Group 2: Authentication, Sessions & Credentials ---');
   {
-    // Super admin login
+    // One-Password Model login (no email, only password)
+    const onePasswordRes = await post<any>('/api/admin/auth/login', {
+      password: 'NexusAdmin!2026',
+    });
+    assert(onePasswordRes.status === 200, 'One-Password model login returns status 200');
+    assert(
+      onePasswordRes.body.data.token && onePasswordRes.body.data.user.role === 'super_admin',
+      'One-Password login returns active session token and super_admin profile'
+    );
+
+    // One-Password Model with invalid password
+    const onePasswordWrong = await post<any>('/api/admin/auth/login', {
+      password: 'IncorrectPassword!999',
+    });
+    assert(
+      onePasswordWrong.status === 401 && onePasswordWrong.body.error?.code === 'INVALID_CREDENTIALS',
+      'One-Password login with invalid password is rejected with 401'
+    );
+
+    // One-Password Model with missing password
+    const onePasswordMissing = await post<any>('/api/admin/auth/login', {});
+    assert(
+      onePasswordMissing.status === 400 && onePasswordMissing.body.error?.code === 'INVALID_PASSWORD',
+      'One-Password login with missing password is rejected with 400'
+    );
+
+    // Super admin login (with email)
     const loginRes = await post<any>('/api/admin/auth/login', {
       email: 'admin@nexus.campus',
       password: 'NexusAdmin!2026',
@@ -343,9 +369,9 @@ async function runAdminTestSuite() {
 
     const actions = auditRes.body.data.map((l: any) => l.action);
     assert(actions.includes('LOGIN_SUCCESS'), 'Audit logs recorded LOGIN_SUCCESS');
-    assert(actions.includes('CREATE'), 'Audit logs recorded CREATE');
-    assert(actions.includes('STATUS_CHANGE') || actions.includes('PUBLISH'), 'Audit logs recorded publication / status change');
-    assert(actions.includes('DELETE'), 'Audit logs recorded DELETE');
+    assert(actions.includes('CREATE') || actions.includes('PROJECT_CREATED'), 'Audit logs recorded CREATE');
+    assert(actions.includes('STATUS_CHANGE') || actions.includes('PUBLISH') || actions.includes('PROJECT_PUBLISHED') || actions.includes('PROJECT_STATUS_CHANGED') || actions.includes('PROJECT_ARCHIVED'), 'Audit logs recorded publication / status change');
+    assert(actions.includes('DELETE') || actions.includes('PROJECT_DELETED'), 'Audit logs recorded DELETE');
   }
 
   console.log('\n--- Test Group 8: Logout Session Invalidation ---');

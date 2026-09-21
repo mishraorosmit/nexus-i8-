@@ -14,19 +14,28 @@ export interface PublicProjectDto {
   summary: string;
   description: string;
   disciplines: string;
-  status: 'Active' | 'Completed' | 'Incubating';
+  status: 'Active' | 'Completed' | 'Incubating' | 'Draft' | 'Published' | 'Archived' | string;
   featured: boolean;
   technologies: string[];
   deliverables: string[];
   coverImage: string | null;
+  coverImageUrl?: string | null;
   demoUrl: string | null;
+  liveUrl?: string | null;
   repositoryUrl: string | null;
+  documentationUrl?: string | null;
+  startDate?: string | null;
+  endDate?: string | null;
+  publishedAt?: string | null;
   members?: Array<{
     id: string;
     publicId: string;
+    slug?: string;
+    uniqueId?: string;
     name: string;
     role: string | null;
     photoUrl: string | null;
+    profileImageUrl?: string | null;
   }>;
   relatedEvents?: Array<{
     id: string;
@@ -45,7 +54,7 @@ export function formatPublicProject(
 ): PublicProjectDto {
   let tech: string[] = [];
   try {
-    tech = JSON.parse(record.technologies);
+    tech = JSON.parse(record.technologies || '[]');
   } catch {
     tech = [];
   }
@@ -58,6 +67,9 @@ export function formatPublicProject(
       deliverables = [];
     }
   }
+
+  const cover = record.cover_image_url || record.cover_image || null;
+  const live = record.live_url || record.demo_url || null;
 
   return {
     id: record.id,
@@ -73,17 +85,26 @@ export function formatPublicProject(
     featured: record.featured === 1,
     technologies: tech,
     deliverables,
-    coverImage: record.cover_image,
-    demoUrl: record.demo_url,
+    coverImage: cover,
+    coverImageUrl: cover,
+    demoUrl: live,
+    liveUrl: live,
     repositoryUrl: record.repository_url,
+    documentationUrl: record.documentation_url || null,
+    startDate: record.start_date || null,
+    endDate: record.end_date || null,
+    publishedAt: record.published_at || null,
     ...(members
       ? {
           members: members.map((m) => ({
             id: m.member_id,
             publicId: m.public_id,
+            slug: m.slug || m.public_id,
+            uniqueId: m.unique_id,
             name: m.name,
             role: m.role,
-            photoUrl: m.photo_url,
+            photoUrl: m.profile_image_url || m.photo_url,
+            profileImageUrl: m.profile_image_url || m.photo_url,
           })),
         }
       : {}),
@@ -150,6 +171,11 @@ export class ProjectsService {
     const record = projectsRepository.findBySlug(slug);
     if (!record) return null;
 
+    const status = (record.status || '').toLowerCase();
+    if (status === 'draft' || status === 'archived') {
+      return null;
+    }
+
     const members = projectsRepository.getMembers(record.id);
     const relatedEvents = projectsRepository.getRelatedEvents(record.id);
 
@@ -159,6 +185,12 @@ export class ProjectsService {
   public async getProjectMembers(slug: string) {
     const record = projectsRepository.findBySlug(slug);
     if (!record) return null;
+
+    const status = (record.status || '').toLowerCase();
+    if (status === 'draft' || status === 'archived') {
+      return null;
+    }
+
     return projectsRepository.getMembers(record.id).map((m) => ({
       id: m.member_id,
       publicId: m.public_id,

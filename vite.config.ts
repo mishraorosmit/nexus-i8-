@@ -1,5 +1,6 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
+import fs from 'fs';
 import path from 'path';
 import {defineConfig} from 'vite';
 import {normalizePath} from 'vite';
@@ -12,6 +13,35 @@ export default defineConfig(() => {
     plugins: [
       react(),
       tailwindcss(),
+      // Custom dev server middleware to serve root images/ directory at /images/
+      {
+        name: 'serve-root-images',
+        configureServer(server) {
+          server.middlewares.use('/images', (req, res, next) => {
+            const rawUrl = req.url || '';
+            const cleanPath = rawUrl.replace(/^\//, '').split('?')[0];
+            const filePath = path.resolve(__dirname, 'images', cleanPath);
+            if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+              const ext = path.extname(filePath).toLowerCase();
+              const mimeMap: Record<string, string> = {
+                '.webp': 'image/webp',
+                '.png': 'image/png',
+                '.jpg': 'image/jpeg',
+                '.jpeg': 'image/jpeg',
+                '.svg': 'image/svg+xml',
+                '.gif': 'image/gif',
+                '.avif': 'image/avif',
+                '.ico': 'image/x-icon',
+              };
+              res.setHeader('Content-Type', mimeMap[ext] || 'application/octet-stream');
+              res.setHeader('Cache-Control', 'public, max-age=3600');
+              fs.createReadStream(filePath).pipe(res);
+              return;
+            }
+            next();
+          });
+        },
+      },
       // Serve the canonical nexus-i8-/images/ directory at URL /images/
       // for both dev server and production build output.
       // normalizePath is required on Windows (backslashes break tinyglobby).
@@ -19,7 +49,7 @@ export default defineConfig(() => {
         targets: [
           {
             src: normalizePath(path.resolve(__dirname, 'images')) + '/**/*',
-            dest: '',
+            dest: 'images',
           },
         ],
       }),

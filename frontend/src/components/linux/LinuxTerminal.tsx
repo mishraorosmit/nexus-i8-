@@ -10,6 +10,7 @@ import { PROJECTS } from '../../data/nexusData.ts';
 interface LinuxTerminalProps {
   onOpenProject: (project: Project) => void;
   onClose: () => void;
+  projects?: Project[];
 }
 
 interface CommandLog {
@@ -18,7 +19,8 @@ interface CommandLog {
   output: React.ReactNode;
 }
 
-export const LinuxTerminal: React.FC<LinuxTerminalProps> = ({ onOpenProject, onClose }) => {
+export const LinuxTerminal: React.FC<LinuxTerminalProps> = ({ onOpenProject, onClose, projects }) => {
+  const projectSource = projects && projects.length > 0 ? projects : PROJECTS;
   const [input, setInput] = useState('');
   const [history, setHistory] = useState<string[]>([]);
   const [historyIdx, setHistoryIdx] = useState<number>(-1);
@@ -82,7 +84,7 @@ export const LinuxTerminal: React.FC<LinuxTerminalProps> = ({ onOpenProject, onC
           <div className="space-y-1.5">
             <div className="text-[#F2613F] font-bold">PROJECTS DIRECTORY (/home/nexus/projects):</div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 text-xs">
-              {PROJECTS.map((p) => (
+              {projectSource.map((p) => (
                 <div key={p.id} className="flex items-center gap-2">
                   <span className="text-[#F2613F]">📁 {p.title.toLowerCase()}/</span>
                   <span className="text-[#857E74]">[{p.id}]</span>
@@ -102,7 +104,7 @@ export const LinuxTerminal: React.FC<LinuxTerminalProps> = ({ onOpenProject, onC
           outputNode = <div className="text-[#F2613F]">Usage: open &lt;project_name | project_id&gt; (e.g., 'open algolab')</div>;
           break;
         }
-        const target = PROJECTS.find(
+        const target = projectSource.find(
           (p) =>
             p.title.toLowerCase() === argString ||
             p.id.toLowerCase() === argString ||
@@ -130,7 +132,7 @@ export const LinuxTerminal: React.FC<LinuxTerminalProps> = ({ onOpenProject, onC
           outputNode = <div className="text-[#F2613F]">Usage: github &lt;project_name&gt;</div>;
           break;
         }
-        const target = PROJECTS.find(
+        const target = projectSource.find(
           (p) =>
             p.title.toLowerCase() === argString ||
             p.id.toLowerCase() === argString ||
@@ -160,7 +162,7 @@ export const LinuxTerminal: React.FC<LinuxTerminalProps> = ({ onOpenProject, onC
           outputNode = <div className="text-[#F2613F]">Usage: cat &lt;project_name&gt;</div>;
           break;
         }
-        const target = PROJECTS.find(
+        const target = projectSource.find(
           (p) =>
             p.title.toLowerCase() === argString ||
             p.id.toLowerCase() === argString ||

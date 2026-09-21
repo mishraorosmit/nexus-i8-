@@ -34,6 +34,14 @@ function validateEnvironment(): {
   };
   admin: {
     defaultUsername: string;
+    passwordHash: string;
+  };
+  cloudinary: {
+    cloudName: string;
+    apiKey: string;
+    apiSecret: string;
+    folder: string;
+    isConfigured: boolean;
   };
   isProduction: boolean;
   isDevelopment: boolean;
@@ -54,6 +62,7 @@ function validateEnvironment(): {
   const localDir = process.env.MEDIA_STORAGE_LOCAL_DIR || './data/media';
 
   const defaultUsername = process.env.ADMIN_DEFAULT_USER || 'admin@nexus.campus';
+  const passwordHash = process.env.ADMIN_PASSWORD_HASH || '';
 
   // Production sanity checks
   if (env === 'production') {
@@ -61,6 +70,17 @@ function validateEnvironment(): {
       console.warn('[Security Warning] CORS is configured with wildcard ("*") in production environment!');
     }
   }
+
+  const cloudinaryCloudName =
+    process.env.CLOUDINARY_CLOUD_NAME ||
+    process.env.VITE_CLOUDINARY_CLOUD_NAME ||
+    'plg8gola';
+  const cloudinaryApiKey = process.env.CLOUDINARY_API_KEY || '';
+  const cloudinaryApiSecret = process.env.CLOUDINARY_API_SECRET || '';
+  const cloudinaryFolder =
+    process.env.CLOUDINARY_FOLDER ||
+    process.env.VITE_CLOUDINARY_FOLDER ||
+    'nexus/profile-images';
 
   return {
     env,
@@ -78,6 +98,14 @@ function validateEnvironment(): {
     },
     admin: {
       defaultUsername,
+      passwordHash,
+    },
+    cloudinary: {
+      cloudName: cloudinaryCloudName,
+      apiKey: cloudinaryApiKey,
+      apiSecret: cloudinaryApiSecret,
+      folder: cloudinaryFolder,
+      isConfigured: Boolean(cloudinaryApiKey && cloudinaryApiSecret),
     },
     isProduction: env === 'production',
     isDevelopment: env === 'development',

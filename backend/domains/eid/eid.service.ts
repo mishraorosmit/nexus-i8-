@@ -1,5 +1,6 @@
 import { membersRepository, MemberRecord } from '../../db/repositories/members.repository.ts';
 import { EidCardMemberDto, EidMemberStatus } from './eid.types.ts';
+import { settingsService } from '../../services/settings.service.ts';
 
 export function formatEidCardMember(record: MemberRecord): EidCardMemberDto {
   let socials: Record<string, string> | null = null;
@@ -40,7 +41,7 @@ export function formatEidCardMember(record: MemberRecord): EidCardMemberDto {
     rawStatus === 'INACTIVE' ? 'INACTIVE' : rawStatus === 'ALUMNI' ? 'ALUMNI' : 'ACTIVE';
 
   const uniqueId = record.unique_id || 'NX-000';
-  const slug = record.public_id;
+  const slug = record.slug || record.public_id;
 
   return {
     uniqueId,
@@ -50,7 +51,7 @@ export function formatEidCardMember(record: MemberRecord): EidCardMemberDto {
     role: record.role,
     department: record.department || 'Engineering',
     domain: domainArray,
-    image: record.photo_url || null,
+    image: record.profile_image_url || record.photo_url || null,
     bio: record.bio || null,
     status,
     clearanceLevel: record.clearance_level || 'LVL-03 // SPEC',
@@ -62,7 +63,11 @@ export function formatEidCardMember(record: MemberRecord): EidCardMemberDto {
     badgeIssue: record.badge_issue || '2026.Q1',
     skills,
     socials,
-    qrUrl: `/memberID/${slug}/${uniqueId}`,
+    qrUrl: (() => {
+      const baseUrl = settingsService.getSetting<string>('eid_base_url') || '';
+      const canonicalRoute = `/memberID/${slug}/${uniqueId}`;
+      return baseUrl ? `${baseUrl}${canonicalRoute}` : canonicalRoute;
+    })(),
     createdAt: record.created_at,
     updatedAt: record.updated_at,
   };

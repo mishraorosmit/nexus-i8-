@@ -5,9 +5,6 @@
 
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform, useReducedMotion } from 'motion/react';
-import { NexusCuriosityPinwheel } from './NexusCuriosityPinwheel.tsx';
-import { NexusOrbitingSparkle } from './NexusOrbitingSparkle.tsx';
-import { NexusReversePinwheel } from './NexusReversePinwheel.tsx';
 
 /**
  * 03 — HOW WE THINK
@@ -17,10 +14,6 @@ import { NexusReversePinwheel } from './NexusReversePinwheel.tsx';
 export const AboutSection03Thinking: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
-  const curiosityRowRef = useRef<HTMLDivElement>(null);
-  const collaborationRowRef = useRef<HTMLDivElement>(null);
-  const experimentationRowRef = useRef<HTMLDivElement>(null);
-  const craftRowRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -90,17 +83,6 @@ export const AboutSection03Thinking: React.FC = () => {
           {principles.map((p, idx) => (
             <motion.div
               key={p.name}
-              ref={
-                idx === 0
-                  ? curiosityRowRef
-                  : idx === 1
-                  ? collaborationRowRef
-                  : idx === 2
-                  ? experimentationRowRef
-                  : idx === 3
-                  ? craftRowRef
-                  : undefined
-              }
               initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-10% 0px -10% 0px' }}
@@ -113,19 +95,9 @@ export const AboutSection03Thinking: React.FC = () => {
             >
               {/* Index marker */}
               <div className="md:col-span-2 relative flex items-center shrink-0">
-                {p.number === '01' ? (
-                  <NexusCuriosityPinwheel rowRef={curiosityRowRef} />
-                ) : p.number === '02' ? (
-                  <NexusOrbitingSparkle rowRef={collaborationRowRef} />
-                ) : p.number === '03' ? (
-                  <NexusReversePinwheel rowRef={experimentationRowRef} />
-                ) : p.number === '04' ? (
-                  <NexusOrbitingSparkle rowRef={craftRowRef} />
-                ) : (
-                  <span className="font-dosis font-bold text-xs md:text-sm tracking-[0.28em] text-[#F2613F]">
-                    {p.number}
-                  </span>
-                )}
+                <span className="font-dosis font-bold text-base sm:text-lg md:text-xl tracking-[0.28em] text-[#F2613F] select-none">
+                  {p.number}
+                </span>
               </div>
 
               {/* Principle Name */}

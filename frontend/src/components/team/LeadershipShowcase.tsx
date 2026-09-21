@@ -52,12 +52,12 @@ export const LeadershipShowcase: React.FC<LeadershipShowcaseProps> = ({
   return (
     <section
       id={id}
-      className="relative w-full py-12 sm:py-16 bg-[var(--bg-subsurface)] text-[var(--text-primary)] border-b border-[var(--border-subtle)]"
+      className="relative w-full py-8 sm:py-10 md:py-12 bg-[var(--bg-subsurface)] text-[var(--text-primary)] border-b border-[var(--border-subtle)]"
     >
       <Container>
         {/* Section Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-6 sm:pb-8 border-b border-[var(--border-subtle)]">
-          <div className="space-y-2">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4 sm:pb-5 border-b border-[var(--border-subtle)]">
+          <div className="space-y-1.5">
             <div className="flex items-center gap-3">
               <SectionLabel number="01" label="LEADERSHIP &amp; ADVISORY" />
               <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-[var(--bg-surface)] text-[var(--text-primary)] text-[10px] font-dosis font-bold tracking-[0.22em] uppercase border border-[rgba(242,97,63,0.3)]">
@@ -65,10 +65,10 @@ export const LeadershipShowcase: React.FC<LeadershipShowcaseProps> = ({
                 <span>DIRECTORS</span>
               </span>
             </div>
-            <h2 className="font-fraunces font-bold text-3xl sm:text-4xl text-[var(--text-primary)] tracking-tight uppercase">
+            <h2 className="font-fraunces font-bold text-2xl sm:text-3xl md:text-4xl text-[var(--text-primary)] tracking-tight uppercase">
               COORDINATOR &amp; MENTOR
             </h2>
-            <p className="font-bitter text-sm sm:text-base text-[var(--text-secondary)] max-w-xl leading-relaxed">
+            <p className="font-bitter text-xs sm:text-sm text-[var(--text-secondary)] max-w-xl leading-relaxed">
               Guiding studio operations, cross-disciplinary sprint roadmaps, engineering architecture, and squad mentorship.
             </p>
           </div>
@@ -83,11 +83,11 @@ export const LeadershipShowcase: React.FC<LeadershipShowcaseProps> = ({
 
         {/* Coordinators & Mentors in the Same Row (Grid aligned side-by-side with 3D ProfileCard) */}
         <div
-          className={`pt-8 sm:pt-12 grid grid-cols-1 ${
+          className={`pt-6 sm:pt-8 grid grid-cols-1 ${
             leadershipMembers.length >= 3
               ? 'md:grid-cols-3 max-w-6xl'
               : 'md:grid-cols-2 max-w-4xl'
-          } gap-8 sm:gap-10 mx-auto items-stretch justify-items-center`}
+          } gap-6 sm:gap-8 mx-auto items-stretch justify-items-center`}
         >
           {leadershipMembers.map(({ member, badge }) => {
             const isCoord = member.role.toUpperCase().includes('COORDINATOR');

@@ -76,7 +76,7 @@ export function normalizeMemberJson(input: unknown): TeamMember {
   const frequency = String(raw.frequency || '108.40 MHz');
   const securityZone = String(raw.securityZone || 'SEC // ALPHA');
   const badgeIssue = String(raw.badgeIssue || '2026.Q1');
-  const qrUrl = String(raw.qrUrl || raw.url || (raw.uniqueId ? `/${slug}/${raw.uniqueId}` : `/${slug}`));
+  const qrUrl = String(raw.qrUrl || raw.url || (raw.uniqueId ? `/memberID/${slug}/${raw.uniqueId}` : `/memberID/${slug}`));
 
   const rawPositioning = raw.positioning || {};
   const positioning = {
@@ -136,10 +136,7 @@ export const teamMembers: TeamMember[] = (membersData as any[]).map(normalizeMem
  * Returns canonical route for a member
  */
 export function getMemberRoute(member: TeamMember): string {
-  if (member.id && member.id.startsWith('NX-')) {
-    return `/${member.slug}/${member.id}`;
-  }
-  return `/${member.slug}/${member.id}`;
+  return `/memberID/${member.slug}/${member.id}`;
 }
 
 /**
@@ -194,20 +191,5 @@ export function exportMemberAsJson(member: TeamMember): string {
  */
 export function getMemberShareUrl(member: TeamMember): string {
   const origin = typeof window !== 'undefined' && window.location?.origin ? window.location.origin : '';
-  const isCanonical = teamMembers.some((m) => m.id === member.id);
-
-  if (isCanonical && member.id.startsWith('NX-')) {
-    return `${origin}/${member.slug}/${member.id}`;
-  }
-  if (isCanonical) {
-    return `${origin}/${member.slug}/${member.id}`;
-  }
-
-  // Deep-link for custom or user-modified member card
-  try {
-    const jsonStr = JSON.stringify(member);
-    return `${origin}/${member.slug}/${member.id}?json=${encodeURIComponent(jsonStr)}`;
-  } catch {
-    return `${origin}/${member.slug}/${member.id}`;
-  }
+  return `${origin}/memberID/${member.slug}/${member.id}`;
 }

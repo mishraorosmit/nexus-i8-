@@ -3,17 +3,39 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container } from '../primitives/Container.tsx';
 import { SectionLabel } from '../primitives/SectionLabel.tsx';
 import { PrimaryButton, TextLink } from '../primitives/Button.tsx';
 import { ProjectCard } from '../primitives/ProjectCard.tsx';
 import { RevealSection, RevealText } from '../motion/MotionPrimitives.tsx';
-import { AppRoute } from '../../types.ts';
+import { AppRoute, Project } from '../../types.ts';
 import { PROJECTS } from '../../data/nexusData.ts';
 
 interface ProjectPreviewProps {
   onRouteChange: (route: AppRoute) => void;
+}
+
+// Helper to map public project payload to Project model
+function mapPublicProject(p: any): Project {
+  return {
+    id: p.id || p.slug,
+    projectNumber: p.projectNumber || `NXS / ${p.id?.slice(0, 4) || '000'}`,
+    title: p.title,
+    category: p.category || 'Technology',
+    year: p.year || '2026',
+    summary: p.summary || '',
+    description: p.description || '',
+    disciplines: p.disciplines || 'RESEARCH × SOFTWARE',
+    status: p.status || 'Active',
+    leadStudents: Array.isArray(p.members) && p.members.length > 0 
+      ? p.members.map((m: any) => `${m.name}${m.role ? ` (${m.role})` : ''}`)
+      : (p.leadStudents || []),
+    tags: Array.isArray(p.technologies) ? p.technologies : (p.tags || []),
+    deliverables: Array.isArray(p.deliverables) ? p.deliverables : [],
+    githubUrl: p.repositoryUrl || p.githubUrl || undefined,
+    demoUrl: p.liveUrl || p.demoUrl || undefined,
+  };
 }
 
 /**
@@ -23,9 +45,29 @@ interface ProjectPreviewProps {
  * 4px translations, and gentle sibling focus dimming.
  */
 export const ProjectPreview: React.FC<ProjectPreviewProps> = ({ onRouteChange }) => {
-  // First 3 projects as specified in prompt
-  const previewProjects = PROJECTS.slice(0, 3);
+  const [previewProjects, setPreviewProjects] = useState<Project[]>(() => PROJECTS.slice(0, 3));
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+
+  useEffect(() => {
+    let isMounted = true;
+    fetch('/api/projects?limit=6')
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then((json) => {
+        if (!isMounted) return;
+        if (json?.success && Array.isArray(json.data) && json.data.length > 0) {
+          setPreviewProjects(json.data.slice(0, 3).map(mapPublicProject));
+        }
+      })
+      .catch(() => {
+        // Fallback to static PROJECTS
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   return (
     <RevealSection

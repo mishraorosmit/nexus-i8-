@@ -9,6 +9,7 @@ export interface EventRegistrationRecord {
   attendee_email: string;
   attendee_phone: string | null;
   organization: string | null;
+  department: string | null;
   status: EventRegistrationStatus;
   metadata: string | null; // JSON
   registration_timestamp: string;
@@ -48,43 +49,63 @@ export class EventRegistrationsRepository extends BaseRepository<EventRegistrati
 
   public listByEvent(
     eventId: string,
-    filter?: { status?: string; page?: number; limit?: number }
+    filter?: { status?: string; search?: string; page?: number; limit?: number }
   ): { items: EventRegistrationRecord[]; total: number } {
-    let sql = 'SELECT * FROM event_registrations WHERE event_id = ?';
-    let countSql = 'SELECT COUNT(*) as total FROM event_registrations WHERE event_id = ?';
+    let whereSql = ' WHERE event_id = ?';
     const params: (string | number)[] = [eventId];
-    const countParams: (string | number)[] = [eventId];
 
-    if (filter?.status) {
-      sql += ' AND status = ?';
-      countSql += ' AND status = ?';
+    if (filter?.status && filter.status !== 'all') {
+      whereSql += ' AND status = ?';
       params.push(filter.status);
-      countParams.push(filter.status);
     }
 
-    sql += ' ORDER BY registration_timestamp DESC';
+    if (filter?.search) {
+      whereSql += ' AND (LOWER(attendee_name) LIKE LOWER(?) OR LOWER(attendee_email) LIKE LOWER(?) OR LOWER(COALESCE(department, organization, \'\')) LIKE LOWER(?))';
+      const q = `%${filter.search}%`;
+      params.push(q, q, q);
+    }
 
+    const countSql = `SELECT COUNT(*) as total FROM event_registrations${whereSql}`;
     const countStmt = this.db.prepare(countSql);
-    const countRow = countStmt.get(...countParams) as { total: number };
+    const countRow = countStmt.get(...params) as { total: number };
     const total = countRow ? countRow.total : 0;
 
     const page = Math.max(1, filter?.page || 1);
     const limit = Math.min(100, Math.max(1, filter?.limit || 20));
     const offset = (page - 1) * limit;
 
-    sql += ' LIMIT ? OFFSET ?';
-    params.push(limit, offset);
+    const querySql = `
+      SELECT * FROM event_registrations
+      ${whereSql}
+      ORDER BY registration_timestamp DESC
+      LIMIT ? OFFSET ?
+    `;
 
-    const stmt = this.db.prepare(sql);
-    const items = stmt.all(...params) as unknown as EventRegistrationRecord[];
+    const stmt = this.db.prepare(querySql);
+    const items = stmt.all(...params, limit, offset) as unknown as EventRegistrationRecord[];
 
     return { items, total };
+  }
+
+  public listAllForEvent(eventId: string): EventRegistrationRecord[] {
+    const stmt = this.db.prepare(`
+      SELECT * FROM event_registrations 
+      WHERE event_id = ? 
+      ORDER BY registration_timestamp ASC
+    `);
+    return stmt.all(eventId) as unknown as EventRegistrationRecord[];
+  }
+
+  public findByEvent(eventId: string): EventRegistrationRecord[] {
+    return this.listAllForEvent(eventId);
   }
 
   public create(data: Omit<EventRegistrationRecord, 'created_at' | 'updated_at'>): EventRegistrationRecord {
     const now = new Date().toISOString();
     const record: EventRegistrationRecord = {
       ...data,
+      department: data.department || data.organization || null,
+      organization: data.organization || data.department || null,
       created_at: now,
       updated_at: now,
     };
@@ -92,8 +113,8 @@ export class EventRegistrationsRepository extends BaseRepository<EventRegistrati
     const stmt = this.db.prepare(`
       INSERT INTO event_registrations (
         id, event_id, attendee_name, attendee_email, attendee_phone,
-        organization, status, metadata, registration_timestamp, created_at, updated_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        organization, department, status, metadata, registration_timestamp, created_at, updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
 
     stmt.run(
@@ -103,6 +124,7 @@ export class EventRegistrationsRepository extends BaseRepository<EventRegistrati
       record.attendee_email.toLowerCase().trim(),
       record.attendee_phone,
       record.organization,
+      record.department,
       record.status,
       record.metadata,
       record.registration_timestamp,

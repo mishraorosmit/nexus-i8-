@@ -40,12 +40,25 @@ export function isEidPath(pathname: string, hash: string = ''): boolean {
   return false;
 }
 
+export function isAdminPath(pathname: string, hash: string = ''): boolean {
+  if (typeof window === 'undefined') return false;
+  let clean = (pathname || '').trim().split('?')[0].split('#')[0];
+  if (hash && hash.startsWith('#/')) {
+    clean = hash.slice(1).split('?')[0];
+  }
+  if (!clean.startsWith('/')) clean = '/' + clean;
+  clean = clean.replace(/\/+$/, '');
+
+  return clean === '/admin' || clean.startsWith('/admin/');
+}
+
 // Code-split route pages with prefetching on user intent
 const AboutPage = lazy(() => import('./pages/AboutPage.tsx').then((m) => ({ default: m.AboutPage })));
 const ProjectsPage = lazy(() => import('./pages/ProjectsPage.tsx').then((m) => ({ default: m.ProjectsPage })));
 const GalleryPage = lazy(() => import('./pages/GalleryPage.tsx').then((m) => ({ default: m.GalleryPage })));
 const TeamPage = lazy(() => import('./pages/TeamPage.tsx').then((m) => ({ default: m.TeamPage })));
 const ContactPage = lazy(() => import('./pages/ContactPage.tsx').then((m) => ({ default: m.ContactPage })));
+const AdminApp = lazy(() => import('./admin/AdminApp.tsx').then((m) => ({ default: m.AdminApp })));
 
 export default function App() {
   const shouldReduceMotion = useReducedMotion();
@@ -110,6 +123,20 @@ export default function App() {
   };
 
   const isProjectsWorkspace = currentRoute === '/projects';
+
+  if (isAdminPath(currentPath, typeof window !== 'undefined' ? window.location.hash : '')) {
+    return (
+      <Suspense
+        fallback={
+          <div className="min-h-screen w-full bg-neutral-950 flex items-center justify-center text-neutral-400 font-mono text-xs">
+            Loading admin...
+          </div>
+        }
+      >
+        <AdminApp />
+      </Suspense>
+    );
+  }
 
   if (isEidPath(currentPath, typeof window !== 'undefined' ? window.location.hash : '')) {
     return (

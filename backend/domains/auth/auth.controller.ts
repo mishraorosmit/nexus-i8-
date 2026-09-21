@@ -1,21 +1,15 @@
 import { Request, Response, NextFunction } from 'express';
-import { authService } from './auth.service.ts';
-import { AppError } from '../../middleware/errorHandler.ts';
 import { apiSuccess } from '../../utils/apiResponse.ts';
 
 export class AuthController {
   public async me(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const users = await authService.getAdminUsers();
-      res.json(
+      res.status(200).json(
         apiSuccess(
           {
-            authenticated: false,
-            availableRoles: ['SuperAdmin', 'Editor'],
-            seedAdminCount: users.length,
-          },
-          {
-            message: 'Admin authorization foundation initialized. Configure session / JWT provider in the next phase.',
+            deprecated: true,
+            message: 'The /api/auth endpoints are legacy placeholders. Please use /api/admin/auth/me for authenticated administrative session verification.',
+            canonicalEndpoint: '/api/admin/auth/me',
           }
         )
       );
@@ -26,28 +20,15 @@ export class AuthController {
 
   public async login(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const { email } = req.body;
-      if (!email) {
-        throw new AppError(400, 'Email is required', undefined, 'INVALID_CREDENTIALS');
-      }
-
-      const user = await authService.getAdminUserByEmail(email);
-      if (!user) {
-        throw new AppError(401, 'Invalid credentials', undefined, 'INVALID_CREDENTIALS');
-      }
-
-      res.json(
-        apiSuccess(
-          {
-            id: user.id,
-            email: user.email,
-            role: user.role,
-          },
-          {
-            message: 'Admin authentication foundation endpoint reached.',
-          }
-        )
-      );
+      res.status(410).json({
+        data: null,
+        meta: null,
+        error: {
+          code: 'ENDPOINT_DEPRECATED',
+          message: 'The /api/auth/login endpoint has been deprecated. Please authenticate via the authoritative One-Password endpoint at /api/admin/auth/login.',
+          canonicalEndpoint: '/api/admin/auth/login',
+        },
+      });
     } catch (err) {
       next(err);
     }

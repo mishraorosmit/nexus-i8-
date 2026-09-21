@@ -72,7 +72,7 @@ export function resolveOfflineFallback(cleanId: string, expectedSlug?: string): 
           message: `Credential slug mismatch: "${expectedSlug}" does not correspond to permanent identifier "${cleanId}".`,
           identifier: cleanId,
           correctSlug: cached.slug,
-          canonicalUrl: `/${cached.slug}/${cached.id}`,
+          canonicalUrl: `/memberID/${cached.slug}/${cached.id}`,
         },
       };
     }
@@ -92,8 +92,7 @@ export function resolveOfflineFallback(cleanId: string, expectedSlug?: string): 
  * 2. If an expectedSlug is provided (e.g. from /memberID/:slug/:uniqueId), validates
  *    that the returned member's registered slug matches the URL slug.
  * 3. Handles invalid formats, 404s, slug mismatches, inactive statuses, and server/network failures.
- *    Whenever the live backend service is offline, down (5xx), unmigrated, or returning non-JSON,
- *    it gracefully and authoritatively falls back to the authentic 26-member local dataset.
+ *    Whenever the live backend service is offline or down, it falls back to the local dataset.
  */
 export async function fetchMemberByIdentifier(
   identifier: string,
@@ -159,12 +158,8 @@ export async function fetchMemberByIdentifier(
       }
     }
 
-    // Handle 404 Not Found: Check authentic local fallback before failing
+    // Handle 404 Not Found: Authoritative NOT_FOUND from SQLite (never resurrect deleted members)
     if (res.status === 404) {
-      const fallback = resolveOfflineFallback(cleanId, expectedSlug);
-      if (fallback) {
-        return fallback;
-      }
       return {
         success: false,
         error: {
@@ -267,7 +262,7 @@ export async function fetchMemberByIdentifier(
             message: `Credential slug mismatch: "${expectedSlug}" does not correspond to permanent identifier "${uniqueId}".`,
             identifier: cleanId,
             correctSlug: rawData.slug,
-            canonicalUrl: `/${rawData.slug}/${uniqueId}`,
+            canonicalUrl: `/memberID/${rawData.slug}/${uniqueId}`,
           },
         };
       }

@@ -98,12 +98,12 @@ export const CrewDirectory: React.FC<CrewDirectoryProps> = ({
   return (
     <section
       id={id}
-      className="relative w-full py-12 sm:py-16 lg:py-20 bg-[var(--bg-primary)] text-[var(--text-primary)]"
+      className="relative w-full py-8 sm:py-10 md:py-12 bg-[var(--bg-primary)] text-[var(--text-primary)]"
     >
       <Container>
         {/* Section Header: Restrained Editorial Typography */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 sm:pb-10 border-b border-[var(--border-subtle)]">
-          <div className="space-y-3 max-w-2xl">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-4 sm:pb-5 border-b border-[var(--border-subtle)]">
+          <div className="space-y-1.5 max-w-2xl">
             <div className="flex items-center gap-3">
               <SectionLabel number={sectionNumber} label="DATABASE" />
               <span className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-[var(--bg-surface)] text-[var(--text-primary)] text-[10px] font-dosis font-bold tracking-[0.2em] uppercase border border-[rgba(242,97,63,0.3)]">
@@ -111,16 +111,16 @@ export const CrewDirectory: React.FC<CrewDirectoryProps> = ({
                 <span>ACTIVE CREW</span>
               </span>
             </div>
-            <h2 className="font-fraunces font-bold text-3xl sm:text-4xl md:text-5xl text-[var(--text-primary)] tracking-tight uppercase">
+            <h2 className="font-fraunces font-bold text-2xl sm:text-3xl md:text-4xl text-[var(--text-primary)] tracking-tight uppercase">
               CREW DIRECTORY
             </h2>
-            <p className="font-bitter text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed">
+            <p className="font-bitter text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
               Complete index of student researchers, software engineers, industrial designers, and editorial authors.
             </p>
           </div>
 
           {/* Member Count Indicator */}
-          <div className="flex items-center gap-3 font-dosis text-xs tracking-[0.2em] text-[var(--text-muted)] uppercase self-start md:self-end">
+          <div className="flex items-center gap-2 font-dosis text-xs tracking-[0.2em] text-[var(--text-muted)] uppercase self-start md:self-end">
             <span className="font-bold text-[var(--text-primary)] text-2xl font-fraunces">
               {filteredMembers.length}
             </span>
@@ -129,7 +129,7 @@ export const CrewDirectory: React.FC<CrewDirectoryProps> = ({
         </div>
 
         {/* Filter & Search Bar */}
-        <div className="py-6 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[var(--border-subtle)]">
+        <div className="py-3 sm:py-3.5 flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-[var(--border-subtle)]">
           {/* Category Filters */}
           <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
             {categories.map((cat) => {
@@ -199,7 +199,7 @@ export const CrewDirectory: React.FC<CrewDirectoryProps> = ({
 
         {/* Card Hover Ribbon Mode for Squads */}
         {viewMode === 'card-hover' && searchQuery.trim() === '' && !isLeadershipCategory ? (
-          <div className="pt-6 space-y-10">
+          <div className="pt-4 sm:pt-5 space-y-6 sm:space-y-8">
             {isSquadCategory ? (
               <SquadCardHover
                 members={filteredMembers}
@@ -208,7 +208,7 @@ export const CrewDirectory: React.FC<CrewDirectoryProps> = ({
               />
             ) : (
               /* ALL Category: display each squad ribbon */
-              <div className="space-y-10">
+              <div className="space-y-6 sm:space-y-8">
                 {managementMembers.length > 0 && (
                   <SquadCardHover
                     members={managementMembers}
@@ -236,10 +236,10 @@ export const CrewDirectory: React.FC<CrewDirectoryProps> = ({
         ) : (
           /* Members Grid with Clean Portrait Photography and Spacious Layout */
           <div
-            className={`pt-8 sm:pt-10 ${
+            className={`pt-5 sm:pt-6 ${
               isLeadershipCategory
-                ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 max-w-6xl lg:max-w-7xl mx-auto items-stretch'
-                : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-7 items-stretch'
+                ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 max-w-6xl lg:max-w-7xl mx-auto items-stretch'
+                : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6 items-stretch'
             }`}
             onMouseLeave={() => setHoveredMemberId(null)}
           >

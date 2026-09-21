@@ -26,16 +26,19 @@ import {
 
 interface LinuxFileManagerProps {
   onOpenProject: (project: Project) => void;
+  projects?: Project[];
 }
 
-export const LinuxFileManager: React.FC<LinuxFileManagerProps> = ({ onOpenProject }) => {
+export const LinuxFileManager: React.FC<LinuxFileManagerProps> = ({ onOpenProject, projects }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<'name' | 'year' | 'category'>('name');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
+  const projectSource = projects && projects.length > 0 ? projects : PROJECTS;
+
   // Filter and sort projects
-  const filteredProjects = PROJECTS.filter((p) => {
+  const filteredProjects = projectSource.filter((p) => {
     const q = searchQuery.toLowerCase();
     return (
       p.title.toLowerCase().includes(q) ||

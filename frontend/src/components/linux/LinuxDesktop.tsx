@@ -23,6 +23,28 @@ interface LinuxDesktopProps {
   onRouteChange: (route: AppRoute) => void;
 }
 
+// Helper to map public project payload to desktop Project model
+function mapPublicProject(p: any): Project {
+  return {
+    id: p.id || p.slug,
+    projectNumber: p.projectNumber || `NXS / ${p.id?.slice(0, 4) || '000'}`,
+    title: p.title,
+    category: p.category || 'Technology',
+    year: p.year || '2026',
+    summary: p.summary || '',
+    description: p.description || '',
+    disciplines: p.disciplines || 'RESEARCH × SOFTWARE',
+    status: p.status || 'Active',
+    leadStudents: Array.isArray(p.members) && p.members.length > 0 
+      ? p.members.map((m: any) => `${m.name}${m.role ? ` (${m.role})` : ''}`)
+      : (p.leadStudents || []),
+    tags: Array.isArray(p.technologies) ? p.technologies : (p.tags || []),
+    deliverables: Array.isArray(p.deliverables) ? p.deliverables : [],
+    githubUrl: p.repositoryUrl || p.githubUrl || undefined,
+    demoUrl: p.liveUrl || p.demoUrl || undefined,
+  };
+}
+
 export const LinuxDesktop: React.FC<LinuxDesktopProps> = ({ onRouteChange }) => {
   const [isBooting, setIsBooting] = useState(true);
   const [projectsList, setProjectsList] = useState<Project[]>(PROJECTS);
@@ -36,6 +58,28 @@ export const LinuxDesktop: React.FC<LinuxDesktopProps> = ({ onRouteChange }) => 
     y: 0,
     targetType: 'desktop',
   });
+
+  // Fetch live published projects from backend API
+  useEffect(() => {
+    let isMounted = true;
+    fetch('/api/projects?limit=50')
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then((json) => {
+        if (!isMounted) return;
+        if (json?.success && Array.isArray(json.data) && json.data.length > 0) {
+          setProjectsList(json.data.map(mapPublicProject));
+        }
+      })
+      .catch(() => {
+        // Fallback to static PROJECTS
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   // Alt+Tab state
   const [altTabOpen, setAltTabOpen] = useState(false);
@@ -289,7 +333,21 @@ export const LinuxDesktop: React.FC<LinuxDesktopProps> = ({ onRouteChange }) => 
 
   // Refresh Desktop
   const handleRefresh = useCallback(() => {
-    setProjectsList([...PROJECTS]);
+    fetch('/api/projects?limit=50')
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then((json) => {
+        if (json?.success && Array.isArray(json.data) && json.data.length > 0) {
+          setProjectsList(json.data.map(mapPublicProject));
+        } else {
+          setProjectsList([...PROJECTS]);
+        }
+      })
+      .catch(() => {
+        setProjectsList([...PROJECTS]);
+      });
     setSelectedFolderId(null);
   }, []);
 
@@ -453,11 +511,15 @@ export const LinuxDesktop: React.FC<LinuxDesktopProps> = ({ onRouteChange }) => 
                 <LinuxTerminal
                   onOpenProject={openProjectWindow}
                   onClose={() => closeWindow(win.id)}
+                  projects={projectsList}
                 />
               )}
 
               {win.type === 'file-manager' && (
-                <LinuxFileManager onOpenProject={openProjectWindow} />
+                <LinuxFileManager
+                  onOpenProject={openProjectWindow}
+                  projects={projectsList}
+                />
               )}
 
               {win.type === 'system-info' && <LinuxSystemInfo />}

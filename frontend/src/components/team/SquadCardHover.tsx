@@ -61,9 +61,9 @@ export const SquadCardHover: React.FC<SquadCardHoverProps> = ({
   };
 
   return (
-    <div className={`w-full py-6 ${className}`}>
+    <div className={`w-full py-2 sm:py-3 ${className}`}>
       {categoryName && (
-        <div className="mb-4 flex items-center justify-between">
+        <div className="mb-2.5 sm:mb-3 flex items-center justify-between">
           <span className="font-dosis font-bold text-xs tracking-[0.2em] text-[#F2613F] uppercase">
             {categoryName} SQUAD HOVER SHOWCASE
           </span>
@@ -73,7 +73,7 @@ export const SquadCardHover: React.FC<SquadCardHoverProps> = ({
         </div>
       )}
 
-      <div className="relative w-full overflow-x-auto pb-4 pt-2 no-scrollbar scroll-smooth overscroll-x-contain">
+      <div className="relative w-full overflow-x-auto pb-2.5 pt-1 no-scrollbar scroll-smooth overscroll-x-contain">
         <div className="flex items-center justify-start sm:justify-center gap-2 sm:gap-2.5 min-w-max mx-auto px-2">
           {members.map((member, idx) => {
             const isExpanded = idx === expandedIndex;

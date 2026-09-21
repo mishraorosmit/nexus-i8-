@@ -15,3 +15,9 @@ coverage/
 /data/
 uploads/
 public/uploads/
+
+# Local docs (developer only - not pushed to remote)
+docs/
+documentation/
+NEXUS_Admin_Portal_Full_Blueprint.md
+

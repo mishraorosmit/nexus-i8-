@@ -51,12 +51,12 @@ export const HeadsShowcase: React.FC<HeadsShowcaseProps> = ({
   return (
     <section
       id={id}
-      className="relative w-full py-12 sm:py-16 bg-[var(--bg-primary)] text-[var(--text-primary)] border-b border-[var(--border-subtle)]"
+      className="relative w-full py-8 sm:py-10 md:py-12 bg-[var(--bg-primary)] text-[var(--text-primary)] border-b border-[var(--border-subtle)]"
     >
       <Container>
         {/* Section Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-6 sm:pb-8 border-b border-[var(--border-subtle)]">
-          <div className="space-y-2">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4 sm:pb-5 border-b border-[var(--border-subtle)]">
+          <div className="space-y-1.5">
             <div className="flex items-center gap-3">
               <SectionLabel number="02" label="STUDIO HEADS" />
               <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-[var(--bg-surface)] text-[var(--text-primary)] text-[10px] font-dosis font-bold tracking-[0.22em] uppercase border border-[rgba(242,97,63,0.3)]">
@@ -64,10 +64,10 @@ export const HeadsShowcase: React.FC<HeadsShowcaseProps> = ({
                 <span>OPERATIONS &amp; TECH</span>
               </span>
             </div>
-            <h2 className="font-fraunces font-bold text-3xl sm:text-4xl text-[var(--text-primary)] tracking-tight uppercase">
+            <h2 className="font-fraunces font-bold text-2xl sm:text-3xl md:text-4xl text-[var(--text-primary)] tracking-tight uppercase">
               HEADS OF OPERATIONS &amp; TECH
             </h2>
-            <p className="font-bitter text-sm sm:text-base text-[var(--text-secondary)] max-w-xl leading-relaxed">
+            <p className="font-bitter text-xs sm:text-sm text-[var(--text-secondary)] max-w-xl leading-relaxed">
               Driving operational infrastructure, technical architecture, and cross-disciplinary execution across NEXUS initiatives.
             </p>
           </div>
@@ -82,7 +82,7 @@ export const HeadsShowcase: React.FC<HeadsShowcaseProps> = ({
 
         {/* Heads Grid (3-column layout) */}
         <div
-          className="pt-8 sm:pt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-6xl lg:max-w-7xl gap-6 sm:gap-8 mx-auto items-stretch"
+          className="pt-6 sm:pt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-6xl lg:max-w-7xl gap-5 sm:gap-6 mx-auto items-stretch"
           onMouseLeave={() => setHoveredId(null)}
         >
           {heads.map((member) => {

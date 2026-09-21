@@ -6,6 +6,7 @@ import { checkIpLoginRateLimit, resetIpLoginRateLimit, extractToken } from '../.
 import { auditService } from '../../services/audit.service.ts';
 import { AppError } from '../../middleware/errorHandler.ts';
 import { apiSuccess } from '../../utils/apiResponse.ts';
+import { config } from '../../config/index.ts';
 
 export class AdminAuthController {
   public async login(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -18,18 +19,34 @@ export class AdminAuthController {
       }
 
       const { email, password } = req.body;
-      if (!email || typeof email !== 'string' || !email.includes('@')) {
-        throw new AppError(400, 'A valid email address is required', undefined, 'INVALID_EMAIL');
-      }
       if (!password || typeof password !== 'string') {
         throw new AppError(400, 'Password is required', undefined, 'INVALID_PASSWORD');
       }
 
-      // 2. Fetch admin user
-      const user = adminUsersRepository.findByEmail(email);
+      // 2. Fetch target admin user
+      // If email is provided, authenticate specific user (backward compatible with RBAC tests)
+      // If email is omitted, enforce One-Password model (NEXUS Admin Portal standard)
+      let user = null;
+      if (email && typeof email === 'string') {
+        if (!email.includes('@')) {
+          throw new AppError(400, 'A valid email address is required', undefined, 'INVALID_EMAIL');
+        }
+        user = adminUsersRepository.findByEmail(email);
+      } else {
+        // One-Password model: resolves the primary super administrator
+        user =
+          adminUsersRepository.findByEmail(config.admin.defaultUsername) ||
+          adminUsersRepository.listAllSafe()[0] ||
+          null;
+        if (user && !('password_hash' in user)) {
+          // If returned from listAllSafe, retrieve full record with credentials
+          user = adminUsersRepository.findById(user.id);
+        }
+      }
+
       if (!user) {
-        // Obscure whether email or password was wrong
-        throw new AppError(401, 'Invalid credentials provided', undefined, 'INVALID_CREDENTIALS');
+        // Obscure whether user was missing or credentials failed
+        throw new AppError(401, 'Invalid credentials.', undefined, 'INVALID_CREDENTIALS');
       }
 
       // 3. Check account status
@@ -49,7 +66,15 @@ export class AdminAuthController {
       }
 
       // 5. Verify password
-      const isMatch = await verifyPassword(password, user.password_hash, user.salt);
+      // If environment secret ADMIN_PASSWORD_HASH is set (<hash>:<salt>) and no specific email requested:
+      let isMatch = false;
+      if (!email && config.admin.passwordHash && config.admin.passwordHash.includes(':')) {
+        const [envHash, envSalt] = config.admin.passwordHash.split(':');
+        isMatch = await verifyPassword(password, envHash, envSalt);
+      } else {
+        isMatch = await verifyPassword(password, user.password_hash, user.salt);
+      }
+
       if (!isMatch) {
         const { locked, lockedUntil } = adminUsersRepository.incrementFailedAttempts(user.id, 5, 15);
         auditService.log(
@@ -74,7 +99,7 @@ export class AdminAuthController {
           );
         }
 
-        throw new AppError(401, 'Invalid credentials provided', undefined, 'INVALID_CREDENTIALS');
+        throw new AppError(401, 'Invalid credentials.', undefined, 'INVALID_CREDENTIALS');
       }
 
       // 6. Login succeeded: reset counters, record timestamp
@@ -95,13 +120,13 @@ export class AdminAuthController {
         req.headers['user-agent'] || null
       );
 
-      // 8. Set HttpOnly Cookie
+      // 8. Set HttpOnly Cookie (Path=/ so all admin and api requests inherit session)
       const isProduction = process.env.NODE_ENV === 'production';
       res.cookie('nexus_admin_session', token, {
         httpOnly: true,
         secure: isProduction,
         sameSite: 'strict',
-        path: '/api',
+        path: '/',
         maxAge: 24 * 60 * 60 * 1000,
       });
 
@@ -161,6 +186,7 @@ export class AdminAuthController {
         );
       }
 
+      res.clearCookie('nexus_admin_session', { path: '/' });
       res.clearCookie('nexus_admin_session', { path: '/api' });
 
       res.status(200).json(

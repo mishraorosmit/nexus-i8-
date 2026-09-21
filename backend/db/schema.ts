@@ -40,13 +40,20 @@ CREATE TABLE IF NOT EXISTS projects (
   short_description TEXT NOT NULL,
   full_description TEXT NOT NULL,
   disciplines TEXT NOT NULL,
-  status TEXT NOT NULL DEFAULT 'Active',
+  status TEXT NOT NULL DEFAULT 'Draft',
   featured INTEGER NOT NULL DEFAULT 0,
   technologies TEXT NOT NULL DEFAULT '[]',
   deliverables TEXT,
   cover_image TEXT,
+  cover_image_url TEXT,
+  cover_image_public_id TEXT,
   demo_url TEXT,
+  live_url TEXT,
   repository_url TEXT,
+  documentation_url TEXT,
+  start_date TEXT,
+  end_date TEXT,
+  published_at TEXT,
   created_at TEXT NOT NULL,
   updated_at TEXT NOT NULL
 );
@@ -55,6 +62,8 @@ CREATE INDEX IF NOT EXISTS idx_projects_slug ON projects(slug);
 CREATE INDEX IF NOT EXISTS idx_projects_status ON projects(status);
 CREATE INDEX IF NOT EXISTS idx_projects_category ON projects(category);
 CREATE INDEX IF NOT EXISTS idx_projects_featured ON projects(featured);
+CREATE INDEX IF NOT EXISTS idx_projects_created_at ON projects(created_at);
+CREATE INDEX IF NOT EXISTS idx_projects_updated_at ON projects(updated_at);
 
 -- 3. PROJECT MEMBERS (Junction table with foreign keys)
 CREATE TABLE IF NOT EXISTS project_members (
@@ -74,15 +83,26 @@ CREATE TABLE IF NOT EXISTS events (
   id TEXT PRIMARY KEY,
   slug TEXT UNIQUE NOT NULL,
   title TEXT NOT NULL,
+  short_description TEXT,
   description TEXT NOT NULL,
   event_type TEXT NOT NULL,
-  event_date TEXT NOT NULL,
-  event_time TEXT NOT NULL,
-  venue TEXT NOT NULL,
+  event_date TEXT,
+  event_time TEXT,
+  event_start TEXT,
+  event_end TEXT,
+  venue TEXT,
+  location TEXT,
   registration_url TEXT,
+  registration_enabled INTEGER NOT NULL DEFAULT 1,
+  registration_start TEXT,
+  registration_end TEXT,
+  capacity INTEGER,
   cover_image TEXT,
+  cover_image_url TEXT,
+  cover_image_public_id TEXT,
   featured INTEGER NOT NULL DEFAULT 0,
-  status TEXT NOT NULL DEFAULT 'Upcoming',
+  status TEXT NOT NULL DEFAULT 'Draft',
+  published_at TEXT,
   created_at TEXT NOT NULL,
   updated_at TEXT NOT NULL
 );
@@ -90,10 +110,13 @@ CREATE TABLE IF NOT EXISTS events (
 CREATE INDEX IF NOT EXISTS idx_events_slug ON events(slug);
 CREATE INDEX IF NOT EXISTS idx_events_status ON events(status);
 CREATE INDEX IF NOT EXISTS idx_events_date ON events(event_date);
+CREATE INDEX IF NOT EXISTS idx_events_start ON events(event_start);
+CREATE INDEX IF NOT EXISTS idx_events_featured ON events(featured);
 
 -- 5. ANNOUNCEMENTS
 CREATE TABLE IF NOT EXISTS announcements (
   id TEXT PRIMARY KEY,
+  slug TEXT,
   title TEXT NOT NULL,
   summary TEXT NOT NULL,
   body TEXT NOT NULL,
@@ -105,8 +128,11 @@ CREATE TABLE IF NOT EXISTS announcements (
   updated_at TEXT NOT NULL
 );
 
+CREATE INDEX IF NOT EXISTS idx_announcements_slug ON announcements(slug);
 CREATE INDEX IF NOT EXISTS idx_announcements_publish_status ON announcements(publish_status);
 CREATE INDEX IF NOT EXISTS idx_announcements_published_at ON announcements(published_at);
+CREATE INDEX IF NOT EXISTS idx_announcements_expires_at ON announcements(expires_at);
+CREATE INDEX IF NOT EXISTS idx_announcements_priority ON announcements(priority);
 
 -- 6. ARCHIVE ITEMS
 CREATE TABLE IF NOT EXISTS archive_items (
@@ -184,6 +210,7 @@ CREATE TABLE IF NOT EXISTS site_settings (
   key TEXT PRIMARY KEY,
   value TEXT NOT NULL,
   description TEXT,
+  value_type TEXT NOT NULL DEFAULT 'string',
   updated_at TEXT NOT NULL
 );
 `;
@@ -280,6 +307,7 @@ CREATE TABLE IF NOT EXISTS event_registrations (
   attendee_email TEXT NOT NULL,
   attendee_phone TEXT,
   organization TEXT,
+  department TEXT,
   status TEXT NOT NULL DEFAULT 'CONFIRMED' CHECK (status IN ('CONFIRMED', 'WAITLISTED', 'CANCELLED', 'ATTENDED')),
   metadata TEXT,
   registration_timestamp TEXT NOT NULL,
@@ -301,4 +329,18 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_members_unique_id ON members(unique_id);
 CREATE INDEX IF NOT EXISTS idx_members_email ON members(email);
 CREATE INDEX IF NOT EXISTS idx_members_slug ON members(public_id);
 `;
+
+export const ADMIN_DATABASE_FOUNDATION_SQL = `
+-- 17. ADMIN PORTAL DATABASE FOUNDATION
+-- Unique indexes and constraints for stable identities and media readiness
+DROP INDEX IF EXISTS idx_members_slug;
+CREATE UNIQUE INDEX IF NOT EXISTS idx_members_slug ON members(slug);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_members_unique_id ON members(unique_id);
+CREATE INDEX IF NOT EXISTS idx_members_email ON members(email);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_media_assets_cloudinary_public_id ON media_assets(cloudinary_public_id);
+CREATE INDEX IF NOT EXISTS idx_media_assets_category ON media_assets(category);
+CREATE INDEX IF NOT EXISTS idx_audit_logs_action ON audit_logs(action);
+CREATE INDEX IF NOT EXISTS idx_audit_logs_entity ON audit_logs(entity_type, entity_id);
+`;
+
 

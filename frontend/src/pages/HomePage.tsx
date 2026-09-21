@@ -5,10 +5,12 @@
 
 import React from 'react';
 import { Hero } from '../components/home/Hero.tsx';
+import { AnnouncementBanner } from '../components/home/AnnouncementBanner.tsx';
 import { AboutPreview } from '../components/home/AboutPreview.tsx';
 import { ProcessSection } from '../components/home/ProcessSection.tsx';
 import { ProjectPreview } from '../components/home/ProjectPreview.tsx';
 import { GalleryPreview } from '../components/home/GalleryPreview.tsx';
+import { EventShowcaseSection } from '../components/home/EventShowcaseSection.tsx';
 import { TeamPreview } from '../components/home/TeamPreview.tsx';
 import { FinalCTA } from '../components/home/FinalCTA.tsx';
 import { AppRoute } from '../types.ts';
@@ -20,6 +22,9 @@ interface HomePageProps {
 export const HomePage: React.FC<HomePageProps> = ({ onRouteChange }) => {
   return (
     <main id="nexus-home-page" className="w-full">
+      {/* 0. PUBLIC ANNOUNCEMENTS (RENDERED ONLY IF ACTIVE) */}
+      <AnnouncementBanner />
+
       {/* 1. HERO */}
       <Hero onRouteChange={onRouteChange} />
 
@@ -35,10 +40,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onRouteChange }) => {
       {/* 5. GALLERY PREVIEW */}
       <GalleryPreview onRouteChange={onRouteChange} />
 
-      {/* 6. TEAM PREVIEW */}
+      {/* 6. UPCOMING EVENTS & SESSIONS */}
+      <EventShowcaseSection />
+
+      {/* 7. TEAM PREVIEW */}
       <TeamPreview onRouteChange={onRouteChange} />
 
-      {/* 7. FINAL CALL TO ACTION */}
+      {/* 8. FINAL CALL TO ACTION */}
       <FinalCTA onRouteChange={onRouteChange} />
     </main>
   );

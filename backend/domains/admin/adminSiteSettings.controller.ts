@@ -1,27 +1,18 @@
 import { Request, Response, NextFunction } from 'express';
-import { siteSettingsRepository } from '../../db/repositories/siteSettings.repository.ts';
-import { auditService } from '../../services/audit.service.ts';
+import { settingsService } from '../../services/settings.service.ts';
 import { AppError } from '../../middleware/errorHandler.ts';
 import { apiSuccess } from '../../utils/apiResponse.ts';
 
 export class AdminSiteSettingsController {
   public async getSettings(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const records = siteSettingsRepository.getAll();
-      const settingsMap: Record<string, unknown> = {};
-
-      for (const record of records) {
-        try {
-          settingsMap[record.key] = JSON.parse(record.value);
-        } catch {
-          settingsMap[record.key] = record.value;
-        }
-      }
+      const settings = settingsService.getAllSettings();
+      const schema = settingsService.getSettingsSchema();
 
       res.status(200).json(
         apiSuccess({
-          records,
-          settings: settingsMap,
+          settings,
+          schema,
         })
       );
     } catch (err) {
@@ -31,36 +22,30 @@ export class AdminSiteSettingsController {
 
   public async updateSettings(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const { settings } = req.body;
-      if (!settings || typeof settings !== 'object') {
-        throw new AppError(400, 'Settings object is required', undefined, 'INVALID_SETTINGS_PAYLOAD');
+      const rawPayload = req.body.settings !== undefined ? req.body.settings : req.body;
+
+      if (!rawPayload || typeof rawPayload !== 'object' || Array.isArray(rawPayload)) {
+        throw new AppError(400, 'Settings payload must be an object', undefined, 'INVALID_SETTINGS_PAYLOAD');
       }
 
-      const updatedKeys: string[] = [];
-      for (const [key, val] of Object.entries(settings)) {
-        const valStr = typeof val === 'object' && val !== null ? JSON.stringify(val) : String(val);
-        siteSettingsRepository.set(key, valStr);
-        updatedKeys.push(key);
-      }
+      const adminContext = {
+        adminId: req.admin?.adminId || null,
+        adminName: req.admin?.name || 'Admin',
+        adminRole: req.admin?.role || 'super_admin',
+        ipAddress: (req.headers['x-forwarded-for'] as string) || req.socket.remoteAddress || null,
+        actor: 'authenticated-admin',
+      };
 
-      auditService.log(
-        {
-          adminId: req.admin?.adminId,
-          adminName: req.admin?.name,
-          adminRole: req.admin?.role,
-          action: 'UPDATE',
-          entityType: 'SITE_SETTINGS',
-          entityId: 'global',
-          details: { updatedKeys },
-        },
-        req
-      );
+      const result = settingsService.updateSettings(rawPayload, adminContext);
 
       res.status(200).json(
         apiSuccess(
-          { updatedKeys },
           {
-            message: `${updatedKeys.length} setting(s) updated successfully`,
+            updatedKeys: result.updatedKeys,
+            settings: result.settings,
+          },
+          {
+            message: `${result.updatedKeys.length} setting(s) updated successfully`,
           }
         )
       );

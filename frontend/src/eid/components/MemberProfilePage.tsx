@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import { toBlob, toPng } from 'html-to-image';
 import { TeamMember } from '../types';
-import { teamMembers, getMemberBySlug, getMemberRoute, normalizeMemberJson, getMemberShareUrl } from '../data/members';
+import { teamMembers, getMemberBySlug, normalizeMemberJson, getMemberShareUrl } from '../data/members';
 import { useRouter } from '../router';
 import { HangingCard } from './HangingCard';
 import { JsonInputModal } from './JsonInputModal';
@@ -151,24 +151,14 @@ export const MemberProfilePage: React.FC<MemberProfilePageProps> = ({
   }, [strapHeight]);
 
   const activeList = membersList && membersList.length > 0 ? membersList : teamMembers;
-  const totalMembers = activeList.length;
   const currentIndex = member
     ? activeList.findIndex((m) => m.id === member.id || m.slug === member.slug)
     : -1;
-  const partNumber = currentIndex !== -1 ? currentIndex + 1 : 1;
-  const prevMember =
-    currentIndex !== -1
-      ? activeList[(currentIndex - 1 + totalMembers) % totalMembers]
-      : activeList[0] || teamMembers[0];
-  const nextMember =
-    currentIndex !== -1
-      ? activeList[(currentIndex + 1) % totalMembers]
-      : activeList[0] || teamMembers[0];
 
   // Dynamic document metadata update
   useEffect(() => {
     if (member) {
-      document.title = `NEXUS [${String(partNumber).padStart(2, '0')}/${String(totalMembers).padStart(2, '0')}] — ${member.name} (${member.id})`;
+      document.title = `NEXUS E-ID — ${member.name} (${member.id})`;
       const metaDesc = document.querySelector('meta[name="description"]');
       if (metaDesc) {
         metaDesc.setAttribute(
@@ -183,7 +173,7 @@ export const MemberProfilePage: React.FC<MemberProfilePageProps> = ({
     return () => {
       document.title = 'NEXUS Team';
     };
-  }, [member, partNumber, totalMembers]);
+  }, [member]);
 
   /**
    * Spotify-style Web Share API & Image Generator
@@ -295,7 +285,7 @@ export const MemberProfilePage: React.FC<MemberProfilePageProps> = ({
     }
   };
 
-  // Keyboard navigation & JSON/Share hotkeys (← / → / Space / F / S / J)
+  // Keyboard navigation & JSON/Share hotkeys (Space / F / S / J / ← / →)
   useEffect(() => {
     if (!member) return;
 
@@ -303,13 +293,7 @@ export const MemberProfilePage: React.FC<MemberProfilePageProps> = ({
       if ((e.target as HTMLElement).tagName === 'INPUT' || (e.target as HTMLElement).tagName === 'TEXTAREA') {
         return;
       }
-      if (e.key === 'ArrowLeft') {
-        e.preventDefault();
-        navigate(getMemberRoute(prevMember));
-      } else if (e.key === 'ArrowRight') {
-        e.preventDefault();
-        navigate(getMemberRoute(nextMember));
-      } else if (e.key === ' ' || e.key === 'f' || e.key === 'F') {
+      if (e.key === ' ' || e.key === 'f' || e.key === 'F' || e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
         e.preventDefault();
         setIsCardFlipped((prev) => !prev);
       } else if (e.key === 's' || e.key === 'S') {
@@ -323,7 +307,7 @@ export const MemberProfilePage: React.FC<MemberProfilePageProps> = ({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [member, prevMember, nextMember, navigate]);
+  }, [member]);
 
   // Drag-and-drop listener for .json files
   useEffect(() => {
@@ -372,7 +356,7 @@ export const MemberProfilePage: React.FC<MemberProfilePageProps> = ({
     };
   }, [setCustomMember]);
 
-  // Touch swipe handling to turn pages
+  // Touch swipe handling strictly toggles card flip for the current member (prevents viewing other members)
   const handleTouchStart = (e: React.TouchEvent) => {
     if (e.touches.length === 1) {
       touchStartX.current = e.touches[0].clientX;
@@ -385,12 +369,8 @@ export const MemberProfilePage: React.FC<MemberProfilePageProps> = ({
       const deltaX = e.changedTouches[0].clientX - touchStartX.current;
       const deltaY = Math.abs(e.changedTouches[0].clientY - touchStartY.current);
 
-      if (Math.abs(deltaX) > 65 && deltaY < 45) {
-        if (deltaX > 0) {
-          navigate(getMemberRoute(prevMember));
-        } else {
-          navigate(getMemberRoute(nextMember));
-        }
+      if (Math.abs(deltaX) > 50 && deltaY < 50) {
+        setIsCardFlipped((prev) => !prev);
       }
     }
   };
@@ -576,7 +556,7 @@ export const MemberProfilePage: React.FC<MemberProfilePageProps> = ({
             <button
               id="btn-navigate-canonical"
               type="button"
-              onClick={() => navigate(route.error?.canonicalUrl || `/${route.error?.correctSlug}/${expectedId}`)}
+              onClick={() => navigate(route.error?.canonicalUrl || `/memberID/${route.error?.correctSlug}/${expectedId}`)}
               className="w-full py-3.5 px-4 rounded-lg bg-[#FF5A1F] hover:bg-[#E04B14] active:bg-[#C84119] text-xs font-mono-tech text-black font-bold transition-colors min-h-[44px] touch-manipulation shadow-md flex items-center justify-center gap-2 cursor-pointer mb-2"
             >
               <span>NAVIGATE TO OFFICIAL DOSSIER ({expectedId})</span>

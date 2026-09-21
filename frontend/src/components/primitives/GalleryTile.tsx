@@ -3,11 +3,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { NexusIcon } from '../brand/NexusLogo.tsx';
 import { GalleryItem } from '../../types.ts';
-import { handleImageFallbackError } from '../../data/cloudinaryMap.ts';
+import { handleImageFallbackError, getLocalFallbackUrl } from '../../data/cloudinaryMap.ts';
 
 interface GalleryTileProps {
   item: GalleryItem;
@@ -33,8 +33,16 @@ export const GalleryTile: React.FC<GalleryTileProps> = ({
   onSelect,
   className = '',
 }) => {
-  const [isLoaded, setIsLoaded] = React.useState(false);
-  const [hasError, setHasError] = React.useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [hasError, setHasError] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
+
+  // Synchronize state for cached images that completed before event listener registration
+  useEffect(() => {
+    if (imgRef.current && imgRef.current.complete && imgRef.current.naturalWidth > 0) {
+      setIsLoaded(true);
+    }
+  }, [item.imageUrl]);
 
   const aspectClass = {
     '16/9': 'aspect-[16/9]',
@@ -85,15 +93,26 @@ export const GalleryTile: React.FC<GalleryTileProps> = ({
         <div className="w-full h-full flex flex-col items-center justify-center text-center transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]">
           {item.imageUrl && !hasError ? (
             <img
+              ref={imgRef}
               src={item.imageUrl}
               alt={item.title}
               onLoad={() => setIsLoaded(true)}
               onError={(e) => {
-                if (e.currentTarget.dataset.fallbackTried === 'true') {
+                const img = e.currentTarget;
+                if (img.dataset.fallbackTried === 'true') {
                   setHasError(true);
                   setIsLoaded(true);
+                  return;
+                }
+                const currentSrc = img.currentSrc || img.src;
+                const fallback = getLocalFallbackUrl(currentSrc);
+                if (fallback && fallback !== currentSrc && !currentSrc.endsWith(fallback)) {
+                  img.dataset.fallbackTried = 'true';
+                  img.src = fallback;
                 } else {
-                  handleImageFallbackError(e);
+                  img.dataset.fallbackTried = 'true';
+                  setHasError(true);
+                  setIsLoaded(true);
                 }
               }}
               className={`w-full h-full object-cover filter grayscale contrast-[1.05] group-hover:grayscale-0 group-hover:contrast-100 transition-all duration-500 ${

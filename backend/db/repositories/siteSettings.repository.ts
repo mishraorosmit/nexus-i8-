@@ -4,6 +4,7 @@ export interface SiteSettingRecord {
   key: string;
   value: string; // JSON string or plain text
   description: string | null;
+  value_type?: string;
   updated_at: string;
 }
 
@@ -23,22 +24,25 @@ export class SiteSettingsRepository {
     return stmt.all() as unknown as SiteSettingRecord[];
   }
 
-  public set(key: string, value: string, description?: string): SiteSettingRecord {
+  public set(key: string, value: string, description?: string, value_type?: string): SiteSettingRecord {
     const now = new Date().toISOString();
+    const type = value_type || 'string';
     const stmt = this.db.prepare(`
-      INSERT INTO site_settings (key, value, description, updated_at)
-      VALUES (?, ?, ?, ?)
+      INSERT INTO site_settings (key, value, description, value_type, updated_at)
+      VALUES (?, ?, ?, ?, ?)
       ON CONFLICT(key) DO UPDATE SET
         value = excluded.value,
         description = coalesce(excluded.description, site_settings.description),
+        value_type = coalesce(excluded.value_type, site_settings.value_type),
         updated_at = excluded.updated_at
     `);
-    stmt.run(key, value, description || null, now);
+    stmt.run(key, value, description || null, type, now);
 
     return {
       key,
       value,
       description: description || null,
+      value_type: type,
       updated_at: now,
     };
   }

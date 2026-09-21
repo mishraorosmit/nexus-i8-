@@ -125,13 +125,13 @@ export function parseIdentifierFromUrl(
 }
 
 function getInitialPath(): string {
-  const defaultPath = '/jitesh-raj/NX-001';
+  const defaultPath = '/memberID/jitesh-raj/NX-001';
   if (typeof window === 'undefined') return defaultPath;
   if (window.location.hash && window.location.hash.startsWith('#/')) {
     return window.location.hash.slice(1);
   }
   const curr = window.location.pathname;
-  if (!curr || curr === '/' || curr === '/team' || curr === '/team/') {
+  if (!curr || curr === '/' || curr === '/team' || curr === '/team/' || curr === '/memberID' || curr === '/memberID/') {
     return defaultPath;
   }
   return curr + (window.location.search || '');
@@ -169,7 +169,7 @@ export const RouterProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   // Synchronize browser history events
   useEffect(() => {
     const handlePopState = () => {
-      let currentPath = window.location.pathname || '/jitesh-raj/NX-001';
+      let currentPath = window.location.pathname || '/memberID/jitesh-raj/NX-001';
       if (window.location.hash && window.location.hash.startsWith('#/')) {
         currentPath = window.location.hash.slice(1);
       }
@@ -248,8 +248,8 @@ export const RouterProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       }
     }
 
-    // Enforce that BOTH slug and unique ID must be provided and properly formatted
-    if (!slugPair || !identifier || !isStrictUniqueIdFormat(identifier)) {
+    // Enforce that unique ID must be provided and properly formatted
+    if (!identifier || !isStrictUniqueIdFormat(identifier)) {
       setRoute({
         type: 'error',
         identifier: identifier || '',
@@ -258,7 +258,7 @@ export const RouterProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         isLoading: false,
         error: {
           type: 'INVALID_ID',
-          message: 'Both the operative slug and permanent unique ID must be correctly combined (format: /:slug/:id where id is NX-XXX) to view this digital ID card.',
+          message: 'The permanent unique ID must conform to the required format (expected NX-XXX).',
           identifier: identifier || '',
         },
       });
@@ -283,6 +283,12 @@ export const RouterProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       if (requestIdRef.current !== currentReqId) return;
 
       if (result.success && result.data) {
+        // Auto-canonicalize URL to /memberID/:slug/:uniqueId if route was non-canonical
+        const canonical = `/memberID/${result.data.slug}/${result.data.id}`;
+        if (typeof window !== 'undefined' && window.location.pathname !== canonical && !window.location.hash) {
+          window.history.replaceState({ fromApp: true }, '', canonical);
+        }
+
         setRoute({
           type: 'member',
           slug: result.data.slug,
@@ -293,6 +299,15 @@ export const RouterProvider: React.FC<{ children: React.ReactNode }> = ({ childr
           error: null,
         });
       } else {
+        // If error is SLUG_MISMATCH, automatically canonicalize to official URL
+        if (result.error?.type === 'SLUG_MISMATCH' && result.error.canonicalUrl) {
+          if (typeof window !== 'undefined') {
+            window.history.replaceState({ fromApp: true }, '', result.error.canonicalUrl);
+            setPathname(result.error.canonicalUrl);
+            return;
+          }
+        }
+
         setRoute({
           type: 'error',
           identifier,
@@ -302,7 +317,7 @@ export const RouterProvider: React.FC<{ children: React.ReactNode }> = ({ childr
           isLoading: false,
           error: result.error || {
             type: 'NOT_FOUND',
-            message: 'Operative record not found.',
+            message: 'Operative record not found in NEXUS registry.',
             identifier,
           },
         });
