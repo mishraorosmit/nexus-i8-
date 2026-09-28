@@ -30,7 +30,6 @@ import {
   Loader2,
   Download,
 } from 'lucide-react';
-import { BulkImportModal } from '../components/BulkImportModal.tsx';
 import { ExportModal } from '../components/ExportModal.tsx';
 import {
   AdminMember,
@@ -178,8 +177,7 @@ export const AdminMembersPage: React.FC<AdminMembersPageProps> = () => {
   const [isUpdatingStatus, setIsUpdatingStatus] = useState(false);
   const [statusError, setStatusError] = useState<string | null>(null);
 
-  // Bulk Import & Export Modals
-  const [isImportOpen, setIsImportOpen] = useState(false);
+  // Export Modal
   const [isExportOpen, setIsExportOpen] = useState(false);
 
   // Profile photo upload & management state
@@ -730,15 +728,6 @@ export const AdminMembersPage: React.FC<AdminMembersPageProps> = () => {
           >
             <Download className="w-3.5 h-3.5 text-cyan-400" />
             <span>Export</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => setIsImportOpen(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-neutral-800 bg-neutral-900 text-neutral-300 hover:text-white hover:bg-neutral-800/80 text-xs font-mono transition-colors"
-            title="Bulk import members from CSV or JSON"
-          >
-            <Upload className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Import</span>
           </button>
           <button
             type="button"
@@ -1891,17 +1880,6 @@ export const AdminMembersPage: React.FC<AdminMembersPageProps> = () => {
           </div>
         </div>
       )}
-
-      {/* Bulk Import Modal */}
-      <BulkImportModal
-        isOpen={isImportOpen}
-        onClose={() => setIsImportOpen(false)}
-        onSuccess={(res) => {
-          setIsImportOpen(false);
-          triggerFlash(`Successfully imported ${res.totalProcessed} members (${res.createdCount} created, ${res.updatedCount} updated).`);
-          loadMembers();
-        }}
-      />
 
       {/* Export Modal */}
       <ExportModal

@@ -37,11 +37,41 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onRouteChange }) => {
   const [majorOrAffiliation, setMajorOrAffiliation] = useState('');
   const [message, setMessage] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [referenceId, setReferenceId] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!fullName || !email) return;
-    setSubmitted(true);
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fullName,
+          email,
+          intent,
+          majorOrAffiliation,
+          message,
+        }),
+      });
+
+      const body = await res.json();
+      if (!res.ok || body.error) {
+        throw new Error(body.error?.message || 'Failed to submit message. Please try again.');
+      }
+
+      setReferenceId(body.data?.reference_id || null);
+      setSubmitted(true);
+    } catch (err: any) {
+      setSubmitError(err.message || 'An unexpected error occurred.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -144,6 +174,12 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onRouteChange }) => {
                     <h3 className="font-fraunces text-2xl sm:text-3xl font-bold uppercase tracking-tight text-[var(--text-primary)]">
                       MESSAGE DISPATCHED
                     </h3>
+                    {referenceId && (
+                      <div className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--bg-elevated)] border border-[rgba(242,97,63,0.4)] text-xs font-mono">
+                        <span className="text-[var(--text-muted)]">TRACKING REF:</span>
+                        <span className="font-bold text-[#F2613F] tracking-wider">{referenceId}</span>
+                      </div>
+                    )}
                     <p className="font-bitter text-base max-w-md mx-auto text-[var(--text-muted)] leading-relaxed">
                       Thank you, <span className="font-bold text-[var(--text-primary)]">{fullName}</span>. Your note regarding <span className="font-dosis font-bold text-[#F2613F] tracking-[0.16em]">{intent}</span> has been received by student leads.
                     </p>
@@ -152,6 +188,8 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onRouteChange }) => {
                         label="SEND ANOTHER MESSAGE"
                         onClick={() => {
                           setSubmitted(false);
+                          setReferenceId(null);
+                          setSubmitError(null);
                           setFullName('');
                           setEmail('');
                           setMajorOrAffiliation('');
@@ -175,6 +213,13 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onRouteChange }) => {
                         STUDENT DESK
                       </span>
                     </div>
+
+                    {submitError && (
+                      <div className="p-3 bg-red-950/30 border border-red-500/40 text-red-400 text-xs font-mono flex items-center gap-2">
+                        <span>⚠</span>
+                        <span>{submitError}</span>
+                      </div>
+                    )}
 
                     {/* Name */}
                     <div className="space-y-2">
@@ -262,7 +307,8 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onRouteChange }) => {
                     <div className="pt-2">
                       <PrimaryButton
                         type="submit"
-                        label={`SUBMIT ${intent}`}
+                        disabled={isSubmitting}
+                        label={isSubmitting ? 'TRANSMITTING...' : `SUBMIT ${intent}`}
                         className="w-full sm:w-auto"
                       />
                     </div>

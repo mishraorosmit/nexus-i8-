@@ -8,7 +8,15 @@ export class ProjectsController {
     try {
       const { page, limit, offset } = parsePaginationParams(req.query as Record<string, unknown>, 12);
       const category = req.query.category as string | undefined;
-      const status = req.query.status as string | undefined;
+      // Public boundary clamping: public endpoints strictly prohibit querying draft or archived projects
+      const rawStatus = (req.query.status as string | undefined)?.trim();
+      let status: string | undefined = undefined;
+      if (rawStatus) {
+        const lower = rawStatus.toLowerCase();
+        if (lower !== 'draft' && lower !== 'archived') {
+          status = rawStatus;
+        }
+      }
       const technology = req.query.technology as string | undefined;
       const search = req.query.q as string | undefined;
       const featured = req.query.featured === 'true' ? true : req.query.featured === 'false' ? false : undefined;

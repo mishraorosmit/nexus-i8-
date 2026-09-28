@@ -592,6 +592,98 @@ export const migrations: Migration[] = [
       }
     },
   },
+  {
+    id: '012_admin_workflows_and_submissions_schema',
+    name: 'Add reference_id, admin notes, review metadata, and conversion links for inbound workflows',
+    up: (db) => {
+      // 1. recruitment_submissions
+      const recCols = db.prepare('PRAGMA table_info(recruitment_submissions);').all() as Array<{ name: string }>;
+      const recSet = new Set(recCols.map((c) => c.name));
+
+      if (!recSet.has('reference_id')) {
+        db.exec('ALTER TABLE recruitment_submissions ADD COLUMN reference_id TEXT;');
+      }
+      if (!recSet.has('admin_notes')) {
+        db.exec('ALTER TABLE recruitment_submissions ADD COLUMN admin_notes TEXT;');
+      }
+      if (!recSet.has('reviewed_by')) {
+        db.exec('ALTER TABLE recruitment_submissions ADD COLUMN reviewed_by TEXT;');
+      }
+      if (!recSet.has('reviewed_at')) {
+        db.exec('ALTER TABLE recruitment_submissions ADD COLUMN reviewed_at TEXT;');
+      }
+      if (!recSet.has('converted_member_id')) {
+        db.exec('ALTER TABLE recruitment_submissions ADD COLUMN converted_member_id TEXT;');
+      }
+      db.exec('CREATE UNIQUE INDEX IF NOT EXISTS idx_recruitment_reference_id ON recruitment_submissions(reference_id);');
+
+      // Backfill recruitment reference IDs
+      const recRows = db.prepare('SELECT id, reference_id FROM recruitment_submissions ORDER BY created_at ASC').all() as Array<{ id: string; reference_id: string | null }>;
+      const recUpdate = db.prepare('UPDATE recruitment_submissions SET reference_id = ? WHERE id = ?');
+      let recIndex = 1;
+      for (const r of recRows) {
+        if (!r.reference_id) {
+          const refId = `APP-2026-${recIndex.toString().padStart(3, '0')}`;
+          recUpdate.run(refId, r.id);
+          recIndex++;
+        }
+      }
+
+      // 2. submissions (contact inquiries)
+      const subCols = db.prepare('PRAGMA table_info(submissions);').all() as Array<{ name: string }>;
+      const subSet = new Set(subCols.map((c) => c.name));
+
+      if (!subSet.has('reference_id')) {
+        db.exec('ALTER TABLE submissions ADD COLUMN reference_id TEXT;');
+      }
+      if (!subSet.has('admin_notes')) {
+        db.exec('ALTER TABLE submissions ADD COLUMN admin_notes TEXT;');
+      }
+      if (!subSet.has('reviewed_by')) {
+        db.exec('ALTER TABLE submissions ADD COLUMN reviewed_by TEXT;');
+      }
+      if (!subSet.has('reviewed_at')) {
+        db.exec('ALTER TABLE submissions ADD COLUMN reviewed_at TEXT;');
+      }
+      db.exec('CREATE UNIQUE INDEX IF NOT EXISTS idx_submissions_reference_id ON submissions(reference_id);');
+
+      // Backfill submissions reference IDs
+      const subRows = db.prepare('SELECT id, reference_id FROM submissions ORDER BY created_at ASC').all() as Array<{ id: string; reference_id: string | null }>;
+      const subUpdate = db.prepare('UPDATE submissions SET reference_id = ? WHERE id = ?');
+      let subIndex = 1;
+      for (const s of subRows) {
+        if (!s.reference_id) {
+          const refId = `INQ-2026-${subIndex.toString().padStart(3, '0')}`;
+          subUpdate.run(refId, s.id);
+          subIndex++;
+        }
+      }
+
+      // 3. event_registrations
+      const regCols = db.prepare('PRAGMA table_info(event_registrations);').all() as Array<{ name: string }>;
+      const regSet = new Set(regCols.map((c) => c.name));
+
+      if (!regSet.has('reference_id')) {
+        db.exec('ALTER TABLE event_registrations ADD COLUMN reference_id TEXT;');
+      }
+      if (!regSet.has('admin_notes')) {
+        db.exec('ALTER TABLE event_registrations ADD COLUMN admin_notes TEXT;');
+      }
+      db.exec('CREATE UNIQUE INDEX IF NOT EXISTS idx_event_reg_reference_id ON event_registrations(reference_id);');
+
+      // Backfill event registrations reference IDs
+      const regRows = db.prepare('SELECT id, reference_id FROM event_registrations ORDER BY created_at ASC').all() as Array<{ id: string; reference_id: string | null }>;
+      const regUpdate = db.prepare('UPDATE event_registrations SET reference_id = ? WHERE id = ?');
+      let regIndex = 1;
+      for (const reg of regRows) {
+        if (!reg.reference_id) {
+          const refId = `REG-2026-${regIndex.toString().padStart(3, '0')}`;
+          regUpdate.run(refId, reg.id);
+          regIndex++;
+        }
+      }
+    },
+  },
 ];
 
 

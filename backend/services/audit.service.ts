@@ -137,6 +137,44 @@ const ANNOUNCEMENT_SNAPSHOT_WHITELIST: (keyof Record<string, unknown>)[] = [
   'updated_at',
 ];
 
+const APPLICATION_SNAPSHOT_WHITELIST: (keyof Record<string, unknown>)[] = [
+  'id',
+  'reference_id',
+  'name',
+  'email',
+  'phone',
+  'department',
+  'year_of_study',
+  'selected_domain',
+  'interests',
+  'portfolio_url',
+  'github_url',
+  'linkedin_url',
+  'status',
+  'admin_notes',
+  'reviewed_by',
+  'reviewed_at',
+  'converted_member_id',
+  'created_at',
+  'updated_at',
+];
+
+const INQUIRY_SNAPSHOT_WHITELIST: (keyof Record<string, unknown>)[] = [
+  'id',
+  'reference_id',
+  'name',
+  'email',
+  'category',
+  'message',
+  'metadata',
+  'status',
+  'admin_notes',
+  'reviewed_by',
+  'reviewed_at',
+  'created_at',
+  'updated_at',
+];
+
 export interface SafeAdminContext {
   adminId?: string | null;
   adminName?: string | null;
@@ -207,6 +245,26 @@ export class AuditService {
     if (entityType.toUpperCase() === 'ANNOUNCEMENT') {
       const sanitized: Record<string, unknown> = {};
       for (const field of ANNOUNCEMENT_SNAPSHOT_WHITELIST) {
+        if (field in data && data[field] !== undefined) {
+          sanitized[field as string] = data[field];
+        }
+      }
+      return sanitized;
+    }
+
+    if (entityType.toUpperCase() === 'APPLICATION' || entityType.toUpperCase() === 'RECRUITMENT') {
+      const sanitized: Record<string, unknown> = {};
+      for (const field of APPLICATION_SNAPSHOT_WHITELIST) {
+        if (field in data && data[field] !== undefined) {
+          sanitized[field as string] = data[field];
+        }
+      }
+      return sanitized;
+    }
+
+    if (entityType.toUpperCase() === 'INQUIRY' || entityType.toUpperCase() === 'SUBMISSION') {
+      const sanitized: Record<string, unknown> = {};
+      for (const field of INQUIRY_SNAPSHOT_WHITELIST) {
         if (field in data && data[field] !== undefined) {
           sanitized[field as string] = data[field];
         }

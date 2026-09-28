@@ -8,6 +8,7 @@ export type NotificationEventType =
 export interface NotificationPayloads {
   'recruitment.submitted': {
     id: string;
+    reference_id?: string;
     name: string;
     maskedEmail: string;
     domain: string;
@@ -21,6 +22,7 @@ export interface NotificationPayloads {
   };
   'contact.submitted': {
     id: string;
+    reference_id?: string;
     category: string;
     name: string;
     maskedEmail: string;
@@ -28,6 +30,7 @@ export interface NotificationPayloads {
   };
   'event.registered': {
     registrationId: string;
+    reference_id?: string;
     eventId: string;
     attendeeName: string;
     maskedEmail: string;

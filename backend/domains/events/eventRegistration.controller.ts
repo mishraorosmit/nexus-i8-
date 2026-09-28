@@ -44,6 +44,7 @@ export class EventRegistrationController {
       res.status(201).json({
         data: {
           id: registration.id,
+          reference_id: registration.reference_id,
           event_id: registration.event_id,
           attendee_name: registration.attendee_name,
           attendee_email: registration.attendee_email,
@@ -149,12 +150,12 @@ export class EventRegistrationController {
   public async updateStatus(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const registrationId = req.params.id;
-      const { status } = req.body;
+      const { status, admin_notes } = req.body;
       if (!status) {
         throw new AppError(400, 'Status is required', undefined, 'INVALID_STATUS');
       }
 
-      const updated = await eventRegistrationService.updateStatus(registrationId, status, req);
+      const updated = await eventRegistrationService.updateStatus(registrationId, status, admin_notes, req);
 
       res.json({
         data: {

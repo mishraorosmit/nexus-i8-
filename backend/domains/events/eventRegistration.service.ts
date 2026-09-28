@@ -10,6 +10,7 @@ import { auditService } from '../../services/audit.service.ts';
 import { AppError } from '../../middleware/errorHandler.ts';
 import { sanitizeText } from '../../middleware/spamProtection.ts';
 import { notificationHooks, NotificationHookService } from '../../services/notificationHook.service.ts';
+import { generateReferenceId } from '../../utils/referenceId.ts';
 import type { Request } from 'express';
 
 export const VALID_REGISTRATION_TRANSITIONS: Record<EventRegistrationStatus, EventRegistrationStatus[]> = {
@@ -150,8 +151,10 @@ export class EventRegistrationService {
       }
 
       // Insert record
+      const reference_id = generateReferenceId('REG');
       record = eventRegistrationsRepository.create({
         id: registrationId,
+        reference_id,
         event_id: lockedEvent.id,
         attendee_name: attendeeName,
         attendee_email: email,
@@ -160,6 +163,7 @@ export class EventRegistrationService {
         department: dept,
         status: 'CONFIRMED',
         metadata: dto.metadata ? JSON.stringify(dto.metadata) : null,
+        admin_notes: null,
         registration_timestamp: now,
       });
 
@@ -211,12 +215,23 @@ export class EventRegistrationService {
     return eventRegistrationsRepository.listAllForEvent(event.id);
   }
 
+  public async findAllGlobal(filter?: {
+    status?: string;
+    eventId?: string;
+    search?: string;
+    page?: number;
+    limit?: number;
+  }) {
+    return eventRegistrationsRepository.findAllGlobal(filter);
+  }
+
   public async updateStatus(
     registrationId: string,
     newStatus: EventRegistrationStatus,
+    adminNotes?: string | null,
     req?: Request
   ): Promise<EventRegistrationRecord> {
-    const existing = eventRegistrationsRepository.findById(registrationId);
+    const existing = eventRegistrationsRepository.findByIdOrRef(registrationId);
     if (!existing) {
       throw new AppError(404, `Registration not found: ${registrationId}`, undefined, 'REGISTRATION_NOT_FOUND');
     }
@@ -232,7 +247,7 @@ export class EventRegistrationService {
       );
     }
 
-    const updated = eventRegistrationsRepository.updateStatus(registrationId, newStatus);
+    const updated = eventRegistrationsRepository.updateStatus(existing.id, newStatus, adminNotes);
     if (!updated) {
       throw new AppError(500, 'Failed to update registration status', undefined, 'INTERNAL_SERVER_ERROR');
     }

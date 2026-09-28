@@ -7,10 +7,7 @@ export type AdminRoute =
   | '/admin/login'
   | '/admin/members'
   | '/admin/projects'
-  | '/admin/events'
   | '/admin/media'
-  | '/admin/announcements'
-  | '/admin/imports'
   | '/admin/audit'
   | '/admin/settings';
 
@@ -68,10 +65,6 @@ export interface AdminDashboardData {
   };
   projects?: {
     total: number;
-  };
-  events?: {
-    total: number;
-    upcoming: number;
   };
 }
 
@@ -149,50 +142,6 @@ export interface AdminMemberFilterFacets {
   domains: string[];
   departments: string[];
   statuses: string[];
-}
-
-export type ImportMode = 'CREATE_ONLY' | 'UPDATE_ONLY' | 'UPSERT';
-export type RowClassification = 'NEW' | 'UPDATE' | 'DUPLICATE' | 'CONFLICT' | 'INVALID';
-
-export interface RowError {
-  field: string;
-  message: string;
-}
-
-export interface RowPreview {
-  rowNumber: number;
-  classification: RowClassification;
-  uniqueId: string | null;
-  name: string;
-  email: string | null;
-  role: string;
-  department: string | null;
-  status: string;
-  errors: RowError[];
-  warnings: string[];
-  matchedMemberId?: string | null;
-}
-
-export interface ImportPreviewResult {
-  totalRows: number;
-  validRows: number;
-  invalidRows: number;
-  newRecords: number;
-  updates: number;
-  duplicates: number;
-  conflicts: number;
-  mode: ImportMode;
-  canCommit: boolean;
-  rows: RowPreview[];
-}
-
-export interface ImportCommitResult {
-  success: boolean;
-  totalProcessed: number;
-  createdCount: number;
-  updatedCount: number;
-  mode: ImportMode;
-  durationMs: number;
 }
 
 export type AuditLogAction =
@@ -360,102 +309,6 @@ export interface AdminProjectQueryParams {
   sort?: string;
 }
 
-export type EventStatus = 'Draft' | 'Published' | 'Archived' | 'Upcoming' | 'Completed' | 'Cancelled' | string;
-export type EventType = 'Workshop' | 'Showcase' | 'OpenStudio' | 'Meeting' | 'Hackathon' | string;
-export type EventRegistrationStatus = 'CONFIRMED' | 'WAITLISTED' | 'CANCELLED' | 'ATTENDED';
-
-export interface AdminEvent {
-  id: string;
-  slug: string;
-  title: string;
-  short_description?: string | null;
-  shortDescription?: string | null;
-  description: string;
-  event_type: EventType;
-  eventType?: EventType;
-  event_date?: string | null;
-  event_time?: string | null;
-  event_start?: string | null;
-  eventStart?: string | null;
-  event_end?: string | null;
-  eventEnd?: string | null;
-  venue?: string | null;
-  location?: string | null;
-  registration_url?: string | null;
-  registrationUrl?: string | null;
-  registration_enabled?: number | boolean;
-  registrationEnabled?: boolean;
-  registration_start?: string | null;
-  registrationStart?: string | null;
-  registration_end?: string | null;
-  registrationEnd?: string | null;
-  registration_status?: string;
-  registrationStatus?: string;
-  capacity?: number | null;
-  cover_image?: string | null;
-  cover_image_url?: string | null;
-  coverImageUrl?: string | null;
-  cover_image_public_id?: string | null;
-  coverImagePublicId?: string | null;
-  featured: boolean | number;
-  status: EventStatus;
-  published_at?: string | null;
-  publishedAt?: string | null;
-  confirmed_count?: number;
-  confirmedCount?: number;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface CreateEventInput {
-  title: string;
-  slug?: string;
-  eventType: string;
-  shortDescription?: string;
-  description: string;
-  location?: string;
-  venue?: string;
-  eventStart: string;
-  eventEnd: string;
-  registrationEnabled?: boolean;
-  registrationStart?: string;
-  registrationEnd?: string;
-  capacity?: number | null;
-  registrationUrl?: string;
-  coverImageUrl?: string;
-  featured?: boolean;
-  status?: EventStatus;
-}
-
-export interface UpdateEventInput extends Partial<CreateEventInput> {
-  expected_updated_at?: string;
-}
-
-export interface AdminEventQueryParams {
-  page?: number;
-  limit?: number;
-  status?: string;
-  eventType?: string;
-  registrationState?: string;
-  search?: string;
-  sort?: string;
-}
-
-export interface AdminEventRegistration {
-  id: string;
-  event_id: string;
-  attendee_name: string;
-  attendee_email: string;
-  attendee_phone?: string | null;
-  organization?: string | null;
-  department?: string | null;
-  status: EventRegistrationStatus;
-  metadata?: Record<string, any> | null;
-  registration_timestamp: string;
-  created_at: string;
-  updated_at: string;
-}
-
 export type MediaCategory = 'member' | 'project' | 'event' | 'gallery' | 'branding' | 'general';
 export type MediaUsageStatus = 'USED' | 'UNUSED' | 'UNKNOWN';
 
@@ -510,42 +363,3 @@ export interface AdminMediaFacets {
   byCategory: Record<string, number>;
 }
 
-// ==========================================
-// ANNOUNCEMENTS TYPES (PHASE 18)
-// ==========================================
-
-export type AnnouncementStatus = 'draft' | 'published' | 'archived';
-export type AnnouncementPriority = 'Normal' | 'Urgent';
-
-export interface AdminAnnouncement {
-  id: string;
-  slug: string;
-  title: string;
-  summary: string;
-  body: string;
-  priority: AnnouncementPriority;
-  publish_status: AnnouncementStatus;
-  published_at: string | null;
-  expires_at: string | null;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface AdminAnnouncementFacets {
-  total: number;
-  published: number;
-  draft: number;
-  archived: number;
-  urgent: number;
-  expired: number;
-}
-
-export interface AdminAnnouncementQueryParams {
-  page?: number;
-  limit?: number;
-  status?: string;
-  priority?: string;
-  search?: string;
-  sort?: string;
-  order?: 'ASC' | 'DESC';
-}

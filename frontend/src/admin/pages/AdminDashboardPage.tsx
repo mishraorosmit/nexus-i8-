@@ -8,7 +8,6 @@ import {
   UserMinus,
   GraduationCap,
   FolderGit2,
-  Calendar,
   CheckCircle2,
   AlertCircle,
   RefreshCw,
@@ -209,14 +208,14 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
         </div>
       </div>
 
-      {/* Additional Clean Ecosystem Entities (Projects & Events) */}
+      {/* Additional Clean Ecosystem Entities (Projects) */}
       <div>
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-xs font-mono uppercase tracking-wider text-neutral-400 flex items-center gap-2">
             <Database className="w-3.5 h-3.5 text-neutral-300" />
             <span>Platform Ecosystem Entities (Real SQLite Data)</span>
           </h2>
-          <span className="text-[11px] text-neutral-400">Source: projects, events tables</span>
+          <span className="text-[11px] text-neutral-400">Source: projects table</span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -234,23 +233,6 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
             </div>
             <div className="text-[10px] text-neutral-400 mt-1">Active showcase initiatives</div>
           </div>
-
-          <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-4">
-            <div className="flex items-center justify-between text-neutral-400 mb-2">
-              <span className="text-xs font-medium text-neutral-300">UPCOMING EVENTS</span>
-              <Calendar className="w-4 h-4 text-neutral-400" />
-            </div>
-            <div className="text-2xl font-bold text-white font-mono">
-              {isLoading ? (
-                <span className="text-neutral-500 animate-pulse">...</span>
-              ) : (
-                metrics?.events?.upcoming ?? 0
-              )}
-            </div>
-            <div className="text-[10px] text-neutral-400 mt-1">
-              {metrics?.events?.total !== undefined ? `${metrics.events.total} total recorded events` : 'Scheduled sessions'}
-            </div>
-          </div>
         </div>
       </div>
 
@@ -260,7 +242,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
           <h2 className="text-xs font-mono uppercase tracking-wider text-neutral-400">
             Administrative Modules
           </h2>
-          <span className="text-[11px] text-neutral-400">Deliberate placeholders for subsequent phases</span>
+          <span className="text-[11px] text-neutral-400">Active console modules</span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -276,24 +258,9 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
               desc: 'Project lifecycle, featured flags, deliverables, and repo links',
             },
             {
-              title: 'Events',
-              route: '/admin/events' as AdminRoute,
-              desc: 'Event scheduling, registration lists, venues, and banners',
-            },
-            {
               title: 'Media',
               route: '/admin/media' as AdminRoute,
               desc: 'Asset repository, storage management, and Cloudinary image mappings',
-            },
-            {
-              title: 'Announcements',
-              route: '/admin/announcements' as AdminRoute,
-              desc: 'Bulletins, public notices, recruitment schedules, and operational alerts',
-            },
-            {
-              title: 'Imports',
-              route: '/admin/imports' as AdminRoute,
-              desc: 'CSV/JSON batch import pipeline, verification, and export',
             },
             {
               title: 'Audit Logs',
@@ -324,7 +291,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
               </div>
               <div className="pt-2 border-t border-neutral-800/80 flex items-center justify-between text-[10px] font-mono text-neutral-400">
                 <span>{card.route}</span>
-                <span className="text-neutral-400 uppercase">Reserved</span>
+                <span className="text-neutral-400 uppercase">Module</span>
               </div>
             </div>
           ))}

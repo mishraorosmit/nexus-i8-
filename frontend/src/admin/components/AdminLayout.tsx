@@ -4,9 +4,7 @@ import {
   LayoutDashboard,
   Users,
   FolderGit2,
-  Calendar,
   Image as ImageIcon,
-  FileSpreadsheet,
   FileText,
   Settings,
   LogOut,
@@ -15,7 +13,6 @@ import {
   X,
   Database,
   ExternalLink,
-  Megaphone,
 } from 'lucide-react';
 
 interface AdminLayoutProps {
@@ -53,36 +50,12 @@ export const ADMIN_NAV_ITEMS: NavItemConfig[] = [
     apiEndpoint: '/api/admin/projects',
   },
   {
-    id: 'events',
-    label: 'Events',
-    path: '/admin/events',
-    isReserved: false,
-    description: 'Workshops, hackathons, and registration lists',
-    apiEndpoint: '/api/admin/events',
-  },
-  {
     id: 'media',
     label: 'Media',
     path: '/admin/media',
     isReserved: false,
     description: 'Centralized asset registry and Cloudinary image mappings',
     apiEndpoint: '/api/admin/media',
-  },
-  {
-    id: 'announcements',
-    label: 'Announcements',
-    path: '/admin/announcements',
-    isReserved: false,
-    description: 'Bulletins, public notices, and broadcast updates',
-    apiEndpoint: '/api/admin/announcements',
-  },
-  {
-    id: 'imports',
-    label: 'Imports',
-    path: '/admin/imports',
-    isReserved: true,
-    description: 'CSV/JSON batch import, schema validation, and export',
-    apiEndpoint: '/api/admin/members/import',
   },
   {
     id: 'audit',
@@ -120,14 +93,8 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
         return <Users className="w-4 h-4" />;
       case 'projects':
         return <FolderGit2 className="w-4 h-4" />;
-      case 'events':
-        return <Calendar className="w-4 h-4" />;
       case 'media':
         return <ImageIcon className="w-4 h-4" />;
-      case 'announcements':
-        return <Megaphone className="w-4 h-4" />;
-      case 'imports':
-        return <FileSpreadsheet className="w-4 h-4" />;
       case 'audit':
         return <FileText className="w-4 h-4" />;
       case 'settings':

@@ -70,8 +70,8 @@ export function publicCache(domain: string, ttlSeconds: number = 30) {
 
     const originalJson = res.json.bind(res);
     res.json = (body: any) => {
-      // Only cache successful 200 responses
-      if (res.statusCode === 200 && body?.success) {
+      // Only cache successful 200 responses (supporting both { success: true } and { error: null } apiSuccess format)
+      if (res.statusCode === 200 && (body?.success || body?.error === null)) {
         memoryCache.set(domain, cacheKey, body, {}, ttlSeconds * 1000);
       }
       res.setHeader('X-Cache', 'MISS');

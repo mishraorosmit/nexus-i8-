@@ -5,11 +5,9 @@ import { AdminLoginPage } from './pages/AdminLoginPage.tsx';
 import { AdminDashboardPage } from './pages/AdminDashboardPage.tsx';
 import { AdminMembersPage } from './pages/AdminMembersPage.tsx';
 import { AdminProjectsPage } from './pages/AdminProjectsPage.tsx';
-import { AdminEventsPage } from './pages/AdminEventsPage.tsx';
 import { AdminAuditPage } from './pages/AdminAuditPage.tsx';
 import { AdminSettingsPage } from './pages/AdminSettingsPage.tsx';
 import { AdminMediaPage } from './pages/AdminMediaPage.tsx';
-import { AdminAnnouncementsPage } from './pages/AdminAnnouncementsPage.tsx';
 import { AdminReservedPage } from './pages/AdminReservedPage.tsx';
 import { AdminLayout } from './components/AdminLayout.tsx';
 import { ShieldAlert } from 'lucide-react';
@@ -24,10 +22,7 @@ export const AdminApp: React.FC = () => {
       '/admin/login',
       '/admin/members',
       '/admin/projects',
-      '/admin/events',
       '/admin/media',
-      '/admin/announcements',
-      '/admin/imports',
       '/admin/audit',
       '/admin/settings',
     ];
@@ -168,16 +163,12 @@ export const AdminApp: React.FC = () => {
         <AdminMembersPage onNavigate={navigateTo} />
       ) : currentRoute === '/admin/projects' ? (
         <AdminProjectsPage onNavigate={navigateTo} />
-      ) : currentRoute === '/admin/events' ? (
-        <AdminEventsPage onNavigate={navigateTo} />
+      ) : currentRoute === '/admin/media' ? (
+        <AdminMediaPage onNavigate={navigateTo} />
       ) : currentRoute === '/admin/audit' ? (
         <AdminAuditPage onNavigate={navigateTo} />
       ) : currentRoute === '/admin/settings' ? (
         <AdminSettingsPage onNavigate={navigateTo} />
-      ) : currentRoute === '/admin/media' ? (
-        <AdminMediaPage onNavigate={navigateTo} />
-      ) : currentRoute === '/admin/announcements' ? (
-        <AdminAnnouncementsPage />
       ) : currentRoute.startsWith('/admin/') ? (
         <AdminReservedPage route={currentRoute} onNavigate={navigateTo} />
       ) : (

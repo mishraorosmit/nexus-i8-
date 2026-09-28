@@ -200,7 +200,7 @@ export const LinuxProjectView: React.FC<LinuxProjectViewProps> = ({ project }) =
                           {category}
                         </span>
                         <ul className="space-y-1">
-                          {members.map((name) => (
+                          {(Array.isArray(members) ? members : []).map((name: string) => (
                             <li key={name} className="font-mono text-xs text-[#F5EFE6] flex items-center gap-2">
                               <span className="w-1.5 h-1.5 bg-[#F2613F] rounded-full" />
                               <span>{name}</span>
@@ -300,7 +300,7 @@ export const LinuxProjectView: React.FC<LinuxProjectViewProps> = ({ project }) =
                       <div key={category} className="space-y-0.5">
                         <span className="text-[11px] font-bold text-[#F5EFE6] uppercase">{category}:</span>
                         <ul className="list-disc list-inside pl-2 text-xs">
-                          {members.map((name) => (
+                          {(Array.isArray(members) ? members : []).map((name: string) => (
                             <li key={name}>{name}</li>
                           ))}
                         </ul>

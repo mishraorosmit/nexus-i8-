@@ -5,10 +5,18 @@ import { AppError } from '../../middleware/errorHandler.ts';
 export class RecruitmentController {
   public async apply(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const application = await recruitmentService.submitApplication(req.body);
+      const application = await recruitmentService.submitApplication({
+        ...req.body,
+        selected_domain: req.body.selected_domain || req.body.selectedDomain,
+        portfolio_url: req.body.portfolio_url || req.body.portfolioUrl,
+        github_url: req.body.github_url || req.body.githubUrl,
+        linkedin_url: req.body.linkedin_url || req.body.linkedinUrl,
+        interests: req.body.interests || req.body.skills,
+      });
       res.status(201).json({
         data: {
           id: application.id,
+          reference_id: application.reference_id,
           name: application.name,
           email: application.email,
           selected_domain: application.selected_domain,

@@ -7,7 +7,15 @@ export class EventsController {
   public async list(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { page, limit, offset } = parsePaginationParams(req.query as Record<string, unknown>, 10);
-      const status = req.query.status as string | undefined;
+      // Public boundary clamping: public endpoints strictly prohibit querying draft, archived, or cancelled events
+      const rawStatus = (req.query.status as string | undefined)?.trim();
+      let status: string | undefined = undefined;
+      if (rawStatus) {
+        const lower = rawStatus.toLowerCase();
+        if (lower !== 'draft' && lower !== 'archived' && lower !== 'cancelled') {
+          status = rawStatus;
+        }
+      }
       const type = req.query.type as string | undefined;
       const year = req.query.year as string | undefined;
       const featured = req.query.featured === 'true' ? true : req.query.featured === 'false' ? false : undefined;

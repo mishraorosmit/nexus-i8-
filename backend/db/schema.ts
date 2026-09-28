@@ -177,16 +177,21 @@ CREATE INDEX IF NOT EXISTS idx_resources_status ON resources(published_status);
 -- 8. RECRUITMENT / CONTACT SUBMISSIONS
 CREATE TABLE IF NOT EXISTS submissions (
   id TEXT PRIMARY KEY,
+  reference_id TEXT UNIQUE,
   name TEXT NOT NULL,
   email TEXT NOT NULL,
   category TEXT NOT NULL,
   message TEXT,
   metadata TEXT,
   status TEXT NOT NULL DEFAULT 'Unread',
+  admin_notes TEXT,
+  reviewed_by TEXT,
+  reviewed_at TEXT,
   created_at TEXT NOT NULL,
   updated_at TEXT NOT NULL
 );
 
+CREATE INDEX IF NOT EXISTS idx_submissions_reference_id ON submissions(reference_id);
 CREATE INDEX IF NOT EXISTS idx_submissions_status ON submissions(status);
 CREATE INDEX IF NOT EXISTS idx_submissions_email ON submissions(email);
 CREATE INDEX IF NOT EXISTS idx_submissions_created_at ON submissions(created_at);
@@ -276,6 +281,7 @@ export const SUBMISSIONS_AND_REGISTRATIONS_SCHEMA_SQL = `
 -- 14. RECRUITMENT SUBMISSIONS
 CREATE TABLE IF NOT EXISTS recruitment_submissions (
   id TEXT PRIMARY KEY,
+  reference_id TEXT UNIQUE,
   name TEXT NOT NULL,
   email TEXT NOT NULL,
   phone TEXT,
@@ -290,10 +296,15 @@ CREATE TABLE IF NOT EXISTS recruitment_submissions (
   consent INTEGER NOT NULL DEFAULT 1,
   status TEXT NOT NULL DEFAULT 'SUBMITTED' CHECK (status IN ('SUBMITTED', 'UNDER_REVIEW', 'SHORTLISTED', 'ACCEPTED', 'REJECTED', 'WITHDRAWN')),
   status_notes TEXT,
+  admin_notes TEXT,
+  reviewed_by TEXT,
+  reviewed_at TEXT,
+  converted_member_id TEXT REFERENCES members(id) ON DELETE SET NULL,
   created_at TEXT NOT NULL,
   updated_at TEXT NOT NULL
 );
 
+CREATE INDEX IF NOT EXISTS idx_recruitment_reference_id ON recruitment_submissions(reference_id);
 CREATE INDEX IF NOT EXISTS idx_recruitment_email ON recruitment_submissions(email);
 CREATE INDEX IF NOT EXISTS idx_recruitment_domain ON recruitment_submissions(selected_domain);
 CREATE INDEX IF NOT EXISTS idx_recruitment_status ON recruitment_submissions(status);
@@ -302,6 +313,7 @@ CREATE INDEX IF NOT EXISTS idx_recruitment_created_at ON recruitment_submissions
 -- 15. EVENT REGISTRATIONS
 CREATE TABLE IF NOT EXISTS event_registrations (
   id TEXT PRIMARY KEY,
+  reference_id TEXT UNIQUE,
   event_id TEXT NOT NULL,
   attendee_name TEXT NOT NULL,
   attendee_email TEXT NOT NULL,
@@ -310,6 +322,7 @@ CREATE TABLE IF NOT EXISTS event_registrations (
   department TEXT,
   status TEXT NOT NULL DEFAULT 'CONFIRMED' CHECK (status IN ('CONFIRMED', 'WAITLISTED', 'CANCELLED', 'ATTENDED')),
   metadata TEXT,
+  admin_notes TEXT,
   registration_timestamp TEXT NOT NULL,
   created_at TEXT NOT NULL,
   updated_at TEXT NOT NULL,
@@ -317,6 +330,7 @@ CREATE TABLE IF NOT EXISTS event_registrations (
   UNIQUE(event_id, attendee_email)
 );
 
+CREATE INDEX IF NOT EXISTS idx_event_reg_reference_id ON event_registrations(reference_id);
 CREATE INDEX IF NOT EXISTS idx_event_reg_event ON event_registrations(event_id);
 CREATE INDEX IF NOT EXISTS idx_event_reg_email ON event_registrations(attendee_email);
 CREATE INDEX IF NOT EXISTS idx_event_reg_status ON event_registrations(status);

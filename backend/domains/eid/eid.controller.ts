@@ -10,11 +10,14 @@ export async function getAllEidMembers(req: Request, res: Response): Promise<voi
       meta: {
         total: result.total,
       },
+      error: null,
     });
   } catch (error) {
     console.error('[E-ID Controller] Failed to list members:', error);
     res.status(500).json({
       success: false,
+      data: null,
+      meta: null,
       error: {
         code: 'INTERNAL_SERVER_ERROR',
         message: 'An unexpected error occurred while fetching E-ID cards.',
@@ -29,6 +32,8 @@ export async function getEidMemberByIdentifier(req: Request, res: Response): Pro
     if (!identifier) {
       res.status(400).json({
         success: false,
+        data: null,
+        meta: null,
         error: {
           code: 'BAD_REQUEST',
           message: 'Member identifier is required.',
@@ -41,6 +46,8 @@ export async function getEidMemberByIdentifier(req: Request, res: Response): Pro
     if (!member) {
       res.status(404).json({
         success: false,
+        data: null,
+        meta: null,
         error: {
           code: 'NOT_FOUND',
           message: `NEXUS E-ID card for identifier "${identifier}" could not be found.`,
@@ -52,11 +59,15 @@ export async function getEidMemberByIdentifier(req: Request, res: Response): Pro
     res.status(200).json({
       success: true,
       data: member,
+      meta: null,
+      error: null,
     });
   } catch (error) {
     console.error('[E-ID Controller] Failed to fetch member by identifier:', error);
     res.status(500).json({
       success: false,
+      data: null,
+      meta: null,
       error: {
         code: 'INTERNAL_SERVER_ERROR',
         message: 'An unexpected error occurred while resolving E-ID card.',
@@ -71,6 +82,8 @@ export async function getEidMemberBySlugAndId(req: Request, res: Response): Prom
     if (!slug || !uniqueId) {
       res.status(400).json({
         success: false,
+        data: null,
+        meta: null,
         error: {
           code: 'BAD_REQUEST',
           message: 'Both member slug and unique ID are required.',
@@ -83,6 +96,8 @@ export async function getEidMemberBySlugAndId(req: Request, res: Response): Prom
     if (!member) {
       res.status(404).json({
         success: false,
+        data: null,
+        meta: null,
         error: {
           code: 'NOT_FOUND',
           message: `NEXUS E-ID card for slug "${slug}" and ID "${uniqueId}" could not be found.`,
@@ -94,11 +109,15 @@ export async function getEidMemberBySlugAndId(req: Request, res: Response): Prom
     res.status(200).json({
       success: true,
       data: member,
+      meta: null,
+      error: null,
     });
   } catch (error) {
     console.error('[E-ID Controller] Failed to fetch member by slug and uniqueId:', error);
     res.status(500).json({
       success: false,
+      data: null,
+      meta: null,
       error: {
         code: 'INTERNAL_SERVER_ERROR',
         message: 'An unexpected error occurred while resolving E-ID card.',

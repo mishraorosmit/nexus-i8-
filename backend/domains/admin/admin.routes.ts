@@ -3,17 +3,13 @@ import { requireAdminSession, requireSuperAdmin } from '../../middleware/auth.ts
 import { adminAuthController } from './adminAuth.controller.ts';
 import { adminUsersController } from './adminUsers.controller.ts';
 import { adminProjectsController } from './adminProjects.controller.ts';
-import { adminEventsController } from './adminEvents.controller.ts';
 import { adminMembersController } from './adminMembers.controller.ts';
 import { adminBulkMembersController } from './adminBulkMembers.controller.ts';
-import { adminAnnouncementsController } from './adminAnnouncements.controller.ts';
 import { adminArchiveController } from './adminArchive.controller.ts';
 import { adminResourcesController } from './adminResources.controller.ts';
 import { adminMediaController } from './adminMedia.controller.ts';
 import { adminSiteSettingsController } from './adminSiteSettings.controller.ts';
 import { adminAuditLogsController } from './adminAuditLogs.controller.ts';
-import { recruitmentController } from '../recruitment/recruitment.controller.ts';
-import { eventRegistrationController } from '../events/eventRegistration.controller.ts';
 import { authRateLimiter } from '../../middleware/rateLimiter.ts';
 
 const router = Router();
@@ -36,15 +32,33 @@ router.use((req, res, next) => {
     res.on('finish', () => {
       if (res.statusCode >= 200 && res.statusCode < 300) {
         const path = req.path;
-        for (const domain of ['projects', 'events', 'members', 'announcements', 'archive', 'resources', 'site-settings', 'site-config']) {
-          if (path.includes(domain)) {
-            memoryCache.invalidate(domain);
-            if (domain === 'members') {
-              memoryCache.invalidate('eid');
-            }
-            if (domain === 'site-settings') {
-              memoryCache.invalidate('site-config');
-            }
+        
+        // Members & E-ID
+        if (path.includes('members')) {
+          memoryCache.invalidate('members');
+          memoryCache.invalidate('eid');
+        }
+        
+        // Projects
+        if (path.includes('projects')) {
+          memoryCache.invalidate('projects');
+        }
+        
+        // Archive, Resources
+        if (path.includes('archive')) memoryCache.invalidate('archive');
+        if (path.includes('resources')) memoryCache.invalidate('resources');
+        
+        // Settings & Site Config
+        if (path.includes('settings') || path.includes('site-config')) {
+          memoryCache.invalidate('site-config');
+        }
+        
+        // Media replacement cascades across all image consumers
+        if (path.includes('media')) {
+          if (path.includes('replace') || req.method === 'DELETE') {
+            memoryCache.invalidate('members');
+            memoryCache.invalidate('eid');
+            memoryCache.invalidate('projects');
           }
         }
       }
@@ -105,30 +119,11 @@ router.delete('/projects/:id/members/:memberId', (req, res, next) => adminProjec
 router.delete('/projects/:id', requireSuperAdmin, (req, res, next) => adminProjectsController.delete(req, res, next));
 
 // ==========================================
-// 6. EVENTS MANAGEMENT
-// ==========================================
-router.get('/events', (req, res, next) => adminEventsController.list(req, res, next));
-router.post('/events', (req, res, next) => adminEventsController.create(req, res, next));
-router.get('/events/:id', (req, res, next) => adminEventsController.getById(req, res, next));
-router.patch('/events/:id', (req, res, next) => adminEventsController.update(req, res, next));
-router.put('/events/:id', (req, res, next) => adminEventsController.update(req, res, next));
-router.patch('/events/:id/status', (req, res, next) => adminEventsController.updateStatus(req, res, next));
-router.patch('/events/:id/registration', (req, res, next) => adminEventsController.toggleRegistration(req, res, next));
-router.post(
-  '/events/:id/image',
-  express.raw({ type: ['image/*', 'application/octet-stream', 'multipart/form-data'], limit: '10mb' }),
-  (req, res, next) => adminEventsController.uploadImage(req, res, next)
-);
-router.delete('/events/:id', requireSuperAdmin, (req, res, next) => adminEventsController.delete(req, res, next));
-
-// ==========================================
-// 7. MEMBERS MANAGEMENT
+// 6. MEMBERS MANAGEMENT
 // ==========================================
 router.get('/members', (req, res, next) => adminMembersController.list(req, res, next));
 router.get('/members/facets', (req, res, next) => adminMembersController.getFacets(req, res, next));
 router.get('/members/export', (req, res, next) => adminBulkMembersController.export(req, res, next));
-router.post('/members/import/preview', (req, res, next) => adminBulkMembersController.preview(req, res, next));
-router.post('/members/import/commit', (req, res, next) => adminBulkMembersController.commit(req, res, next));
 router.post('/members', (req, res, next) => adminMembersController.create(req, res, next));
 router.get('/members/:id', (req, res, next) => adminMembersController.getById(req, res, next));
 router.patch('/members/:id', (req, res, next) => adminMembersController.update(req, res, next));
@@ -143,21 +138,7 @@ router.delete('/members/:id/image', (req, res, next) => adminMembersController.d
 router.delete('/members/:id', requireSuperAdmin, (req, res, next) => adminMembersController.delete(req, res, next));
 
 // ==========================================
-// 8. ANNOUNCEMENTS MANAGEMENT
-// ==========================================
-router.get('/announcements', (req, res, next) => adminAnnouncementsController.list(req, res, next));
-router.post('/announcements', (req, res, next) => adminAnnouncementsController.create(req, res, next));
-router.get('/announcements/:id', (req, res, next) => adminAnnouncementsController.getById(req, res, next));
-router.put('/announcements/:id', (req, res, next) => adminAnnouncementsController.update(req, res, next));
-router.patch('/announcements/:id', (req, res, next) => adminAnnouncementsController.update(req, res, next));
-router.patch('/announcements/:id/publish', (req, res, next) => adminAnnouncementsController.publish(req, res, next));
-router.patch('/announcements/:id/unpublish', (req, res, next) => adminAnnouncementsController.unpublish(req, res, next));
-router.patch('/announcements/:id/archive', (req, res, next) => adminAnnouncementsController.archive(req, res, next));
-router.patch('/announcements/:id/status', (req, res, next) => adminAnnouncementsController.updateStatus(req, res, next));
-router.delete('/announcements/:id', requireSuperAdmin, (req, res, next) => adminAnnouncementsController.delete(req, res, next));
-
-// ==========================================
-// 9. ARCHIVE MANAGEMENT
+// 7. ARCHIVE MANAGEMENT
 // ==========================================
 router.get('/archive', (req, res, next) => adminArchiveController.list(req, res, next));
 router.post('/archive', (req, res, next) => adminArchiveController.create(req, res, next));
@@ -190,19 +171,5 @@ router.patch('/media/:id', (req, res, next) => adminMediaController.update(req, 
 router.put('/media/:id/replace', (req, res, next) => adminMediaController.replace(req, res, next));
 router.post('/media/:id/replace', (req, res, next) => adminMediaController.replace(req, res, next));
 router.delete('/media/:id', requireSuperAdmin, (req, res, next) => adminMediaController.delete(req, res, next));
-
-// ==========================================
-// 12. RECRUITMENT MANAGEMENT
-// ==========================================
-router.get('/recruitment', (req, res, next) => recruitmentController.list(req, res, next));
-router.get('/recruitment/:id', (req, res, next) => recruitmentController.getById(req, res, next));
-router.patch('/recruitment/:id/status', (req, res, next) => recruitmentController.updateStatus(req, res, next));
-
-// ==========================================
-// 13. EVENT REGISTRATIONS MANAGEMENT
-// ==========================================
-router.get('/events/:id/registrations', (req, res, next) => eventRegistrationController.listForEvent(req, res, next));
-router.get('/events/:id/registrations/export', (req, res, next) => eventRegistrationController.exportCsv(req, res, next));
-router.patch('/event-registrations/:id/status', (req, res, next) => eventRegistrationController.updateStatus(req, res, next));
 
 export default router;

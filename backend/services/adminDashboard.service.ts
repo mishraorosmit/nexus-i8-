@@ -10,10 +10,6 @@ export interface AdminDashboardMetrics {
   projects: {
     total: number;
   };
-  events: {
-    total: number;
-    upcoming: number;
-  };
 }
 
 export class AdminDashboardService {
@@ -40,14 +36,6 @@ export class AdminDashboardService {
       SELECT COUNT(*) AS total FROM projects
     `).get() as { total: number } | undefined;
 
-    // 3. Events metrics
-    const eventRow = db.prepare(`
-      SELECT 
-        COUNT(*) AS total,
-        COALESCE(SUM(CASE WHEN LOWER(status) IN ('upcoming', 'published') THEN 1 ELSE 0 END), 0) AS upcoming
-      FROM events
-    `).get() as { total: number; upcoming: number } | undefined;
-
     return {
       members: {
         total: Number(memberRow?.total || 0),
@@ -57,10 +45,6 @@ export class AdminDashboardService {
       },
       projects: {
         total: Number(projectRow?.total || 0),
-      },
-      events: {
-        total: Number(eventRow?.total || 0),
-        upcoming: Number(eventRow?.upcoming || 0),
       },
     };
   }

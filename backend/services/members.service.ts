@@ -525,3 +525,4 @@ export class MembersAdminService {
 
 export const membersService = new MembersAdminService();
 export const memberService = membersService;
+export const membersAdminService = membersService;

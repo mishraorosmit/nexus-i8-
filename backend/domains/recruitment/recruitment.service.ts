@@ -7,6 +7,11 @@ import {
 import { AppError } from '../../middleware/errorHandler.ts';
 import { sanitizeText } from '../../middleware/spamProtection.ts';
 import { notificationHooks, NotificationHookService } from '../../services/notificationHook.service.ts';
+import { generateReferenceId } from '../../utils/referenceId.ts';
+import { membersAdminService, type CreateMemberInput } from '../../services/members.service.ts';
+import { auditService } from '../../services/audit.service.ts';
+import { getDatabase, runTransaction } from '../../db/connection.ts';
+import type { Request } from 'express';
 
 export const ALLOWED_RECRUITMENT_DOMAINS = [
   'Software & Systems',
@@ -100,6 +105,7 @@ export class RecruitmentService {
 
     // 7. Store record
     const id = `rec-${Date.now()}-${crypto.randomBytes(4).toString('hex')}`;
+    const reference_id = generateReferenceId('APP');
     const interestsJson = JSON.stringify(
       Array.isArray(dto.interests)
         ? dto.interests.map((i) => sanitizeText(String(i))).filter(Boolean)
@@ -108,6 +114,7 @@ export class RecruitmentService {
 
     const record = recruitmentRepository.create({
       id,
+      reference_id,
       name,
       email,
       phone: dto.phone ? sanitizeText(dto.phone).substring(0, 30) : null,
@@ -122,11 +129,16 @@ export class RecruitmentService {
       consent: 1,
       status: 'SUBMITTED',
       status_notes: null,
+      admin_notes: null,
+      reviewed_by: null,
+      reviewed_at: null,
+      converted_member_id: null,
     });
 
     // 8. Fire decoupled notification hook
     notificationHooks.dispatch('recruitment.submitted', {
       id: record.id,
+      reference_id: record.reference_id,
       name: record.name,
       maskedEmail: NotificationHookService.maskEmail(record.email),
       domain: record.selected_domain,
@@ -146,8 +158,161 @@ export class RecruitmentService {
     return recruitmentRepository.findAll(filter);
   }
 
-  public async getApplicationById(id: string): Promise<RecruitmentRecord | null> {
-    return recruitmentRepository.findById(id);
+  public async getApplicationById(idOrRef: string): Promise<RecruitmentRecord | null> {
+    return recruitmentRepository.findByIdOrRef(idOrRef);
+  }
+
+  public getFacets() {
+    return recruitmentRepository.getFacets();
+  }
+
+  public async reviewApplication(
+    idOrRef: string,
+    params: {
+      status?: RecruitmentStatus;
+      adminNotes?: string | null;
+    },
+    adminContext?: any,
+    req?: Request
+  ): Promise<RecruitmentRecord> {
+    const existing = recruitmentRepository.findByIdOrRef(idOrRef);
+    if (!existing) {
+      throw new AppError(404, `Recruitment application not found: ${idOrRef}`, undefined, 'APPLICATION_NOT_FOUND');
+    }
+
+    if (params.status && params.status !== existing.status) {
+      const allowed = VALID_RECRUITMENT_TRANSITIONS[existing.status] || [];
+      if (!allowed.includes(params.status)) {
+        throw new AppError(
+          400,
+          `Cannot transition application status from ${existing.status} to ${params.status}. Allowed transitions: ${allowed.join(', ') || 'None (Terminal status)'}`,
+          undefined,
+          'INVALID_STATUS_TRANSITION'
+        );
+      }
+    }
+
+    const updated = recruitmentRepository.updateAdminReview(existing.id, {
+      status: params.status,
+      adminNotes: params.adminNotes,
+      reviewedBy: adminContext?.adminName || 'admin',
+    });
+
+    if (!updated) {
+      throw new AppError(500, 'Failed to update recruitment review', undefined, 'INTERNAL_SERVER_ERROR');
+    }
+
+    const action = updated.status === 'REJECTED'
+      ? 'APPLICATION_REJECTED'
+      : updated.status === 'ACCEPTED'
+      ? 'APPLICATION_ACCEPTED'
+      : 'APPLICATION_REVIEWED';
+
+    auditService.log(
+      {
+        adminId: adminContext?.adminId,
+        adminName: adminContext?.adminName,
+        adminRole: adminContext?.adminRole,
+        action,
+        entityType: 'APPLICATION',
+        entityId: updated.id,
+        beforeJson: existing,
+        afterJson: updated,
+        details: {
+          referenceId: updated.reference_id,
+          name: updated.name,
+          oldStatus: existing.status,
+          newStatus: updated.status,
+          adminNotes: updated.admin_notes,
+        },
+      },
+      req
+    );
+
+    return updated;
+  }
+
+  public async convertToMember(
+    idOrRef: string,
+    memberOverrides?: Partial<CreateMemberInput>,
+    adminContext?: any,
+    req?: Request
+  ): Promise<{ application: RecruitmentRecord; member: any }> {
+    const application = recruitmentRepository.findByIdOrRef(idOrRef);
+    if (!application) {
+      throw new AppError(404, `Recruitment application not found: ${idOrRef}`, undefined, 'APPLICATION_NOT_FOUND');
+    }
+
+    if (application.converted_member_id) {
+      throw new AppError(
+        400,
+        `Application ${application.reference_id || application.id} has already been converted to member (ID: ${application.converted_member_id})`,
+        undefined,
+        'ALREADY_CONVERTED'
+      );
+    }
+
+    let parsedSkills: string[] = [];
+    try {
+      if (application.interests) {
+        parsedSkills = JSON.parse(application.interests);
+      }
+    } catch {
+      parsedSkills = [];
+    }
+
+    const memberInput: CreateMemberInput = {
+      name: application.name,
+      email: application.email,
+      role: memberOverrides?.role || 'Core Contributor',
+      department: memberOverrides?.department || application.department || 'Engineering',
+      domain: memberOverrides?.domain || application.selected_domain,
+      bio: memberOverrides?.bio || application.message || null,
+      skills: memberOverrides?.skills || parsedSkills,
+      status: 'ACTIVE',
+      socialLinks: JSON.stringify({
+        github: application.github_url || null,
+        linkedin: application.linkedin_url || null,
+        portfolio: application.portfolio_url || null,
+      }),
+      uniqueId: memberOverrides?.uniqueId || null,
+      slug: memberOverrides?.slug || null,
+      clearanceLevel: memberOverrides?.clearanceLevel || 'LVL-01 // OPERATIVE',
+    };
+
+    // Execute member creation and application review update atomically inside a transaction
+    const { newMember, updatedApp } = runTransaction(() => {
+      const created = membersAdminService.createMember(memberInput, adminContext);
+      const app = recruitmentRepository.updateAdminReview(application.id, {
+        status: 'ACCEPTED',
+        adminNotes: memberOverrides?.bio ? `Converted to member ${created.unique_id}` : application.admin_notes,
+        reviewedBy: adminContext?.adminName || 'admin',
+        convertedMemberId: created.id,
+      });
+      return { newMember: created, updatedApp: app };
+    });
+
+    auditService.log(
+      {
+        adminId: adminContext?.adminId,
+        adminName: adminContext?.adminName,
+        adminRole: adminContext?.adminRole,
+        action: 'APPLICATION_ACCEPTED',
+        entityType: 'APPLICATION',
+        entityId: application.id,
+        beforeJson: application,
+        afterJson: updatedApp,
+        details: {
+          referenceId: application.reference_id,
+          memberId: newMember.id,
+          uniqueId: newMember.unique_id,
+          name: newMember.name,
+        },
+      },
+      req
+    );
+
+    return { application: updatedApp!, member: newMember };
   }
 
   public async updateStatus(
