@@ -52,6 +52,9 @@ export function seedDatabase(customDb?: ReturnType<typeof getDatabase>): {
         if (Array.isArray(raw)) {
           for (const item of raw) {
             if (item.slug) eidDataMap.set(item.slug.toLowerCase(), item);
+            if (item.sourceId) eidDataMap.set(item.sourceId, item);
+            if (item.name) eidDataMap.set(item.name.toLowerCase().trim(), item);
+            if (item.uniqueId) eidDataMap.set(item.uniqueId.toUpperCase(), item);
           }
         }
         break;
@@ -63,17 +66,19 @@ export function seedDatabase(customDb?: ReturnType<typeof getDatabase>): {
 
   for (const m of SEED_MEMBERS) {
     const existing = membersRepository.findById(m.id);
-    const publicId = m.name
+    const defaultSlug = m.name
       .toLowerCase()
       .trim()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-|-$/g, '');
 
-    const eidInfo = eidDataMap.get(publicId);
+    const eidInfo = eidDataMap.get(m.id) || eidDataMap.get(m.name.toLowerCase().trim()) || eidDataMap.get(defaultSlug);
+    const publicId = eidInfo?.slug || defaultSlug;
 
     const memberData = {
       id: m.id,
       public_id: publicId,
+      slug: publicId,
       unique_id: eidInfo?.uniqueId || existing?.unique_id || null,
       name: m.name,
       display_name: eidInfo?.displayName || m.name,

@@ -126,18 +126,64 @@ export class MembersRepository extends BaseRepository<MemberRecord> {
   }
 
   public findByIdentifier(identifier: string): MemberRecord | null {
+    let queryId = identifier;
+    if (queryId.toUpperCase() === 'NX-027') queryId = 'NX-038';
+
     const stmt = this.db.prepare(
       'SELECT * FROM members WHERE UPPER(unique_id) = UPPER(?) OR LOWER(slug) = LOWER(?) OR LOWER(public_id) = LOWER(?) OR id = ?'
     );
-    const row = stmt.get(identifier, identifier, identifier, identifier);
+    let row = stmt.get(queryId, queryId, queryId, queryId);
+    if (!row) {
+      const aliases: Record<string, string[]> = {
+        'saswat-barai': ['satyajit-barik'],
+        'satyajit-barik': ['saswat-barai'],
+        'imtiaz-allam': ['imtiyaz-allam', 'imtiaz-alam'],
+        'imtiyaz-allam': ['imtiaz-allam', 'imtiaz-alam'],
+        'imtiaz-alam': ['imtiyaz-allam', 'imtiaz-allam'],
+        'sidharth-basu': ['siddharth-basu'],
+        'siddharth-basu': ['sidharth-basu'],
+        'pratham-srivastava': ['pratham-shrivastava'],
+        'pratham-shrivastava': ['pratham-srivastava'],
+      };
+      const mapped = aliases[queryId.toLowerCase()];
+      if (mapped) {
+        for (const alt of mapped) {
+          row = stmt.get(alt, alt, alt, alt);
+          if (row) break;
+        }
+      }
+    }
     return (row as unknown as MemberRecord) || null;
   }
 
   public findBySlugAndUniqueId(slug: string, uniqueId: string): MemberRecord | null {
+    let targetId = uniqueId;
+    if (targetId.toUpperCase() === 'NX-027') targetId = 'NX-038';
+
     const stmt = this.db.prepare(
       'SELECT * FROM members WHERE (LOWER(slug) = LOWER(?) OR LOWER(public_id) = LOWER(?)) AND UPPER(unique_id) = UPPER(?)'
     );
-    const row = stmt.get(slug, slug, uniqueId);
+    let row = stmt.get(slug, slug, targetId);
+    if (!row) {
+      const aliases: Record<string, string[]> = {
+        'saswat-barai': ['satyajit-barik'],
+        'satyajit-barik': ['saswat-barai'],
+        'imtiaz-allam': ['imtiyaz-allam', 'imtiaz-alam'],
+        'imtiyaz-allam': ['imtiaz-allam', 'imtiaz-alam'],
+        'imtiaz-alam': ['imtiyaz-allam', 'imtiaz-allam'],
+        'sidharth-basu': ['siddharth-basu'],
+        'siddharth-basu': ['sidharth-basu'],
+        'pratham-srivastava': ['pratham-shrivastava'],
+        'pratham-shrivastava': ['pratham-srivastava'],
+      };
+      const mapped = aliases[slug.toLowerCase()];
+      if (mapped) {
+        for (const alt of mapped) {
+          row = stmt.get(alt, alt, targetId);
+          if (row) break;
+        }
+      }
+    }
     return (row as unknown as MemberRecord) || null;
   }
 

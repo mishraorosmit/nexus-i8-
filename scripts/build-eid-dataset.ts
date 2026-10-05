@@ -33,7 +33,7 @@ const DETERMINISTIC_ID_MAPPING: Record<string, string> = {
   'team-08': 'NX-010',       // SURYAPRASAD BRAHMA
   'team-content-01': 'NX-011',// TUSHTI SINHA
   'team-content-02': 'NX-012',// SMITA JENA
-  'team-content-03': 'NX-013',// SIDDHARTH BASU
+  'team-content-03': 'NX-013',// SIDHARTH BASU
   'team-content-04': 'NX-014',// SASWAT PALO
   'team-content-05': 'NX-015',// PRATYUSH SAHOO
   'team-content-06': 'NX-016',// OMM PRAKASH TRIPATHY
@@ -47,9 +47,20 @@ const DETERMINISTIC_ID_MAPPING: Record<string, string> = {
   'team-content-14': 'NX-024',// RASHI SWARNIM
   'team-01': 'NX-025',       // ANSHUMAN TIWARY
   'team-02': 'NX-026',       // OROSMIT MISHRA
-  'team-head-02': 'NX-027',  // IMTIAZ ALLAM
   'team-09': 'NX-028',       // ABHINAB JENA
   'team-content-15': 'NX-029',// HIMANSHI MOHAPATRA
+  'team-coord-06': 'NX-032', // ANUBHAV JAISWAL
+  'team-coord-04': 'NX-033', // MOHIT KUMAR
+  'team-10': 'NX-034',       // SASWAT BARAI (satyajit-barik)
+  'team-11': 'NX-035',       // UJJWAL PRUSTY
+  'team-coord-05': 'NX-036', // PRATHAM SRIVASTAVA
+  'team-head-02': 'NX-038',  // IMTIAZ ALAM (imtiyaz-allam)
+};
+
+// Deterministic Slug overrides for specific assigned permalinks
+const DETERMINISTIC_SLUG_OVERRIDE: Record<string, string> = {
+  'NX-034': 'satyajit-barik',
+  'NX-038': 'imtiyaz-allam',
 };
 
 // Sort members deterministically according to their assigned uniqueId
@@ -95,12 +106,13 @@ for (const m of sortedSourceMembers) {
     continue;
   }
 
-  // Generate URL-safe slug strictly from actual name
-  const slug = m.name
+  // Generate URL-safe slug strictly from actual name or specified permalink
+  const defaultSlug = m.name
     .toLowerCase()
     .trim()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
+  const slug = DETERMINISTIC_SLUG_OVERRIDE[uniqueId] || defaultSlug;
 
   const rawImg = m.imageUrl || '';
   let localRel = rawImg;

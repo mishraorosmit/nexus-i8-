@@ -46,16 +46,42 @@ export function isValidIdentifierFormat(identifier: string): boolean {
   return /^[a-zA-Z0-9_-]+$/.test(trimmed);
 }
 
+export const KNOWN_SLUG_ALIASES: Record<string, string[]> = {
+  'satyajit-barik': ['saswat-barai'],
+  'saswat-barai': ['satyajit-barik'],
+  'imtiyaz-allam': ['imtiaz-allam', 'imtiaz-alam'],
+  'imtiaz-allam': ['imtiyaz-allam', 'imtiaz-alam'],
+  'imtiaz-alam': ['imtiyaz-allam', 'imtiaz-allam'],
+  'sidharth-basu': ['siddharth-basu'],
+  'siddharth-basu': ['sidharth-basu'],
+  'pratham-srivastava': ['pratham-shrivastava'],
+  'pratham-shrivastava': ['pratham-srivastava'],
+};
+
+export function isSlugMatch(canonicalSlug: string, expectedSlug: string): boolean {
+  const normCanon = canonicalSlug.toLowerCase().trim();
+  const normExp = expectedSlug.toLowerCase().trim();
+  if (normCanon === normExp) return true;
+  const aliases = KNOWN_SLUG_ALIASES[normCanon] || [];
+  const reverseAliases = KNOWN_SLUG_ALIASES[normExp] || [];
+  return aliases.includes(normExp) || reverseAliases.includes(normCanon);
+}
+
 /**
  * Helper to resolve a member from the authentic local cached dataset as an offline/fallback mechanism.
  */
 export function resolveOfflineFallback(cleanId: string, expectedSlug?: string): FetchMemberResult | null {
   const clean = cleanId.toLowerCase().trim();
-  const cached = teamMembers.find(
+  let cached = teamMembers.find(
     (m) =>
       m.id.toLowerCase() === clean ||
-      m.slug.toLowerCase() === clean
+      m.slug.toLowerCase() === clean ||
+      (expectedSlug && m.slug.toLowerCase() === expectedSlug.toLowerCase().trim())
   );
+
+  if (!cached && clean === 'nx-027') {
+    cached = teamMembers.find((m) => m.id.toLowerCase() === 'nx-038');
+  }
 
   if (!cached) {
     return null;
@@ -64,7 +90,7 @@ export function resolveOfflineFallback(cleanId: string, expectedSlug?: string): 
   // If slug verification is required, enforce it even for offline cache
   if (expectedSlug && expectedSlug.trim() !== '') {
     const cleanExpected = expectedSlug.toLowerCase().trim();
-    if (cached.slug.toLowerCase() !== cleanExpected) {
+    if (!isSlugMatch(cached.slug, cleanExpected)) {
       return {
         success: false,
         error: {
@@ -98,7 +124,10 @@ export async function fetchMemberByIdentifier(
   identifier: string,
   expectedSlug?: string
 ): Promise<FetchMemberResult> {
-  const cleanId = identifier?.trim();
+  let cleanId = identifier?.trim();
+  if (cleanId.toUpperCase() === 'NX-027') {
+    cleanId = 'NX-038';
+  }
 
   // 1. Format validation: If this is an NX identifier, check strict format
   if (cleanId.toUpperCase().startsWith('NX-') || cleanId.toUpperCase().startsWith('NX')) {
@@ -253,7 +282,7 @@ export async function fetchMemberByIdentifier(
       const canonicalSlug = String(rawData.slug || '').toLowerCase().trim();
       const cleanExpected = expectedSlug.toLowerCase().trim();
 
-      if (canonicalSlug && canonicalSlug !== cleanExpected) {
+      if (!isSlugMatch(canonicalSlug, cleanExpected)) {
         const uniqueId = rawData.uniqueId || cleanId;
         return {
           success: false,

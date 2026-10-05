@@ -1,16 +1,16 @@
 {
-  "timestamp": "2026-09-15T05:04:30.826Z",
+  "timestamp": "2026-10-05T05:04:44.240Z",
   "sourceRepository": "nexus-i8-",
   "sourceFile": "frontend/src/data/nexusData.ts",
   "targetDataset": "Eid-card/data/members.json",
   "summary": {
-    "totalExtracted": 29,
+    "totalExtracted": 34,
     "valid": true,
     "issueCount": 0,
-    "uniqueIdsCount": 29,
-    "uniqueSlugsCount": 29,
-    "uniqueImagesCount": 29,
-    "imagesVerifiedOnDisk": 29
+    "uniqueIdsCount": 34,
+    "uniqueSlugsCount": 34,
+    "uniqueImagesCount": 34,
+    "imagesVerifiedOnDisk": 34
   },
   "mapping": [
     {
@@ -135,12 +135,12 @@
     },
     {
       "uniqueId": "NX-013",
-      "name": "SIDDHARTH BASU",
-      "slug": "siddharth-basu",
+      "name": "SIDHARTH BASU",
+      "slug": "sidharth-basu",
       "role": "TECHNICAL WRITING & CASE STUDIES",
       "group": "CONTENT",
       "domain": "Computer Science & Technical Communication",
-      "image": "/images/team/siddharth-basu-content.webp",
+      "image": "/images/team/Sidharth_Basu.jpeg",
       "sourceId": "team-content-03"
     },
     {
@@ -274,16 +274,6 @@
       "sourceId": "team-02"
     },
     {
-      "uniqueId": "NX-027",
-      "name": "IMTIAZ ALLAM",
-      "slug": "imtiaz-allam",
-      "role": "HEAD OF TECH",
-      "group": "HEADS",
-      "domain": "Technical Architecture & Systems Engineering",
-      "image": "/images/team/Imtiaz_Allam.jpeg",
-      "sourceId": "team-head-02"
-    },
-    {
       "uniqueId": "NX-028",
       "name": "ABHINAB JENA",
       "slug": "abhinab-jena",
@@ -302,6 +292,66 @@
       "domain": "Media Communication & Editorial Strategy",
       "image": "/images/team/himanshi_mohapatra.jpeg",
       "sourceId": "team-content-15"
+    },
+    {
+      "uniqueId": "NX-032",
+      "name": "ANUBHAV JAISWAL",
+      "slug": "anubhav-jaiswal",
+      "role": "COORDINATOR",
+      "group": "COORDINATOR & MENTOR",
+      "domain": "Studio Leadership & Program Management",
+      "image": "/images/team/Anubhav_Jaiswal.jpeg",
+      "sourceId": "team-coord-06"
+    },
+    {
+      "uniqueId": "NX-033",
+      "name": "MOHIT KUMAR",
+      "slug": "mohit-kumar",
+      "role": "COORDINATOR",
+      "group": "COORDINATOR & MENTOR",
+      "domain": "Studio Operations & Program Coordination",
+      "image": "/images/team/Mohit_Kumar.jpeg",
+      "sourceId": "team-coord-04"
+    },
+    {
+      "uniqueId": "NX-034",
+      "name": "SASWAT BARAI",
+      "slug": "satyajit-barik",
+      "role": "IDEATION & HARDWARE PROTOTYPER",
+      "group": "IDEATION",
+      "domain": "Embedded Systems & Hardware Prototyping",
+      "image": "/images/team/Saswat_Barai.jpeg",
+      "sourceId": "team-10"
+    },
+    {
+      "uniqueId": "NX-035",
+      "name": "UJJWAL PRUSTY",
+      "slug": "ujjwal-prusty",
+      "role": "IDEATION & SOFTWARE DEVELOPER",
+      "group": "IDEATION",
+      "domain": "Computer Science & Systems Engineering",
+      "image": "/images/team/Ujjwal_Prusty.jpeg",
+      "sourceId": "team-11"
+    },
+    {
+      "uniqueId": "NX-036",
+      "name": "PRATHAM SRIVASTAVA",
+      "slug": "pratham-srivastava",
+      "role": "COORDINATOR",
+      "group": "COORDINATOR & MENTOR",
+      "domain": "Systems Architecture & Technical Coordination",
+      "image": "/images/team/pratham_srivastava.jpeg",
+      "sourceId": "team-coord-05"
+    },
+    {
+      "uniqueId": "NX-038",
+      "name": "IMTIAZ ALAM",
+      "slug": "imtiyaz-allam",
+      "role": "HEAD OF TECH",
+      "group": "HEADS",
+      "domain": "Technical Architecture & Systems Engineering",
+      "image": "/images/team/Imtiaz_Alam.jpeg",
+      "sourceId": "team-head-02"
     }
   ],
   "imageAudit": [
@@ -391,10 +441,10 @@
     },
     {
       "uniqueId": "NX-013",
-      "name": "SIDDHARTH BASU",
-      "relativeImagePath": "/images/team/siddharth-basu-content.webp",
+      "name": "SIDHARTH BASU",
+      "relativeImagePath": "/images/team/Sidharth_Basu.jpeg",
       "imagesDirExists": true,
-      "fileSizeBytes": 36520
+      "fileSizeBytes": 559754
     },
     {
       "uniqueId": "NX-014",
@@ -488,13 +538,6 @@
       "fileSizeBytes": 34076
     },
     {
-      "uniqueId": "NX-027",
-      "name": "IMTIAZ ALLAM",
-      "relativeImagePath": "/images/team/Imtiaz_Allam.jpeg",
-      "imagesDirExists": true,
-      "fileSizeBytes": 45918
-    },
-    {
       "uniqueId": "NX-028",
       "name": "ABHINAB JENA",
       "relativeImagePath": "/images/team/abhinab_jena.jpg",
@@ -507,11 +550,48 @@
       "relativeImagePath": "/images/team/himanshi_mohapatra.jpeg",
       "imagesDirExists": true,
       "fileSizeBytes": 150253
-    }
+    },
     {
       "uniqueId": "NX-032",
-      "name": "GRACY SINGH"
-      
+      "name": "ANUBHAV JAISWAL",
+      "relativeImagePath": "/images/team/Anubhav_Jaiswal.jpeg",
+      "imagesDirExists": true,
+      "fileSizeBytes": 869222
+    },
+    {
+      "uniqueId": "NX-033",
+      "name": "MOHIT KUMAR",
+      "relativeImagePath": "/images/team/Mohit_Kumar.jpeg",
+      "imagesDirExists": true,
+      "fileSizeBytes": 756441
+    },
+    {
+      "uniqueId": "NX-034",
+      "name": "SASWAT BARAI",
+      "relativeImagePath": "/images/team/Saswat_Barai.jpeg",
+      "imagesDirExists": true,
+      "fileSizeBytes": 707790
+    },
+    {
+      "uniqueId": "NX-035",
+      "name": "UJJWAL PRUSTY",
+      "relativeImagePath": "/images/team/Ujjwal_Prusty.jpeg",
+      "imagesDirExists": true,
+      "fileSizeBytes": 1512427
+    },
+    {
+      "uniqueId": "NX-036",
+      "name": "PRATHAM SRIVASTAVA",
+      "relativeImagePath": "/images/team/pratham_srivastava.jpeg",
+      "imagesDirExists": true,
+      "fileSizeBytes": 682016
+    },
+    {
+      "uniqueId": "NX-038",
+      "name": "IMTIAZ ALAM",
+      "relativeImagePath": "/images/team/Imtiaz_Alam.jpeg",
+      "imagesDirExists": true,
+      "fileSizeBytes": 1287186
     }
   ],
   "issues": []

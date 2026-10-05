@@ -1,31 +1,35 @@
-Link
-https://nexusopen.dev/jitesh-raj/NX-001
-https://nexusopen.dev/manish-prakash/NX-002
-https://nexusopen.dev/siba-prasand-panda/NX-003
-https://nexusopen.dev/om-pandey/NX-004
-https://nexusopen.dev/anshita-dash/NX-005
-https://nexusopen.dev/ankita-dutta/NX-006
-https://nexusopen.dev/aadyasha-swain/NX-007
-https://nexusopen.dev/ananya-raj/NX-008
-https://nexusopen.dev/umesh-kumar-sahu/NX-009
-https://nexusopen.dev/suryaprasad-brahma/NX-010
-https://nexusopen.dev/tushti-sinha/NX-011
-https://nexusopen.dev/smita-jena/NX-012
-https://nexusopen.dev/siddharth-basu/NX-013
-https://nexusopen.dev/saswat-palo/NX-014
-https://nexusopen.dev/pratyush-sahoo/NX-015
-https://nexusopen.dev/omm-prakash-tripathy/NX-016
-https://nexusopen.dev/jagruti-pandey/NX-017
-https://nexusopen.dev/debojeet/NX-018
-https://nexusopen.dev/anshuman-meher/NX-019
-https://nexusopen.dev/ishika/NX-020
-https://nexusopen.dev/harshit/NX-021
-https://nexusopen.dev/simrita-barick/NX-022
-https://nexusopen.dev/sindhusuta-rath/NX-023
-https://nexusopen.dev/swarnim/NX-024
-https://nexusopen.dev/anshuman-tiwary/NX-025
-https://nexusopen.dev/orosmit-mishra/NX-026
-https://nexusopen.dev/imtiaz-allam/NX-027
-https://nexusopen.dev/abhinab-jena/NX-028
-https://nexusopen.dev/himanshi-mohapatra/NX-029
-
+"Sl No","Unique ID","Member Name","Domain / Squad","Role / Designation","Slug","E-ID Link (Direct)","E-ID Link (MemberID Route)","E-ID Link (Short ID)"
+"1","NX-001","JITESH RAJ","HEADS","HEAD OF OPERATIONS, NEXUS","jitesh-raj","https://nexusopen.dev/jitesh-raj/NX-001","https://nexusopen.dev/memberID/jitesh-raj/NX-001","https://nexusopen.dev/NX-001"
+"2","NX-002","MANISH PRAKASH","COORDINATOR & MENTOR","COORDINATOR","manish-prakash","https://nexusopen.dev/manish-prakash/NX-002","https://nexusopen.dev/memberID/manish-prakash/NX-002","https://nexusopen.dev/NX-002"
+"3","NX-003","SIBA PRASAND PANDA","HEADS","VICE HEAD OF OPS","siba-prasand-panda","https://nexusopen.dev/siba-prasand-panda/NX-003","https://nexusopen.dev/memberID/siba-prasand-panda/NX-003","https://nexusopen.dev/NX-003"
+"4","NX-004","OM PANDEY","COORDINATOR & MENTOR","MENTOR","om-pandey","https://nexusopen.dev/om-pandey/NX-004","https://nexusopen.dev/memberID/om-pandey/NX-004","https://nexusopen.dev/NX-004"
+"5","NX-005","ANSHITA DASH","IDEATION","IDEATION & INTERACTION","anshita-dash","https://nexusopen.dev/anshita-dash/NX-005","https://nexusopen.dev/memberID/anshita-dash/NX-005","https://nexusopen.dev/NX-005"
+"6","NX-006","ANKITA DUTTA","IDEATION","IDEATION & DESIGN STRATEGIST","ankita-dutta","https://nexusopen.dev/ankita-dutta/NX-006","https://nexusopen.dev/memberID/ankita-dutta/NX-006","https://nexusopen.dev/NX-006"
+"7","NX-007","AADYASHA SWAIN","IDEATION","IDEATION & EXPERIENCE DESIGNER","aadyasha-swain","https://nexusopen.dev/aadyasha-swain/NX-007","https://nexusopen.dev/memberID/aadyasha-swain/NX-007","https://nexusopen.dev/NX-007"
+"8","NX-008","ANANYA RAJ","IDEATION","IDEATION & HARDWARE PROTOTYPER","ananya-raj","https://nexusopen.dev/ananya-raj/NX-008","https://nexusopen.dev/memberID/ananya-raj/NX-008","https://nexusopen.dev/NX-008"
+"9","NX-009","UMESH KUMAR SAHU","IDEATION","IDEATION & SYSTEMS ARCHITECT","umesh-kumar-sahu","https://nexusopen.dev/umesh-kumar-sahu/NX-009","https://nexusopen.dev/memberID/umesh-kumar-sahu/NX-009","https://nexusopen.dev/NX-009"
+"10","NX-010","SURYAPRASAD BRAHMA","IDEATION","IDEATION & CREATIVE TECHNOLOGIST","suryaprasad-brahma","https://nexusopen.dev/suryaprasad-brahma/NX-010","https://nexusopen.dev/memberID/suryaprasad-brahma/NX-010","https://nexusopen.dev/NX-010"
+"11","NX-011","TUSHTI SINHA","IDEATION","IDEATION","tushti-sinha","https://nexusopen.dev/tushti-sinha/NX-011","https://nexusopen.dev/memberID/tushti-sinha/NX-011","https://nexusopen.dev/NX-011"
+"12","NX-012","SMITA JENA","CONTENT","CONTENT & CURATION","smita-jena","https://nexusopen.dev/smita-jena/NX-012","https://nexusopen.dev/memberID/smita-jena/NX-012","https://nexusopen.dev/NX-012"
+"13","NX-013","SIDHARTH BASU","CONTENT","TECHNICAL WRITING & CASE STUDIES","sidharth-basu","https://nexusopen.dev/sidharth-basu/NX-013","https://nexusopen.dev/memberID/sidharth-basu/NX-013","https://nexusopen.dev/NX-013"
+"14","NX-014","SASWAT PALO","CONTENT","MEDIA PRODUCTION & CINEMATICS","saswat-palo","https://nexusopen.dev/saswat-palo/NX-014","https://nexusopen.dev/memberID/saswat-palo/NX-014","https://nexusopen.dev/NX-014"
+"15","NX-015","PRATYUSH SAHOO","CONTENT","GRAPHIC DESIGN & PUBLICATION","pratyush-sahoo","https://nexusopen.dev/pratyush-sahoo/NX-015","https://nexusopen.dev/memberID/pratyush-sahoo/NX-015","https://nexusopen.dev/NX-015"
+"16","NX-016","OMM PRAKASH TRIPATHY","CONTENT","RESEARCH & DOCUMENTATION","omm-prakash-tripathy","https://nexusopen.dev/omm-prakash-tripathy/NX-016","https://nexusopen.dev/memberID/omm-prakash-tripathy/NX-016","https://nexusopen.dev/NX-016"
+"17","NX-017","JAGRUTI PANDEY","CONTENT","COMMUNITY STORYTELLING","jagruti-pandey","https://nexusopen.dev/jagruti-pandey/NX-017","https://nexusopen.dev/memberID/jagruti-pandey/NX-017","https://nexusopen.dev/NX-017"
+"18","NX-018","DEBOJEET","CONTENT","AUDIO & DIGITAL MEDIA","debojeet","https://nexusopen.dev/debojeet/NX-018","https://nexusopen.dev/memberID/debojeet/NX-018","https://nexusopen.dev/NX-018"
+"19","NX-019","ANSHUMAN MEHER","CONTENT","SPRINT ARCHIVE & ASSETS","anshuman-meher","https://nexusopen.dev/anshuman-meher/NX-019","https://nexusopen.dev/memberID/anshuman-meher/NX-019","https://nexusopen.dev/NX-019"
+"20","NX-020","ISHIKA","CONTENT","EDITORIAL RESEARCH & SOCIAL","ishika","https://nexusopen.dev/ishika/NX-020","https://nexusopen.dev/memberID/ishika/NX-020","https://nexusopen.dev/NX-020"
+"21","NX-021","HARSHIT","CONTENT","CREATIVE MEDIA & OUTREACH","harshit","https://nexusopen.dev/harshit/NX-021","https://nexusopen.dev/memberID/harshit/NX-021","https://nexusopen.dev/NX-021"
+"22","NX-022","SIMRITA BARICK","CONTENT","EDITORIAL & WRITTEN MEDIA","simrita-barick","https://nexusopen.dev/simrita-barick/NX-022","https://nexusopen.dev/memberID/simrita-barick/NX-022","https://nexusopen.dev/NX-022"
+"23","NX-023","SINDHUSUTA RATH","CONTENT","CREATIVE DOCUMENTATION & MEDIA","sindhusuta-rath","https://nexusopen.dev/sindhusuta-rath/NX-023","https://nexusopen.dev/memberID/sindhusuta-rath/NX-023","https://nexusopen.dev/NX-023"
+"24","NX-024","RASHI SWARNIM","CONTENT","MULTIMEDIA PRODUCTION & ARCHIVE","rashi-swarnim","https://nexusopen.dev/rashi-swarnim/NX-024","https://nexusopen.dev/memberID/rashi-swarnim/NX-024","https://nexusopen.dev/NX-024"
+"25","NX-025","ANSHUMAN TIWARY","MANAGEMENT","MANAGEMENT","anshuman-tiwary","https://nexusopen.dev/anshuman-tiwary/NX-025","https://nexusopen.dev/memberID/anshuman-tiwary/NX-025","https://nexusopen.dev/NX-025"
+"26","NX-026","OROSMIT MISHRA","MANAGEMENT","MANAGEMENT","orosmit-mishra","https://nexusopen.dev/orosmit-mishra/NX-026","https://nexusopen.dev/memberID/orosmit-mishra/NX-026","https://nexusopen.dev/NX-026"
+"27","NX-028","ABHINAB JENA","IDEATION","IDEATION & CONCEPT DEVELOPER","abhinab-jena","https://nexusopen.dev/abhinab-jena/NX-028","https://nexusopen.dev/memberID/abhinab-jena/NX-028","https://nexusopen.dev/NX-028"
+"28","NX-029","HIMANSHI MOHAPATRA","CONTENT","CONTENT & EDITORIAL STRATEGIST","himanshi-mohapatra","https://nexusopen.dev/himanshi-mohapatra/NX-029","https://nexusopen.dev/memberID/himanshi-mohapatra/NX-029","https://nexusopen.dev/NX-029"
+"29","NX-032","ANUBHAV JAISWAL","COORDINATOR & MENTOR","COORDINATOR","anubhav-jaiswal","https://nexusopen.dev/anubhav-jaiswal/NX-032","https://nexusopen.dev/memberID/anubhav-jaiswal/NX-032","https://nexusopen.dev/NX-032"
+"30","NX-033","MOHIT KUMAR","COORDINATOR & MENTOR","COORDINATOR","mohit-kumar","https://nexusopen.dev/mohit-kumar/NX-033","https://nexusopen.dev/memberID/mohit-kumar/NX-033","https://nexusopen.dev/NX-033"
+"31","NX-034","SASWAT BARAI","IDEATION","IDEATION & HARDWARE PROTOTYPER","satyajit-barik","https://nexusopen.dev/satyajit-barik/NX-034","https://nexusopen.dev/memberID/satyajit-barik/NX-034","https://nexusopen.dev/NX-034"
+"32","NX-035","UJJWAL PRUSTY","IDEATION","IDEATION & SOFTWARE DEVELOPER","ujjwal-prusty","https://nexusopen.dev/ujjwal-prusty/NX-035","https://nexusopen.dev/memberID/ujjwal-prusty/NX-035","https://nexusopen.dev/NX-035"
+"33","NX-036","PRATHAM SRIVASTAVA","COORDINATOR & MENTOR","COORDINATOR","pratham-srivastava","https://nexusopen.dev/pratham-srivastava/NX-036","https://nexusopen.dev/memberID/pratham-srivastava/NX-036","https://nexusopen.dev/NX-036"
+"34","NX-038","IMTIAZ ALAM","HEADS","HEAD OF TECH","imtiyaz-allam","https://nexusopen.dev/imtiyaz-allam/NX-038","https://nexusopen.dev/memberID/imtiyaz-allam/NX-038","https://nexusopen.dev/NX-038"

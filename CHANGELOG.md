@@ -3,9 +3,33 @@
 All notable changes to the NEXUS website project are documented here.
 Changes are grouped by session and ordered from most recent to oldest.
 
+## [Session 4] — 2026-10-05
+
+### Added & Updated Team Members (E-ID Expansion)
+- **New Coordinators & Mentors**:
+  - **Mohit Kumar**: Added as Coordinator (`NX-033`, slug `mohit-kumar`, image `/images/team/Mohit_Kumar.jpeg`).
+  - **Pratham Srivastava**: Added as Coordinator (`NX-036`, slug `pratham-srivastava`, image `/images/team/pratham_srivastava.jpeg`).
+  - **Anubhav Jaiswal**: Added as Coordinator (`NX-032`, slug `anubhav-jaiswal`, image `/images/team/Anubhav_Jaiswal.jpeg`).
+- **New Ideation Squad Members**:
+  - **Saswat Barai**: Added as Ideation & Hardware Prototyper (`NX-034`, canonical slug `satyajit-barik`, image `/images/team/Saswat_Barai.jpeg`).
+  - **Ujjwal Prusty**: Added as Ideation & Software Developer (`NX-035`, slug `ujjwal-prusty`, image `/images/team/Ujjwal_Prusty.jpeg`).
+- **Updated Leadership & Content Members**:
+  - **Imtiaz Alam**: Updated portrait asset (`/images/team/Imtiaz_Alam.jpeg`), assigned permalink `NX-038` with canonical slug `imtiyaz-allam`.
+  - **Sidharth Basu**: Updated portrait asset (`/images/team/Sidharth_Basu.jpeg`) and normalized name/slug (`NX-013`).
+
+### System & Routing Enhancements
+- **Bidirectional Slug & ID Aliasing**:
+  - Implemented slug and unique ID alias resolution in `members.repository.ts`, `frontend/src/eid/data/api.ts`, and `Eid-card/ui/src/data/api.ts`.
+  - Seamlessly handles `satyajit-barik` ↔ `saswat-barai`, `imtiyaz-allam` ↔ `imtiaz-allam`, `sidharth-basu` ↔ `siddharth-basu`, and legacy `NX-027` ↔ `NX-038` lookups.
+- **E-ID Dataset & Report Sync**:
+  - Rebuilt `members.json` across all 5 mirror locations (34 members, 100% validation pass).
+  - Updated `members_eid_links.csv` and generated updated `EID_MEMBER_DATA.md` and `member-validation-report.json`.
+- **Database Synchronization**:
+  - Re-seeded SQLite database `nexus.db` via `npm run db:seed`.
+
 ---
 
-## [Session 3] — 2026-09-13 (Current Session)
+## [Session 3] — 2026-09-13 (Previous Session)
 
 ### Added
 - **Cinematic Theme Transition System** — NEXUS signature LIGHT ↔ DARK curtain animation

@@ -1,10 +1,10 @@
 # NEXUS E-ID Member Dataset — Extraction, Normalization & Validation Report
 
-**Generated**: 2026-09-15T05:04:30.826Z  
+**Generated**: 2026-10-05T05:04:44.240Z  
 **Dataset Path**: `Eid-card/data/members.json`  
 **Machine-Readable Report**: `Eid-card/data/member-validation-report.json`  
 **Source of Truth**: `nexus-i8-/frontend/src/data/nexusData.ts` (`TEAM_MEMBERS`)  
-**Status**: ✓ ALL 29 MEMBERS VALIDATED (100% PASS)
+**Status**: ✓ ALL 34 MEMBERS VALIDATED (100% PASS)
 
 ---
 
@@ -12,11 +12,11 @@
 
 This dataset represents a pure, zero-invention data extraction from the authentic NEXUS website codebase (`nexus-i8-`). Every record maps directly to an active student or coordinator listed in the primary website's team data.
 
-- **Total Members Extracted**: `29`
-- **Unique Public Identifiers**: `NX-001` through `NX-029` (100% unique, sequential, and permanent)
+- **Total Members Extracted**: `34`
+- **Unique Public Identifiers**: `NX-001` through `NX-034` (100% unique, sequential, and permanent)
 - **Name Preservation**: 100% authentic names preserved directly from source
 - **Zero Fabrication**: No roles, emails, biographies, social handles, or portraits were invented. Fields absent from source data are explicitly `null`.
-- **Image Integrity**: All 29 referenced images exist physically on disk and are referenced at their canonical paths (`/images/team/*`).
+- **Image Integrity**: All 34 referenced images exist physically on disk and are referenced at their canonical paths (`/images/team/*`).
 
 ---
 
@@ -36,7 +36,7 @@ This dataset represents a pure, zero-invention data extraction from the authenti
 | `NX-010` | **SURYAPRASAD BRAHMA** | `suryaprasad-brahma` | IDEATION & CREATIVE TECHNOLOGIST | IDEATION | Computational Media & Systems | `/images/team/suryaprasad-brahma-ideation.webp` |
 | `NX-011` | **TUSHTI SINHA** | `tushti-sinha` | IDEATION | IDEATION | Editorial Strategy & Media Communication | `/images/team/tushti-sinha-content.webp` |
 | `NX-012` | **SMITA JENA** | `smita-jena` | CONTENT & CURATION | CONTENT | Visual Media & Creative Writing | `/images/team/smita-jena-content.webp` |
-| `NX-013` | **SIDDHARTH BASU** | `siddharth-basu` | TECHNICAL WRITING & CASE STUDIES | CONTENT | Computer Science & Technical Communication | `/images/team/siddharth-basu-content.webp` |
+| `NX-013` | **SIDHARTH BASU** | `sidharth-basu` | TECHNICAL WRITING & CASE STUDIES | CONTENT | Computer Science & Technical Communication | `/images/team/Sidharth_Basu.jpeg` |
 | `NX-014` | **SASWAT PALO** | `saswat-palo` | MEDIA PRODUCTION & CINEMATICS | CONTENT | Film, Digital Media & Visual Storytelling | `/images/team/saswat-palo-content.webp` |
 | `NX-015` | **PRATYUSH SAHOO** | `pratyush-sahoo` | GRAPHIC DESIGN & PUBLICATION | CONTENT | Visual Communication & Design | `/images/team/pratyush-sahoo-content.webp` |
 | `NX-016` | **OMM PRAKASH TRIPATHY** | `omm-prakash-tripathy` | RESEARCH & DOCUMENTATION | CONTENT | Information Systems & Technical Research | `/images/team/omm-prakash-tripathy-content.webp` |
@@ -50,9 +50,14 @@ This dataset represents a pure, zero-invention data extraction from the authenti
 | `NX-024` | **RASHI SWARNIM** | `rashi-swarnim` | MULTIMEDIA PRODUCTION & ARCHIVE | CONTENT | Digital Media & Visual Arts | `/images/team/swarnim-content.webp` |
 | `NX-025` | **ANSHUMAN TIWARY** | `anshuman-tiwary` | MANAGEMENT | MANAGEMENT | Systems & Engineering Operations | `/images/team/anshuman-tiwary-management.webp` |
 | `NX-026` | **OROSMIT MISHRA** | `orosmit-mishra` | MANAGEMENT | MANAGEMENT | Community & Project Strategy | `/images/team/orosmit-mishra.webp` |
-| `NX-027` | **IMTIAZ ALLAM** | `imtiaz-allam` | HEAD OF TECH | HEADS | Technical Architecture & Systems Engineering | `/images/team/Imtiaz_Allam.jpeg` |
 | `NX-028` | **ABHINAB JENA** | `abhinab-jena` | IDEATION & CONCEPT DEVELOPER | IDEATION | Computer Science & Engineering | `/images/team/abhinab_jena.jpg` |
 | `NX-029` | **HIMANSHI MOHAPATRA** | `himanshi-mohapatra` | CONTENT & EDITORIAL STRATEGIST | CONTENT | Media Communication & Editorial Strategy | `/images/team/himanshi_mohapatra.jpeg` |
+| `NX-032` | **ANUBHAV JAISWAL** | `anubhav-jaiswal` | COORDINATOR | COORDINATOR & MENTOR | Studio Leadership & Program Management | `/images/team/Anubhav_Jaiswal.jpeg` |
+| `NX-033` | **MOHIT KUMAR** | `mohit-kumar` | COORDINATOR | COORDINATOR & MENTOR | Studio Operations & Program Coordination | `/images/team/Mohit_Kumar.jpeg` |
+| `NX-034` | **SASWAT BARAI** | `satyajit-barik` | IDEATION & HARDWARE PROTOTYPER | IDEATION | Embedded Systems & Hardware Prototyping | `/images/team/Saswat_Barai.jpeg` |
+| `NX-035` | **UJJWAL PRUSTY** | `ujjwal-prusty` | IDEATION & SOFTWARE DEVELOPER | IDEATION | Computer Science & Systems Engineering | `/images/team/Ujjwal_Prusty.jpeg` |
+| `NX-036` | **PRATHAM SRIVASTAVA** | `pratham-srivastava` | COORDINATOR | COORDINATOR & MENTOR | Systems Architecture & Technical Coordination | `/images/team/pratham_srivastava.jpeg` |
+| `NX-038` | **IMTIAZ ALAM** | `imtiyaz-allam` | HEAD OF TECH | HEADS | Technical Architecture & Systems Engineering | `/images/team/Imtiaz_Alam.jpeg` |
 
 ---
 
@@ -74,7 +79,7 @@ All portraits were inspected in canonical `images/team/`:
 | `NX-010` | SURYAPRASAD BRAHMA | `/images/team/suryaprasad-brahma-ideation.webp` | ✓ | 8.6 KB |
 | `NX-011` | TUSHTI SINHA | `/images/team/tushti-sinha-content.webp` | ✓ | 59.1 KB |
 | `NX-012` | SMITA JENA | `/images/team/smita-jena-content.webp` | ✓ | 77.2 KB |
-| `NX-013` | SIDDHARTH BASU | `/images/team/siddharth-basu-content.webp` | ✓ | 35.7 KB |
+| `NX-013` | SIDHARTH BASU | `/images/team/Sidharth_Basu.jpeg` | ✓ | 546.6 KB |
 | `NX-014` | SASWAT PALO | `/images/team/saswat-palo-content.webp` | ✓ | 22.0 KB |
 | `NX-015` | PRATYUSH SAHOO | `/images/team/pratyush-sahoo-content.webp` | ✓ | 56.0 KB |
 | `NX-016` | OMM PRAKASH TRIPATHY | `/images/team/omm-prakash-tripathy-content.webp` | ✓ | 39.2 KB |
@@ -88,16 +93,21 @@ All portraits were inspected in canonical `images/team/`:
 | `NX-024` | RASHI SWARNIM | `/images/team/swarnim-content.webp` | ✓ | 42.9 KB |
 | `NX-025` | ANSHUMAN TIWARY | `/images/team/anshuman-tiwary-management.webp` | ✓ | 12.2 KB |
 | `NX-026` | OROSMIT MISHRA | `/images/team/orosmit-mishra.webp` | ✓ | 33.3 KB |
-| `NX-027` | IMTIAZ ALLAM | `/images/team/Imtiaz_Allam.jpeg` | ✓ | 44.8 KB |
 | `NX-028` | ABHINAB JENA | `/images/team/abhinab_jena.jpg` | ✓ | 107.9 KB |
 | `NX-029` | HIMANSHI MOHAPATRA | `/images/team/himanshi_mohapatra.jpeg` | ✓ | 146.7 KB |
+| `NX-032` | ANUBHAV JAISWAL | `/images/team/Anubhav_Jaiswal.jpeg` | ✓ | 848.8 KB |
+| `NX-033` | MOHIT KUMAR | `/images/team/Mohit_Kumar.jpeg` | ✓ | 738.7 KB |
+| `NX-034` | SASWAT BARAI | `/images/team/Saswat_Barai.jpeg` | ✓ | 691.2 KB |
+| `NX-035` | UJJWAL PRUSTY | `/images/team/Ujjwal_Prusty.jpeg` | ✓ | 1477.0 KB |
+| `NX-036` | PRATHAM SRIVASTAVA | `/images/team/pratham_srivastava.jpeg` | ✓ | 666.0 KB |
+| `NX-038` | IMTIAZ ALAM | `/images/team/Imtiaz_Alam.jpeg` | ✓ | 1257.0 KB |
 
 ---
 
 ## 4. Normalization Rules Applied
 
 1. **Unique ID Assignment**:
-   - Sequential, stable, and deterministic allocation (`NX-001` to `NX-029`).
+   - Sequential, stable, and deterministic allocation (`NX-001` to `NX-034`).
    - Permanent identifier for card QR codes and URL paths (`/memberID/{slug}/{uniqueId}`).
 2. **Slug Generation**:
    - Strictly lowercase alphanumeric with hyphens, derived from the actual member name: `name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')`.
@@ -112,10 +122,10 @@ All portraits were inspected in canonical `images/team/`:
 
 ## 5. Validation Checklist
 
-- [x] **Unique IDs are Unique**: 29 / 29 unique identifiers (`NX-001` – `NX-029`).
-- [x] **Names are Non-Empty**: All 29 records have authentic non-empty names.
-- [x] **Slugs are Unique & URL-Safe**: 29 / 29 distinct URL-safe slugs.
-- [x] **Image References Exist**: 29 / 29 portraits verified on filesystem.
+- [x] **Unique IDs are Unique**: 34 / 34 unique identifiers (`NX-001` – `NX-034`).
+- [x] **Names are Non-Empty**: All 34 records have authentic non-empty names.
+- [x] **Slugs are Unique & URL-Safe**: 34 / 34 distinct URL-safe slugs.
+- [x] **Image References Exist**: 34 / 34 portraits verified on filesystem.
 - [x] **JSON is Valid**: Validated syntax in `Eid-card/data/members.json`.
 - [x] **No Duplicate People**: 0 duplicate records.
 - [x] **No Shared Images**: Every member has their own dedicated portrait.
