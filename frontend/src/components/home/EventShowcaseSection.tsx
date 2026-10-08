@@ -333,7 +333,7 @@ export const EventShowcaseSection: React.FC = () => {
                         required
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        placeholder="e.g. Ada Lovelace"
+                        placeholder="Your full name"
                         className="w-full px-3 py-2 bg-neutral-800 border border-neutral-700 rounded text-sm text-white focus:outline-none focus:border-amber-500 font-sans"
                       />
                     </div>
@@ -348,7 +348,7 @@ export const EventShowcaseSection: React.FC = () => {
                         required
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        placeholder="ada@example.com"
+                        placeholder="your.email@domain.com"
                         className="w-full px-3 py-2 bg-neutral-800 border border-neutral-700 rounded text-sm text-white focus:outline-none focus:border-amber-500 font-sans"
                       />
                     </div>

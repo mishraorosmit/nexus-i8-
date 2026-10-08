@@ -1,6 +1,6 @@
 # NEXUS E-ID Member Dataset — Extraction, Normalization & Validation Report
 
-**Generated**: 2026-10-08T15:54:18.481Z  
+**Generated**: 2026-10-08T16:21:43.496Z  
 **Dataset Path**: `Eid-card/data/members.json`  
 **Machine-Readable Report**: `Eid-card/data/member-validation-report.json`  
 **Source of Truth**: `nexus-i8-/frontend/src/data/nexusData.ts` (`TEAM_MEMBERS`)  

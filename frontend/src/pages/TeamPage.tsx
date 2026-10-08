@@ -63,20 +63,7 @@ export const TeamPage: React.FC<TeamPageProps> = ({ onRouteChange }) => {
         m.id === 'NX-002' ||
         m.name.toUpperCase().includes('MANISH PRAKASH')
     );
-    if (list.length > 0) return list;
-    return [
-      TEAM_MEMBERS.find((m) => m.id === 'team-coord-01') || {
-        id: 'team-coord-01',
-        name: 'MANISH PRAKASH',
-        role: 'COORDINATOR',
-        group: 'COORDINATOR & MENTOR',
-        discipline: 'Studio Operations & Program Coordination',
-        yearOfStudy: 'Coordinator',
-        bio: 'Coordinates studio operations, event logistics, and multidisciplinary project sprints across NEXUS squads.',
-        imageUrl: resolveImageUrl('/images/team/manish-prakash-coordinator.webp'),
-        imagePosition: 'center 20%',
-      },
-    ];
+    return list;
   }, [members]);
 
   // Mentors (Dynamic SQLite backed)
@@ -88,20 +75,7 @@ export const TeamPage: React.FC<TeamPageProps> = ({ onRouteChange }) => {
         m.id === 'NX-004' ||
         m.name.toUpperCase().includes('OM PANDEY')
     );
-    if (list.length > 0) return list;
-    return [
-      TEAM_MEMBERS.find((m) => m.id === 'team-mentor-01') || {
-        id: 'team-mentor-01',
-        name: 'OM PANDEY',
-        role: 'MENTOR',
-        group: 'COORDINATOR & MENTOR',
-        discipline: 'Systems Architecture & Creative Mentorship',
-        yearOfStudy: 'Mentor',
-        bio: 'Mentors squad members on design engineering, technical problem-solving, and professional project execution.',
-        imageUrl: resolveImageUrl('/images/team/om-pandey.webp'),
-        imagePosition: 'center 22%',
-      },
-    ];
+    return list;
   }, [members]);
 
   // Studio Heads (Operations & Tech - Dynamic SQLite backed)
@@ -114,44 +88,7 @@ export const TeamPage: React.FC<TeamPageProps> = ({ onRouteChange }) => {
         !r.includes('MENTOR')
       );
     });
-    if (list.length > 0) return list;
-    return [
-      TEAM_MEMBERS.find((m) => m.id === 'team-coord-03') || {
-        id: 'team-coord-03',
-        name: 'JITESH RAJ',
-        role: 'HEAD OF OPERATIONS, NEXUS',
-        group: 'HEADS',
-        discipline: 'Operations & Studio Leadership',
-        yearOfStudy: 'Lead // 2026',
-        bio: 'Directs strategic operations, project lifecycle governance, and squad orchestration across NEXUS.',
-        imageUrl: resolveImageUrl('/images/team/jitesh_bhaiya.webp'),
-        alternateImageUrl: resolveImageUrl('/images/team/jitesh_bhaiya.jpeg'),
-        imagePosition: 'center 36%',
-      },
-      TEAM_MEMBERS.find((m) => m.id === 'team-head-02') || {
-        id: 'team-head-02',
-        name: 'IMTIAZ ALLAM',
-        role: 'HEAD OF TECH',
-        group: 'HEADS',
-        discipline: 'Technical Architecture & Systems Engineering',
-        yearOfStudy: 'Lead // 2026',
-        bio: 'Leads technical infrastructure, software architecture, and engineering sprints across NEXUS projects.',
-        imageUrl: resolveImageUrl('/images/team/Imtiaz_Allam.jpeg'),
-        imagePosition: 'center 25%',
-      },
-      TEAM_MEMBERS.find((m) => m.id === 'team-coord-02') || {
-        id: 'team-coord-02',
-        name: 'SIBA PRASAND PANDA',
-        role: 'VICE HEAD OF OPS',
-        group: 'HEADS',
-        discipline: 'Studio Operations & Program Coordination',
-        yearOfStudy: 'Lead // 2026',
-        bio: 'Oversees operational logistics, squad workflows, resource coordination, and cross-team execution across NEXUS.',
-        imageUrl: resolveImageUrl('/images/team/siba-hoops.webp'),
-        alternateImageUrl: resolveImageUrl('/images/team/siba-hoops.png'),
-        imagePosition: 'center 20%',
-      },
-    ];
+    return list;
   }, [members]);
 
   return (

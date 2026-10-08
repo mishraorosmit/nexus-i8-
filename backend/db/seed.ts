@@ -182,6 +182,15 @@ export function seedDatabase(customDb?: ReturnType<typeof getDatabase>): {
     }
   }
 
+  // Prune demo events no longer in SEED_EVENTS
+  const seedEventIds = new Set(SEED_EVENTS.map((e) => e.id));
+  const { items: existingEvents } = eventsRepository.findPaginated({ limit: 1000, status: 'Upcoming' });
+  for (const evt of existingEvents) {
+    if (evt.id.startsWith('evt-') && !seedEventIds.has(evt.id)) {
+      eventsRepository.deleteById(evt.id);
+    }
+  }
+
   // 5. Seed Announcements
   let announcementCount = 0;
   for (const a of SEED_ANNOUNCEMENTS) {
@@ -202,6 +211,15 @@ export function seedDatabase(customDb?: ReturnType<typeof getDatabase>): {
       announcementCount++;
     } else {
       announcementsRepository.update(a.id, annData);
+    }
+  }
+
+  // Prune demo announcements no longer in SEED_ANNOUNCEMENTS
+  const seedAnnIds = new Set(SEED_ANNOUNCEMENTS.map((a) => a.id));
+  const { items: existingAnns } = announcementsRepository.findPublishedPaginated({ limit: 1000 });
+  for (const ann of existingAnns) {
+    if (ann.id.startsWith('ann-') && !seedAnnIds.has(ann.id)) {
+      announcementsRepository.deleteById(ann.id);
     }
   }
 

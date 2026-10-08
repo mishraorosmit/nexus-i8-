@@ -233,7 +233,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onRouteChange }) => {
                         id="contact-fullName"
                         type="text"
                         required
-                        placeholder="e.g. Maya Chen"
+                        placeholder="Your full name"
                         value={fullName}
                         onChange={(e) => setFullName(e.target.value)}
                         className="w-full px-4 py-3 bg-[var(--bg-subsurface)] border border-[var(--border-subtle)] text-[var(--text-primary)] placeholder-[var(--text-muted)] text-sm font-bitter focus:outline-none focus:border-[#F2613F] focus:bg-[var(--bg-surface)] transition-all duration-200"
@@ -252,7 +252,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onRouteChange }) => {
                         id="contact-email"
                         type="email"
                         required
-                        placeholder="e.g. mchen@college.edu"
+                        placeholder="your.email@domain.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         className="w-full px-4 py-3 bg-[var(--bg-subsurface)] border border-[var(--border-subtle)] text-[var(--text-primary)] placeholder-[var(--text-muted)] text-sm font-bitter focus:outline-none focus:border-[#F2613F] focus:bg-[var(--bg-surface)] transition-all duration-200"

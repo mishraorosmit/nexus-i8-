@@ -73,58 +73,9 @@ export const SEED_PROJECTS: Project[] = PROJECTS;
 export const SEED_MEMBERS: TeamMember[] = TEAM_MEMBERS;
 export const SEED_ARCHIVE: GalleryItem[] = GALLERY_ITEMS;
 
-export const SEED_EVENTS: EventItem[] = [
-  {
-    id: 'evt-001',
-    title: 'NEXUS Studio Open Sprint: Hardware & Interface Lab',
-    type: 'OpenStudio',
-    date: 'OCT 24, 2026',
-    time: '18:00 - 21:00',
-    location: 'SOA Main Lab // Room 304',
-    description: 'Hands-on exploration of sensory computing, micro-controllers, and digital layout tools.',
-    status: 'Upcoming',
-    rsvpUrl: 'https://nexus.campus/events/open-studio',
-  },
-  {
-    id: 'evt-002',
-    title: 'Algorithmic Visuals & Creative Code Showcase',
-    type: 'Showcase',
-    date: 'NOV 12, 2026',
-    time: '17:30 - 20:30',
-    location: 'Engineering Atrium',
-    description: 'Public exhibition of projects built during the Autumn ideation cycle.',
-    status: 'Upcoming',
-  },
-  {
-    id: 'evt-003',
-    title: 'Typographic Hierarchy & Editorial Web Workshop',
-    type: 'Workshop',
-    date: 'DEC 04, 2026',
-    time: '16:00 - 18:30',
-    location: 'Design Studio Lab 2',
-    description: 'Practical deep dive into variable fonts, fluid typography, and CSS layout algorithms.',
-    status: 'Upcoming',
-  },
-];
+export const SEED_EVENTS: EventItem[] = [];
 
-export const SEED_ANNOUNCEMENTS: AnnouncementItem[] = [
-  {
-    id: 'ann-001',
-    title: 'Spring 2027 Cohort Applications Now Open',
-    content: 'Student project leads, interface designers, and hardware tinkerers are invited to apply for open sprint teams.',
-    priority: 'Normal',
-    active: true,
-    publishedAt: new Date().toISOString(),
-  },
-  {
-    id: 'ann-002',
-    title: 'Studio Open Hours: Tuesdays & Thursdays',
-    content: 'The studio lab is accessible to all multidisciplinary student teams from 18:00 to 21:00.',
-    priority: 'Normal',
-    active: true,
-    publishedAt: new Date().toISOString(),
-  },
-];
+export const SEED_ANNOUNCEMENTS: AnnouncementItem[] = [];
 
 export const SEED_RESOURCES: ResourceItem[] = [
   {
