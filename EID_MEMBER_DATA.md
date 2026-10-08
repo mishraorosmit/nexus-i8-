@@ -1,6 +1,6 @@
 # NEXUS E-ID Member Dataset — Extraction, Normalization & Validation Report
 
-**Generated**: 2026-10-05T16:15:01.739Z  
+**Generated**: 2026-10-08T15:44:53.496Z  
 **Dataset Path**: `Eid-card/data/members.json`  
 **Machine-Readable Report**: `Eid-card/data/member-validation-report.json`  
 **Source of Truth**: `nexus-i8-/frontend/src/data/nexusData.ts` (`TEAM_MEMBERS`)  
@@ -54,7 +54,7 @@ This dataset represents a pure, zero-invention data extraction from the authenti
 | `NX-029` | **HIMANSHI MOHAPATRA** | `himanshi-mohapatra` | CONTENT & EDITORIAL STRATEGIST | CONTENT | Media Communication & Editorial Strategy | `/images/team/himanshi_mohapatra.jpeg` |
 | `NX-032` | **ANUBHAV JAISWAL** | `anubhav-jaiswal` | COORDINATOR | COORDINATOR & MENTOR | Studio Leadership & Program Management | `/images/team/Anubhav_Jaiswal.jpeg` |
 | `NX-033` | **MOHIT KUMAR** | `mohit-kumar` | COORDINATOR | COORDINATOR & MENTOR | Studio Operations & Program Coordination | `/images/team/Mohit_Kumar.jpeg` |
-| `NX-034` | **SASWAT BARAI** | `satyajit-barik` | IDEATION & HARDWARE PROTOTYPER | IDEATION | Embedded Systems & Hardware Prototyping | `/images/team/Saswat_Barai.jpeg` |
+| `NX-034` | **SASWAT BARAI** | `satyajit-barik` | COORDINATOR | COORDINATOR & MENTOR | Embedded Systems & Hardware Prototyping | `/images/team/Saswat_Barai.jpeg` |
 | `NX-035` | **UJJWAL PRUSTY** | `ujjwal-prusty` | IDEATION & SOFTWARE DEVELOPER | IDEATION | Computer Science & Systems Engineering | `/images/team/Ujjwal_Prusty.jpeg` |
 | `NX-036` | **PRATHAM SRIVASTAVA** | `pratham-srivastava` | COORDINATOR | COORDINATOR & MENTOR | Systems Architecture & Technical Coordination | `/images/team/pratham_srivastava.jpeg` |
 | `NX-038` | **IMTIAZ ALAM** | `imtiyaz-allam` | HEAD OF TECH | HEADS | Technical Architecture & Systems Engineering | `/images/team/Imtiaz_Alam.jpeg` |

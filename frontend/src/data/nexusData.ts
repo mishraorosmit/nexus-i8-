@@ -351,18 +351,7 @@ const RAW_TEAM_MEMBERS: TeamMember[] = [
     imageUrl: '/images/team/tushti-sinha-content.webp',
     imagePosition: 'center 18%',
   },
-  {
-    id: 'team-10',
-    name: 'SASWAT BARAI',
-    role: 'IDEATION & HARDWARE PROTOTYPER',
-    group: 'IDEATION',
-    discipline: 'Embedded Systems & Hardware Prototyping',
-    yearOfStudy: 'Junior // 2027',
-    bio: 'Develops sensory interfaces, autonomous hardware systems, and physical computing prototypes.',
-    imageUrl: '/images/team/Saswat_Barai.jpeg',
-    alternateImageUrl: '/images/team/Saswat Barai.jpeg',
-    imagePosition: 'center 20%',
-  },
+
   {
     id: 'team-11',
     name: 'UJJWAL PRUSTY',
@@ -576,6 +565,18 @@ const RAW_TEAM_MEMBERS: TeamMember[] = [
     yearOfStudy: 'Coordinator',
     bio: 'Directs cohort operations, interdisciplinary mentorship, and community innovation sprints across NEXUS.',
     imageUrl: '/images/team/Anubhav_Jaiswal.jpeg',
+    imagePosition: 'center 20%',
+  },
+  {
+    id: 'team-10',
+    name: 'SASWAT BARAI',
+    role: 'COORDINATOR',
+    group: 'COORDINATOR & MENTOR',
+    discipline: 'Embedded Systems & Hardware Prototyping',
+    yearOfStudy: 'Coordinator',
+    bio: 'Develops sensory interfaces, autonomous hardware systems, and physical computing prototypes.',
+    imageUrl: '/images/team/Saswat_Barai.jpeg',
+    alternateImageUrl: '/images/team/Saswat Barai.jpeg',
     imagePosition: 'center 20%',
   },
   {

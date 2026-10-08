@@ -93,9 +93,7 @@ export const TeamCard: React.FC<TeamCardProps> = ({
         onPointerMove={handlePointerMove}
         onPointerLeave={handlePointerLeave}
         style={{
-          transform: isHovered
-            ? `perspective(800px) rotateX(${((lightSpot.y - 50) * -0.08).toFixed(2)}deg) rotateY(${((lightSpot.x - 50) * 0.08).toFixed(2)}deg) translateY(-4px)`
-            : 'perspective(800px) rotateX(0deg) rotateY(0deg) translateY(0px)',
+          transform: isHovered ? 'translateY(-4px)' : 'translateY(0px)',
           transition: isHovered
             ? 'transform 0.12s ease-out, box-shadow 0.3s ease, border-color 0.3s ease'
             : 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease',
@@ -110,16 +108,6 @@ export const TeamCard: React.FC<TeamCardProps> = ({
           ${className}
         `}
       >
-        {/* Soft, minimal cursor-following ambient highlight */}
-        <div
-          className="absolute inset-0 pointer-events-none transition-opacity duration-300"
-          style={{
-            opacity: isHovered ? 1 : 0,
-            background: `radial-gradient(circle 260px at ${lightSpot.x}% ${lightSpot.y}%, rgba(242, 97, 63, 0.12) 0%, transparent 70%)`,
-          }}
-          aria-hidden="true"
-        />
-
         <div className="relative z-10 flex flex-col justify-between h-full">
           <div>
             {/* Portrait container with interactive hover zoom and subtle lighting */}

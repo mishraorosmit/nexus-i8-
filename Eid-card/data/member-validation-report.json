@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-10-05T16:15:01.739Z",
+  "timestamp": "2026-10-08T15:44:53.496Z",
   "sourceRepository": "nexus-i8-",
   "sourceFile": "frontend/src/data/nexusData.ts",
   "targetDataset": "Eid-card/data/members.json",
@@ -317,8 +317,8 @@
       "uniqueId": "NX-034",
       "name": "SASWAT BARAI",
       "slug": "satyajit-barik",
-      "role": "IDEATION & HARDWARE PROTOTYPER",
-      "group": "IDEATION",
+      "role": "COORDINATOR",
+      "group": "COORDINATOR & MENTOR",
       "domain": "Embedded Systems & Hardware Prototyping",
       "image": "/images/team/Saswat_Barai.jpeg",
       "sourceId": "team-10"
