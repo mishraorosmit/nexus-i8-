@@ -235,6 +235,23 @@ export const PROJECTS: Project[] = [
     ],
     githubUrl: 'https://github.com/nexus-club/soa-clubsphere',
   },
+  {
+    id: 'nxs-006',
+    projectNumber: 'NXS / 006',
+    title: 'TYPESTREAM',
+    year: '2026',
+    disciplines: 'DESIGN × WEB TOOLS',
+    category: 'Creative Production',
+    summary:
+      'An open-source typographic variable font playground built for student publication designers.',
+    description:
+      'A zero-friction browser tool that lets student typesetters, zine editors, and web designers inspect variable font axes, generate CSS font-variation-settings, and preview glyph sets under real editorial conditions.',
+    status: 'Active',
+    leadStudents: [],
+    tags: ['Opentype.js', 'Variable Fonts', 'SVG Export', 'CSS Tooling'],
+    deliverables: ['Browser Variable Font Tester', 'CSS Export Utility', 'Glyph Specimen Viewer'],
+    githubUrl: 'https://github.com/nexus-club/typestream',
+  },
 ];
 
 const RAW_TEAM_MEMBERS: TeamMember[] = [
