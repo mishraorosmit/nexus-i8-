@@ -51,7 +51,7 @@ const DETERMINISTIC_ID_MAPPING: Record<string, string> = {
   'team-content-15': 'NX-029',// HIMANSHI MOHAPATRA
   'team-coord-06': 'NX-032', // ANUBHAV JAISWAL
   'team-coord-04': 'NX-033', // MOHIT KUMAR
-  'team-10': 'NX-034',       // SASWAT BARAI (satyajit-barik)
+  'team-10': 'NX-034',       // SASWAT BARAI (saswat-barai)
   'team-11': 'NX-035',       // UJJWAL PRUSTY
   'team-coord-05': 'NX-036', // PRATHAM SRIVASTAVA
   'team-head-02': 'NX-038',  // IMTIAZ ALAM (imtiyaz-allam)
@@ -59,7 +59,7 @@ const DETERMINISTIC_ID_MAPPING: Record<string, string> = {
 
 // Deterministic Slug overrides for specific assigned permalinks
 const DETERMINISTIC_SLUG_OVERRIDE: Record<string, string> = {
-  'NX-034': 'satyajit-barik',
+  'NX-034': 'saswat-barai',
   'NX-038': 'imtiyaz-allam',
 };
 

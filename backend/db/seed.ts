@@ -43,8 +43,9 @@ export function seedDatabase(customDb?: ReturnType<typeof getDatabase>): {
   const eidDataMap = new Map<string, any>();
   try {
     const candidates = [
-      path.resolve(process.cwd(), '../Eid-card/data/members.json'),
       path.resolve(process.cwd(), 'Eid-card/data/members.json'),
+      path.resolve(process.cwd(), 'frontend/src/eid/data/members.json'),
+      path.resolve(process.cwd(), '../Eid-card/data/members.json'),
     ];
     for (const p of candidates) {
       if (fs.existsSync(p)) {
